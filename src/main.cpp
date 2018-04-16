@@ -6,30 +6,19 @@
 #include <memory>
 
 #include "EvolveConfig.h"
-
-enum DominanceType {Incomplete, Codominant};
-
-class Allele {
-    float dominance; // Governs how dominant this allele is over allele's of the same genotype.
-
-};
-
-
-class Gene {
-
-    char name;
-    std::pair<Allele, Allele> alleles;
-    DominanceType dominance_type;
-    float expressivity; // Governs the strength of the phenotype
-
-};
-
+#include "phenotype.h"
+#include "gene.h"
 
 
 
 
 int main()
 {
+    std::vector<std::pair<std::string, char>> relationships;
+    relationships.push_back( std::make_pair(std::string("complete"), 'A') );
+    relationships.push_back( std::make_pair(std::string("complete"), 'B') );
+
+    Phenotype brown_eyes(relationships);
 
     std::cout << "Major Version: " << Evolve_VERSION_MAJOR << std::endl;
     std::cout << "Minor Version: " << Evolve_VERSION_MINOR << std::endl;

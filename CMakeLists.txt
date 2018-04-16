@@ -8,6 +8,10 @@ set (Evolve_VERSION_MINOR 2)
 # Enable Debugging
 set(CMAKE_BUILD_TYPE Debug)
 
+# Set C++ standard to C++11
+add_compile_options(-std=c++11)  # CMake < 3.1
+set (CMAKE_CXX_STANDARD 11)      # CMake >= 3.1
+
 # configure a header file to pass some of the CMake settings
 # to the source code
 configure_file (
