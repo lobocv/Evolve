@@ -5,7 +5,7 @@
 
 
 
-AlleleRelationship::AlleleRelationship(Phenotype& phenotype, char gene_code): phenotype(phenotype), gene_code(gene_code) {
+AlleleRelationship::AlleleRelationship(Phenotype* phenotype, char gene_code): phenotype(*phenotype), gene_code(gene_code) {
     // Create two alleles for the gene relationship, one denoted as an upper case letter
     // and one as lower case, as is convention.
     char dominant_code = (char)toupper(gene_code);
@@ -15,8 +15,8 @@ AlleleRelationship::AlleleRelationship(Phenotype& phenotype, char gene_code): ph
 };
 
 
-// CompleteDominance::CompleteDominance(Phenotype& phenotype, char gene_code) : AlleleRelationship(phenotype, gene_code) {
+CompleteDominance::CompleteDominance(Phenotype* phenotype, char gene_code) : AlleleRelationship(phenotype, gene_code) {
 
-//     // dominant_allele = &alleles.first;
-//     // recessive_allele = &alleles.second;
-// };
+    dominant_allele = &alleles.first;
+    recessive_allele = &alleles.second;
+};

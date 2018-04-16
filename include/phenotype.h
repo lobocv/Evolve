@@ -18,4 +18,5 @@ public:
     Phenotype(std::vector<std::pair<std::string, char>>);
 };
 
+
 #endif

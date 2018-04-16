@@ -27,7 +27,7 @@ struct AlleleRelationship {
     Phenotype& phenotype;
     char gene_code;
     std::pair<Gene, Gene> alleles;
-    AlleleRelationship(Phenotype&, char);
+    AlleleRelationship(Phenotype*, char);
 };
 
 /*
@@ -38,11 +38,10 @@ the effect of the other. The allele that masks the other is said to be dominant 
  and the allele that is masked is said to be recessive to the former.
 */
 class CompleteDominance: public AlleleRelationship {
-    Gene &dominant_allele;
-    Gene &recessive_allele;
+    Gene *dominant_allele, *recessive_allele;
 
 public:
-    CompleteDominance(Phenotype&, char);
+    CompleteDominance(Phenotype*, char);
 };
 
 /*

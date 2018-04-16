@@ -9,11 +9,11 @@ Phenotype::Phenotype(std::vector<std::pair<std::string, char>> relationships) {
     
     for (auto cls: relationships) {
         if (cls.first == "complete") {
-            std::cout << cls.first << std::endl;
+            gene_relationships.push_back(CompleteDominance(this, cls.second));
         } else if (cls.first == "imcomplete") {
-            std::cout << cls.first << std::endl;
+            std::cout << "Not supported yet" << std::endl;
         } else if (cls.first == "codominant") {
-            std::cout << cls.first << std::endl;
+            std::cout << "Not supported yet" << std::endl;
         } else {
             // TODO: Raise error
         }
