@@ -7,19 +7,26 @@
 
 #include "EvolveConfig.h"
 
+enum DominanceType {Incomplete, Codominant};
 
-class Test {
+class Allele {
+    float dominance; // Governs how dominant this allele is over allele's of the same genotype.
 
-    int id;
-    std::string name;
-
-public:
-    Test(): id(0), name("calvin") {}
-
-    friend std::ostream& operator<<(std::ostream& out, const Test &test) {
-        out << test.id << ":" << test.name;
-    }
 };
+
+
+class Gene {
+
+    char name;
+    std::pair<Allele, Allele> alleles;
+    DominanceType dominance_type;
+    float expressivity; // Governs the strength of the phenotype
+
+};
+
+
+
+
 
 int main()
 {
@@ -27,8 +34,6 @@ int main()
     std::cout << "Major Version: " << Evolve_VERSION_MAJOR << std::endl;
     std::cout << "Minor Version: " << Evolve_VERSION_MINOR << std::endl;
 
-    Test test1 = Test();
-    std::cout << test1 << std::endl;
 
     return 0;
 }
