@@ -6,7 +6,6 @@
 #include <memory>
 
 #include "EvolveConfig.h"
-#include "phenotype.h"
 #include "gene.h"
 
 
@@ -14,14 +13,19 @@
 
 int main()
 {
-    std::vector<std::pair<std::string, char>> relationships;
-    relationships.push_back( std::make_pair(std::string("complete"), 'A') );
-    relationships.push_back( std::make_pair(std::string("complete"), 'B') );
-
-    Phenotype brown_eyes(relationships);
-
     std::cout << "Major Version: " << Evolve_VERSION_MAJOR << std::endl;
     std::cout << "Minor Version: " << Evolve_VERSION_MINOR << std::endl;
+    std::cout << "===============" << std::endl;
+
+    std::set<char> genecodes = {'a' ,'b', 'c', 'd', 'e', 'f'};
+    std::pair<Chromosome, Chromosome> chromosome_pair = Chromosome::MakePair(genecodes);
+
+    std::vector<Gene> gvect = chromosome_pair.first.genes;
+
+    std::cout << chromosome_pair.first << std::endl;
+    std::cout << chromosome_pair.second << std::endl;
+
+
 
 
     return 0;

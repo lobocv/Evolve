@@ -27,3 +27,44 @@ Gene - Contains information about the strength of one or multiple Traits. When t
        when observed in high numbers, cause the organism to be tall. An example of pleiotropic gene is a gene who's occurance
        affects both the height and weight of an organism simultaneously.
        
+
+Chromosome - Contains many genes and distributes those genes to offspring during reproduction
+
+
+# List of Traits
+
+Continuous
+-------------
+Colour   
+Height
+Weight
+Land Speed
+Water Speed
+Air Speed
+Vision
+Smell
+Hearing
+Strength
+Intelligence
+Agility
+Sociability
+Reproductivity
+
+
+Discrete Binary
+----------------
+Nocturnal
+Handedness
+Colorblind
+Hair length 
+Bipedal
+
+
+Discrete Non-Binary
+--------------------
+Exterior Type (skin, feathers, scales, fur, wool)
+Eye color (blue, green, brown, grey)
+Number of Appendages
+Appendage Weapon (None, Claws, Hooves, Flippers)
+Diet (Herbivore, Carnivore, Omnivore)
+
