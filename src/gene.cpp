@@ -1,37 +1,32 @@
 #include "gene.h"
+#include "common.h"
 #include <ctype.h>
 #include <iostream>
-
+#include <cstdlib>
 
 Gene::Gene(char name) : name{name} {};
 
-Gene::Gene(){};
-
 char Gene::get_name() const {
     return name;
-}
+};
 
-Chromosome::Chromosome(){};
 
-Chromosome::Chromosome(std::set<char> genecodes){
-
+Chromosome::Chromosome(geneset genecodes) {
     for (auto genecode: genecodes) {
-        Gene g(genecode);
-        genes.push_back(g);
+        genes.push_back(Gene(genecode));
     }
 };
 
-// Create a pair of chromosomes for the given gene codes. 
-// This creates one chromosome containing all upper-case alleles of the gene
-// and one chromosome with all lower-case alleles of the gene
-std::pair<Chromosome, Chromosome> Chromosome::MakePair(std::set<char> genecodes) {
-    std::set<char> uppercase, lowercase;
+// Create a pair of chromosomes for the given gene codes.
+// This creates two chromosomes that have random alleles from each gene in the list provided. 
+std::pair<Chromosome, Chromosome> Chromosome::MakePair(geneset genecodes) {
+    geneset left_chromo, right_chromo;
     for (auto genecode: genecodes) {
-        uppercase.insert((char) toupper(genecode));
-        lowercase.insert((char) tolower(genecode));
+        left_chromo.insert((std::rand() % 2) ? (char) toupper(genecode): (char) tolower(genecode) );
+        right_chromo.insert((std::rand() % 2) ? (char) toupper(genecode): (char) tolower(genecode) );
     }
-    Chromosome uppcase_case_chromosome(uppercase);
-    Chromosome lower_case_chromosome(lowercase);
+    Chromosome uppcase_case_chromosome(left_chromo);
+    Chromosome lower_case_chromosome(right_chromo);
 
     return std::make_pair(uppcase_case_chromosome, lower_case_chromosome);
 };

@@ -2,13 +2,14 @@
 #define __Gene
 
 #include <vector>
-#include <set>
+#include <unordered_set>
 #include <ostream>
+#include "common.h"
 
 class Gene {
     char name;
 public:
-    Gene();
+    Gene() = default;
     Gene(char);
     char get_name() const;
 };
@@ -17,11 +18,13 @@ class Chromosome {
     int id;    
 public:
     const int ASD=6;
-    Chromosome();
-    Chromosome(std::set<char>);
+    Chromosome() = default;
+    Chromosome(geneset);
     std::vector<Gene> genes;
-    static std::pair<Chromosome, Chromosome> MakePair(std::set<char>);
+    static std::pair<Chromosome, Chromosome> MakePair(geneset);
     friend std::ostream &operator<< (std::ostream &ostream, const Chromosome &c);
 };
+
+
 
 #endif

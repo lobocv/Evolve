@@ -33,6 +33,7 @@
         "cstdlib": "cpp",
         "cstring": "cpp",
         "cwchar": "cpp",
-        "cwctype": "cpp"
+        "cwctype": "cpp",
+        "unordered_set": "cpp"
     }
 }

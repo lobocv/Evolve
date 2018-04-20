@@ -10,7 +10,8 @@
             "label": "CMake",
             "type": "shell",
             "command": "cmake",
-            "args": [".."
+            "args": [
+                ".."
             ],
             "group": {
                 "kind": "build",
@@ -21,13 +22,17 @@
             "label": "make",
             "type": "shell",
             "command": "make",
-            "args": ["-j"
+            "args": [
+                "-j"
             ],
             "group": {
                 "kind": "build",
                 "isDefault": true
-            }
+            },
+            "problemMatcher": [
+                "$tsc-watch"
+            ],
+            "isBackground": true
         }
-
     ]
 }
