@@ -18,7 +18,7 @@ Creature::Creature(std::string species, int n_chromosome_pairs, int id) : specie
 
 int Creature::get_id() const { return id_;};
 
-std::vector<std::pair<Chromosome,Chromosome>> Creature::get_chromosomes() const {
+std::vector<ChromosomePair> Creature::get_chromosomes() const {
     return chromosomes_; 
 };
 
@@ -30,7 +30,6 @@ std::string Species::get_name() {return name_;};
 int Species::get_n_chromosome_pairs() {return n_chromosome_pairs_;};
 
 const std::vector<Creature>& Species::get_creatures() const {
-    
     return creatures_;};
 
 void Species::AddCreatures(int number) {
@@ -38,7 +37,6 @@ void Species::AddCreatures(int number) {
     for (int ii=0; ii < number; ii++) {
         creatures_.push_back(Creature(name_, n_chromosome_pairs_, id));
         id++;
-        std::cout << "Size"<< get_creatures().size() << std::endl;
     }
 };
 

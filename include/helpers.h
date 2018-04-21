@@ -4,9 +4,8 @@
 #include "common.h"
 #include <iostream>
 
-
-std::ostream &operator<< (std::ostream &stream, const Chromosome &c) {
-    for (auto gene: c.genes) {
+std::ostream &operator<< (std::ostream &stream, const Chromosome &obj) {
+    for (auto gene: obj.genes) {
         stream << gene.get_name();    
     }
     return stream;

@@ -21,7 +21,7 @@ public:
     Chromosome() = default;
     Chromosome(std::string);
     std::vector<Gene> genes;
-    static std::pair<Chromosome, Chromosome> MakePair(std::string);
+    static ChromosomePair MakePair(std::string);
     friend std::ostream &operator<< (std::ostream &ostream, const Chromosome &c);
 };
 
