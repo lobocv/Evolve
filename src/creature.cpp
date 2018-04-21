@@ -5,6 +5,9 @@
 #include <iostream>
 #include <cstdlib>
 
+/*
+    Creature
+*/
 Creature::Creature(std::string species, int n_chromosome_pairs, int id) : species_(species), n_chromosome_pairs_(n_chromosome_pairs), id_(id) {
     std::string genecodes;
     for (int ii=0; ii < N_GENES; ii++) {
@@ -16,16 +19,20 @@ Creature::Creature(std::string species, int n_chromosome_pairs, int id) : specie
     }
 };
 
-int Creature::get_id() const { return id_;};
+const int Creature::get_id() const { return id_;};
+const std::string Creature::get_species() const { return species_;};
 
 std::vector<ChromosomePair> Creature::get_chromosomes() const {
     return chromosomes_; 
 };
 
+/*
+    Species
+*/
 Species::Species(std::string name, int genotype_length, int n_chromosome_pairs) 
     : name_(name), genotype_length_(genotype_length), n_chromosome_pairs_(n_chromosome_pairs) {};
 
-std::string Species::get_name() {return name_;};
+const std::string Species::get_name() const {return name_;};
 
 int Species::get_n_chromosome_pairs() {return n_chromosome_pairs_;};
 
@@ -39,6 +46,11 @@ void Species::AddCreatures(int number) {
         id++;
     }
 };
+
+
+/*
+    Creature Registry (Singleton)
+*/
 
 CreatureRegistry& CreatureRegistry::GetRegistry() {
     static CreatureRegistry registry;

@@ -29,18 +29,23 @@ int main()
     CreatureRegistry &registery = CreatureRegistry::GetRegistry();
     registery.species_["Blorp"] = Species("Blorp", N_GENES, 2);
 
+    std::cout << "List of Species" << std::endl;
+    std::cout << "===============" << std::endl;
+    for (auto species: registery.species_) {
+        std::cout << species.second << std::endl;
+    }
+    std::cout << "===============" << std::endl;
 
     registery.GenerateCreatures("Blorp", 3);
     
     // Create a creature with a random genotype.
     int ii=0;
     std::vector<Creature> const &c = registery.species_["Blorp"].get_creatures();
-    std::cout << "main size" << c.size();
     
     for (auto &creature: c) {
-        std::cout << "Creature #" << creature.get_id() << std::endl;
+        std::cout << creature << std::endl;
         for (auto &chromosome_pair: creature.get_chromosomes()){
-            std::cout << "Chromosome Pair #" << (ii+1) << std::endl;
+            std::cout << "Chromosome Pair #" << (ii+1) << ":" << std::endl;
             std::cout << chromosome_pair.first << std::endl;
             std::cout << chromosome_pair.second << std::endl;
             ii++;

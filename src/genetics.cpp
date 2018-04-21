@@ -5,6 +5,9 @@
 #include <iostream>
 #include <cstdlib>
 
+/*
+    Gene
+*/
 Gene::Gene(char name) : name{name} {};
 
 char Gene::get_name() const {
@@ -12,6 +15,9 @@ char Gene::get_name() const {
 };
 
 
+/*
+    Chromosome
+*/
 Chromosome::Chromosome(std::string genecodes) {
     for (auto genecode: genecodes) {
         genes.push_back(Gene(genecode));
