@@ -16,14 +16,13 @@ public:
 
 class Chromosome {
     int id;    
+    std::vector<Gene> genes;
 public:
     const int ASD=6;
     Chromosome() = default;
     Chromosome(std::string);
-    std::vector<Gene> genes;
     static ChromosomePair MakePair(std::string);
     friend std::ostream &operator<< (std::ostream &ostream, const Chromosome &c);
 };
-
 
 #endif

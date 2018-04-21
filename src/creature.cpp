@@ -21,10 +21,7 @@ Creature::Creature(std::string species, int n_chromosome_pairs, int id) : specie
 
 const int Creature::get_id() const { return id_;};
 const std::string Creature::get_species() const { return species_;};
-
-std::vector<ChromosomePair> Creature::get_chromosomes() const {
-    return chromosomes_; 
-};
+const std::vector<ChromosomePair> &Creature::get_chromosomes() const { return chromosomes_;}
 
 /*
     Species

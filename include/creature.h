@@ -14,7 +14,7 @@ class Creature {
 public:
     Creature() = default;
     Creature(std::string species, int n_chromosome_pairs, int id);    
-    std::vector<ChromosomePair> get_chromosomes() const;
+    const std::vector<ChromosomePair>& get_chromosomes() const;
     const int get_id() const;
     const std::string get_species() const;
 };
