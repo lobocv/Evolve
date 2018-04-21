@@ -19,9 +19,9 @@ class Chromosome {
 public:
     const int ASD=6;
     Chromosome() = default;
-    Chromosome(geneset);
+    Chromosome(std::string);
     std::vector<Gene> genes;
-    static std::pair<Chromosome, Chromosome> MakePair(geneset);
+    static std::pair<Chromosome, Chromosome> MakePair(std::string);
     friend std::ostream &operator<< (std::ostream &ostream, const Chromosome &c);
 };
 

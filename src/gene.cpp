@@ -11,7 +11,7 @@ char Gene::get_name() const {
 };
 
 
-Chromosome::Chromosome(geneset genecodes) {
+Chromosome::Chromosome(std::string genecodes) {
     for (auto genecode: genecodes) {
         genes.push_back(Gene(genecode));
     }
@@ -19,16 +19,18 @@ Chromosome::Chromosome(geneset genecodes) {
 
 // Create a pair of chromosomes for the given gene codes.
 // This creates two chromosomes that have random alleles from each gene in the list provided. 
-std::pair<Chromosome, Chromosome> Chromosome::MakePair(geneset genecodes) {
-    geneset left_chromo, right_chromo;
-    for (auto genecode: genecodes) {
-        left_chromo.insert((std::rand() % 2) ? (char) toupper(genecode): (char) tolower(genecode) );
-        right_chromo.insert((std::rand() % 2) ? (char) toupper(genecode): (char) tolower(genecode) );
+std::pair<Chromosome, Chromosome> Chromosome::MakePair(std::string genecodes) {
+    std::string left_genome, right_genome;
+    for (const auto char_code: genecodes) {
+        int left_allele = (std::rand() % 2) ?  toupper(char_code): tolower(char_code);
+        int right_allele = (std::rand() % 2) ? toupper(char_code): tolower(char_code);
+        left_genome.push_back((char) left_allele);
+        right_genome.push_back((char) right_allele);
     }
-    Chromosome uppcase_case_chromosome(left_chromo);
-    Chromosome lower_case_chromosome(right_chromo);
+    Chromosome left_chromo(left_genome);
+    Chromosome right_chromo(right_genome);
 
-    return std::make_pair(uppcase_case_chromosome, lower_case_chromosome);
+    return std::make_pair(left_chromo, right_chromo);
 };
 
 std::ostream &operator<< (std::ostream &stream, const Chromosome &c) {

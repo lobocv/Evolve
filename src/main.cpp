@@ -21,7 +21,12 @@ int main()
     // Change the seed to be based off the current system time
     srand (time(NULL));
     
-    geneset genecodes = {'a' ,'b', 'c', 'd', 'e', 'f', 'g', 'h'};
+    char genecodes[N_GENES] ;
+
+    for (int ii=0; ii < N_GENES-1; ii++) {
+        genecodes[ii] = 'A' + char(ii);
+    }
+
     std::pair<Chromosome, Chromosome> chromosome_pair = Chromosome::MakePair(genecodes);
 
     std::vector<Gene> gvect = chromosome_pair.first.genes;
