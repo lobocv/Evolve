@@ -2,5 +2,5 @@
 #define __EVOLVE_COMMON
 
 
-const int N_GENES = 27;
+const int N_GENES = 26;
 #endif

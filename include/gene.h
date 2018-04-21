@@ -26,5 +26,13 @@ public:
 };
 
 
+class Creature {
 
+    std::vector<std::pair<Chromosome,Chromosome>> chromosomes_;
+    int n_chromosome_pairs;
+
+public:
+    Creature(int n_chromosome_pairs);
+    std::vector<std::pair<Chromosome,Chromosome>> get_chromosomes() const;
+};
 #endif

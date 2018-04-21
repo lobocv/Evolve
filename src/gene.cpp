@@ -33,6 +33,23 @@ std::pair<Chromosome, Chromosome> Chromosome::MakePair(std::string genecodes) {
     return std::make_pair(left_chromo, right_chromo);
 };
 
+
+Creature::Creature(int n_chromosome_pairs) : n_chromosome_pairs(n_chromosome_pairs) {
+    std::string genecodes;
+    for (int ii=0; ii < N_GENES; ii++) {std::cout << ii << "," << genecodes[ii] << std::endl;
+        genecodes.push_back('A' + ii);
+    }
+
+    for (int ii=0; ii < n_chromosome_pairs; ii++) {
+        auto chromosome_pair = Chromosome::MakePair(genecodes);
+        chromosomes_.push_back(chromosome_pair);
+    }
+};
+
+std::vector<std::pair<Chromosome,Chromosome>> Creature::get_chromosomes() const {
+    return chromosomes_;
+};
+
 std::ostream &operator<< (std::ostream &stream, const Chromosome &c) {
     auto it = c.genes.begin();
     for (it; it != c.genes.end(); it++) {
