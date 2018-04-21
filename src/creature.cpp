@@ -34,7 +34,7 @@ Species::Species(std::string name, int genotype_length, int n_chromosome_pairs)
 
 const std::string Species::get_name() const {return name_;};
 
-int Species::get_n_chromosome_pairs() {return n_chromosome_pairs_;};
+const int Species::get_n_chromosome_pairs() const{return n_chromosome_pairs_;};
 
 const std::vector<Creature>& Species::get_creatures() const {
     return creatures_;};

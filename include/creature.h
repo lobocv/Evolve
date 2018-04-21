@@ -32,9 +32,9 @@ class Species {
 public:
     Species() = default;
     Species(std::string name, int genotype_length, int n_chromosome_pairs);
-    const std::string get_name() const;
     void AddCreatures(int number);
-    int get_n_chromosome_pairs();
+    const std::string get_name() const;
+    const int get_n_chromosome_pairs() const;
     const std::vector<Creature> &get_creatures() const;
     
 };
