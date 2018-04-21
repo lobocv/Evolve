@@ -7,17 +7,20 @@
 
 #include "EvolveConfig.h"
 #include "genetics.h"
+#include "creature.h"
 #include "common.h"
+#include "helpers.h"
 #include <time.h> 
 
 
 
 int main()
 {
-    std::cout << "Evolve" << std::endl;
+    std::cout << "       Evolve         " << std::endl;
+    std::cout << "======================" << std::endl;
+    std::cout << "Author: Calvin Lobo" << std::endl;
     std::cout << "Major Version: " << Evolve_VERSION_MAJOR << std::endl;
     std::cout << "Minor Version: " << Evolve_VERSION_MINOR << std::endl;
-    std::cout << "Author: Calvin Lobo" << std::endl;
     std::cout << "======================" << std::endl;
 
     // Change the seed to be based off the current system time
