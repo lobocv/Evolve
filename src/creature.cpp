@@ -16,7 +16,7 @@ Creature::Creature(std::string species, int n_chromosome_pairs, int id) : specie
     }
 };
 
-int Creature::get_id() { return id_;};
+int Creature::get_id() const { return id_;};
 
 std::vector<std::pair<Chromosome,Chromosome>> Creature::get_chromosomes() const {
     return chromosomes_; 
@@ -49,6 +49,6 @@ CreatureRegistry& CreatureRegistry::GetRegistry() {
 
 void CreatureRegistry::GenerateCreatures(std::string species_name, int number) {
     CreatureRegistry &registery = CreatureRegistry::GetRegistry();
-    Species species = registery.species_[species_name];
+    Species &species = registery.species_[species_name];
     species.AddCreatures(number);
 };

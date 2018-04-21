@@ -34,12 +34,12 @@ int main()
     
     // Create a creature with a random genotype.
     int ii=0;
-    std::vector<Creature> c = registery.species_["Blorp"].get_creatures();
+    std::vector<Creature> const &c = registery.species_["Blorp"].get_creatures();
     std::cout << "main size" << c.size();
     
-    for (auto creature: c) {
+    for (auto &creature: c) {
         std::cout << "Creature #" << creature.get_id() << std::endl;
-        for (auto chromosome_pair: creature.get_chromosomes()){
+        for (auto &chromosome_pair: creature.get_chromosomes()){
             std::cout << "Chromosome Pair #" << (ii+1) << std::endl;
             std::cout << chromosome_pair.first << std::endl;
             std::cout << chromosome_pair.second << std::endl;
