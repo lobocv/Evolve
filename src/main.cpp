@@ -18,20 +18,30 @@ int main()
     std::cout << "Major Version: " << Evolve_VERSION_MAJOR << std::endl;
     std::cout << "Minor Version: " << Evolve_VERSION_MINOR << std::endl;
     std::cout << "Author: Calvin Lobo" << std::endl;
-    std::cout << "===============" << std::endl;
+    std::cout << "======================" << std::endl;
 
     // Change the seed to be based off the current system time
     srand (time(NULL));
     
+    CreatureRegistry &registery = CreatureRegistry::GetRegistry();
+    registery.species_["Blorp"] = Species("Blorp", N_GENES, 2);
 
+
+    registery.GenerateCreatures("Blorp", 3);
+    
     // Create a creature with a random genotype.
-    Creature creature(2);
     int ii=0;
-    for (auto chromosome_pair: creature.get_chromosomes()){
-        std::cout << "Chromosome Pair #" << (ii+1) << std::endl;
-        std::cout << chromosome_pair.first << std::endl;
-        std::cout << chromosome_pair.second << std::endl;
-        ii++;
+    std::vector<Creature> c = registery.species_["Blorp"].get_creatures();
+    std::cout << "main size" << c.size();
+    
+    for (auto creature: c) {
+        std::cout << "Creature #" << creature.get_id() << std::endl;
+        for (auto chromosome_pair: creature.get_chromosomes()){
+            std::cout << "Chromosome Pair #" << (ii+1) << std::endl;
+            std::cout << chromosome_pair.first << std::endl;
+            std::cout << chromosome_pair.second << std::endl;
+            ii++;
+        }
     }
 
 
