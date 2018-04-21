@@ -36,7 +36,7 @@ std::pair<Chromosome, Chromosome> Chromosome::MakePair(std::string genecodes) {
 
 Creature::Creature(int n_chromosome_pairs) : n_chromosome_pairs(n_chromosome_pairs) {
     std::string genecodes;
-    for (int ii=0; ii < N_GENES; ii++) {std::cout << ii << "," << genecodes[ii] << std::endl;
+    for (int ii=0; ii < N_GENES; ii++) {
         genecodes.push_back('A' + ii);
     }
 
