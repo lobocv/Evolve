@@ -6,20 +6,6 @@
 #include <ostream>
 #include "common.h"
 
-class Creature {
-    std::string species_;
-    std::vector<ChromosomePair> chromosomes_;
-    int n_chromosome_pairs_;
-    int id_;
-public:
-    Creature() = default;
-    Creature(std::string species, int n_chromosome_pairs, int id);    
-    const std::vector<ChromosomePair>& get_chromosomes() const;
-    const int get_id() const;
-    const std::string get_species() const;
-};
-
-
 class Species {
 
     int n_chromosome_pairs_;
@@ -38,6 +24,21 @@ public:
     const std::vector<Creature> &get_creatures() const;
     
 };
+
+
+class Creature {
+    Species& species_;
+    std::vector<ChromosomePair> chromosomes_;
+    int n_chromosome_pairs_;
+    int id_;
+public:
+    Creature() = default;
+    Creature(Species& species, int n_chromosome_pairs, int id);    
+    const std::vector<ChromosomePair>& get_chromosomes() const;
+    const int get_id() const;
+    const Species& get_species() const;
+};
+
 
 // Singleton
 class CreatureRegistry {
