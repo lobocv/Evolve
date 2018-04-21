@@ -51,9 +51,8 @@ std::vector<std::pair<Chromosome,Chromosome>> Creature::get_chromosomes() const 
 };
 
 std::ostream &operator<< (std::ostream &stream, const Chromosome &c) {
-    auto it = c.genes.begin();
-    for (it; it != c.genes.end(); it++) {
-        stream << (*it).get_name();    
+    for (auto gene: c.genes) {
+        stream << gene.get_name();    
     }
     return stream;
 };
