@@ -1,4 +1,4 @@
-#include "gene.h"
+#include "genetics.h"
 #include "common.h"
 #include <ctype.h>
 #include <iostream>

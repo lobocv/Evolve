@@ -6,7 +6,7 @@
 #include <memory>
 
 #include "EvolveConfig.h"
-#include "gene.h"
+#include "genetics.h"
 #include "common.h"
 #include <time.h> 
 
