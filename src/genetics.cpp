@@ -8,11 +8,9 @@
 /*
     Gene
 */
-Gene::Gene(char name) : name{name} {};
+Gene::Gene(char name) : name_{name} {};
 
-char Gene::get_name() const {
-    return name;
-};
+const char &Gene::get_name() const {name_;}
 
 
 /*
@@ -26,7 +24,7 @@ Chromosome::Chromosome(std::string genecodes) {
 
 // Create a pair of chromosomes for the given gene codes.
 // This creates two chromosomes that have random alleles from each gene in the list provided. 
-std::pair<Chromosome, Chromosome> Chromosome::MakePair(std::string genecodes) {
+ChromosomePair Chromosome::MakePair(std::string genecodes) {
     std::string left_genome, right_genome;
     for (const auto char_code: genecodes) {
         int left_allele = (std::rand() % 2) ?  toupper(char_code): tolower(char_code);

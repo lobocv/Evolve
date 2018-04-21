@@ -7,11 +7,11 @@
 #include "common.h"
 
 class Gene {
-    char name;
+    char name_;
 public:
     Gene() = default;
     Gene(char);
-    char get_name() const;
+    const char& get_name() const;
 };
 
 class Chromosome {
