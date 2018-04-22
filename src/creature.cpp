@@ -11,12 +11,12 @@
 Creature::Creature(Species& species) : species_(species) {};
 
 void Creature::print() const {
-    int creature_num=0;
+    int chromo_num=0;
     for (auto &chromosome_pair: get_chromosomes()){
-        std::cout << "Chromosome Pair #" << (creature_num+1) << ":" << std::endl;
+        std::cout << "Chromosome Pair #" << (chromo_num+1) << ":" << std::endl;
         std::cout << chromosome_pair.first << std::endl;
         std::cout << chromosome_pair.second << std::endl;
-        creature_num++;
+        chromo_num++;
     }
 };
 
@@ -62,15 +62,14 @@ Species::Species(std::string name, int genotype_length, int n_chromosome_pairs)
     : name_(name), genotype_length_(genotype_length), n_chromosome_pairs_(n_chromosome_pairs) {};
 
 const std::string Species::get_name() const {return name_;};
-
-const int Species::get_population() const { return alive_;};
+const int Species::get_alive_population() const { return alive_;};
+const int Species::get_deceased_population() const { return deceased_;};
 const int Species::get_n_chromosome_pairs() const{return n_chromosome_pairs_;};
 
 const std::vector<Creature>& Species::get_creatures() const {
     return creatures_;};
 
 void Species::AddCreatures(int number) {
-    int id = creatures_.size();
     std::string gene_sequence;
 
     for (int chromo_num=0; chromo_num < N_GENES; chromo_num++) {
@@ -80,15 +79,17 @@ void Species::AddCreatures(int number) {
     // For each creature
     for (int creature_num=0; creature_num < number; creature_num++) {
         Creature creature(*this);
+        
         // Create all the chromosomes for the new creature
         for (int chromo_num=0; chromo_num < this->get_n_chromosome_pairs(); chromo_num++) {
             auto chromosome_pair = Chromosome::MakeRandomPair(gene_sequence);
             creature.chromosomes_.push_back(chromosome_pair);
-            creature.id_ = id;
+            creature.id_ = get_alive_population() + get_deceased_population();
         }
         // Add the creature to the list of recorded creatures in the species
         creatures_.push_back(creature);
-        id++;
+        alive_++;
+
     }
 };
 

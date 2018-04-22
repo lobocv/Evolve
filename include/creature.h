@@ -22,7 +22,8 @@ public:
     const std::string get_name() const;
     const int get_n_chromosome_pairs() const;
     const std::vector<Creature> &get_creatures() const;
-    const int get_population() const;
+    const int get_alive_population() const;
+    const int get_deceased_population() const;
     
 };
 
