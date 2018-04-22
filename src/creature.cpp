@@ -29,8 +29,8 @@ void Creature::Reproduce(const Creature& c1, const Creature& c2){
     // TODO: Check creatures are of reproductive age.
     Species species = c1.get_species();
 
-    std::vector<ChromosomePair> c1_chromo_pairs = c1.get_chromosomes();
-    std::vector<ChromosomePair> c2_chromo_pairs = c2.get_chromosomes();
+    Genome c1_chromo_pairs = c1.get_chromosomes();
+    Genome c2_chromo_pairs = c2.get_chromosomes();
 
     // Iterate through the chromosome pairs. If both creatures are the same 
     // species, they necessarily have the same number of chromosome pairs
@@ -53,7 +53,7 @@ void Creature::Reproduce(const Creature& c1, const Creature& c2){
 
 const int Creature::get_id() const { return id_;};
 const Species &Creature::get_species() const { return species_;};
-const std::vector<ChromosomePair> &Creature::get_chromosomes() const { return chromosomes_;}
+const Genome &Creature::get_chromosomes() const { return chromosomes_;}
 
 /*
     Species
@@ -69,9 +69,19 @@ const int Species::get_n_chromosome_pairs() const{return n_chromosome_pairs_;};
 const std::vector<Creature>& Species::get_creatures() const {
     return creatures_;};
 
-void Species::AddCreatures(int number) {
-    std::string gene_sequence;
+void Species::AddCreature(Genome genome) {
+    Creature creature(*this);
+    for (int chromo_num=0; chromo_num < this->get_n_chromosome_pairs(); chromo_num++) {
+        creature.chromosomes_ = genome;
+        creature.id_ = get_alive_population() + get_deceased_population();
+    }
+    // Add the creature to the list of recorded creatures in the species
+    creatures_.push_back(creature);
+    alive_++;
+}
 
+void Species::InitializeCreatures(int number) {
+    std::string gene_sequence;
     for (int chromo_num=0; chromo_num < N_GENES; chromo_num++) {
         gene_sequence.push_back('A' + chromo_num);
     }        
@@ -79,17 +89,14 @@ void Species::AddCreatures(int number) {
     // For each creature
     for (int creature_num=0; creature_num < number; creature_num++) {
         Creature creature(*this);
-        
+        Genome genome;
         // Create all the chromosomes for the new creature
         for (int chromo_num=0; chromo_num < this->get_n_chromosome_pairs(); chromo_num++) {
             auto chromosome_pair = Chromosome::MakeRandomPair(gene_sequence);
-            creature.chromosomes_.push_back(chromosome_pair);
-            creature.id_ = get_alive_population() + get_deceased_population();
+            genome.push_back(chromosome_pair);
         }
-        // Add the creature to the list of recorded creatures in the species
-        creatures_.push_back(creature);
-        alive_++;
-
+        // Add the creature to the species
+        AddCreature(genome);
     }
 };
 
@@ -98,13 +105,13 @@ void Species::AddCreatures(int number) {
     Creature Registry (Singleton)
 */
 
-CreatureRegistry& CreatureRegistry::GetRegistry() {
-    static CreatureRegistry registry;
+SpeciesRegistry& SpeciesRegistry::GetRegistry() {
+    static SpeciesRegistry registry;
     return registry;
 };
 
-void CreatureRegistry::GenerateCreatures(std::string species_name, int number) {
-    CreatureRegistry &registery = CreatureRegistry::GetRegistry();
-    Species &species = registery.species_[species_name];
-    species.AddCreatures(number);
+void SpeciesRegistry::RegisterSpecies(std::string species_name, int chromosome_length, int n_chromosome_pairs, int initial_population) {
+    SpeciesRegistry &registery = SpeciesRegistry::GetRegistry();
+    registery.species_[species_name] = Species(species_name, chromosome_length, n_chromosome_pairs);
+    registery.species_[species_name].InitializeCreatures(initial_population);
 };

@@ -2,6 +2,7 @@
 #define __EVOLVE_COMMON
 
 #include <utility>
+#include <vector>
 
 const int N_GENES = 26;
 const int MAX_OFFSPRING = 3;
@@ -14,5 +15,5 @@ class Species;
 // Typedefs
 
 typedef std::pair<Chromosome, Chromosome> ChromosomePair;
-
+typedef std::vector<ChromosomePair> Genome;
 #endif

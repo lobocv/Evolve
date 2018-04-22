@@ -25,9 +25,10 @@ int main()
 
     // Change the seed to be based off the current system time
     srand (time(NULL));
-    
-    CreatureRegistry &registery = CreatureRegistry::GetRegistry();
-    registery.species_["Blorp"] = Species("Blorp", N_GENES, 2);
+
+    // Create a registry of creatures and initialize their species
+    SpeciesRegistry &registery = SpeciesRegistry::GetRegistry();
+    registery.RegisterSpecies("Blorp", N_GENES, 2, 3);
 
     std::cout << "List of Species" << std::endl;
     std::cout << "===============" << std::endl;
@@ -35,10 +36,7 @@ int main()
         std::cout << species.second << std::endl;
     }
     std::cout << "===============" << std::endl;
-
-    registery.GenerateCreatures("Blorp", 3);
-    
-    // Create a creature with a random genotype.
+   
     int ii=0;
     std::vector<Creature> const &creatures = registery.species_["Blorp"].get_creatures();
     

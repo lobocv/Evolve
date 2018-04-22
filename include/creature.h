@@ -18,7 +18,8 @@ class Species {
 public:
     Species() = default;
     Species(std::string name, int genotype_length, int n_chromosome_pairs);
-    void AddCreatures(int number);
+    void InitializeCreatures(int number);
+    void AddCreature(Genome);
     const std::string get_name() const;
     const int get_n_chromosome_pairs() const;
     const std::vector<Creature> &get_creatures() const;
@@ -30,14 +31,15 @@ public:
 
 class Creature {
     Species& species_;
-    std::vector<ChromosomePair> chromosomes_;
+    Genome chromosomes_;
     int id_;
 public:
     Creature() = default;
     Creature(Species& species);
     void Reproduce(const Creature& c1, const Creature& c2);    
-    friend void Species::AddCreatures(int);
-    const std::vector<ChromosomePair>& get_chromosomes() const;
+    friend void Species::AddCreature(Genome);
+    friend void Species::InitializeCreatures(int);
+    const Genome& get_chromosomes() const;
     const int get_id() const;
     const Species& get_species() const;
     void print() const;
@@ -45,16 +47,16 @@ public:
 
 
 // Singleton
-class CreatureRegistry {
+class SpeciesRegistry {
 public:
-    static CreatureRegistry& GetRegistry();
+    static SpeciesRegistry& GetRegistry();
     std::map<std::string, Species> species_;
-    void GenerateCreatures(std::string species_name, int number);
+    void RegisterSpecies(std::string species_name, int chromosome_length, int n_chromosome_pairs, int initial_population);
 private:
-    CreatureRegistry(){};
-    ~CreatureRegistry(){};
-    CreatureRegistry(CreatureRegistry &c){};
-    void operator=(CreatureRegistry &c){};
+    SpeciesRegistry(){};
+    ~SpeciesRegistry(){};
+    SpeciesRegistry(SpeciesRegistry &c){};
+    void operator=(SpeciesRegistry &c){};
 };
 
 #endif
