@@ -18,7 +18,7 @@ const char &Gene::get_name() const {name_;}
 */
 Chromosome::Chromosome(std::string genecodes) {
     for (auto genecode: genecodes) {
-        genes.push_back(Gene(genecode));
+        genes_.push_back(Gene(genecode));
     }
 };
 

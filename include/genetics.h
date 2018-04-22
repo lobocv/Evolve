@@ -15,10 +15,9 @@ public:
 };
 
 class Chromosome {
-    int id;    
-    std::vector<Gene> genes;
+    int id_;    
+    std::vector<Gene> genes_;
 public:
-    const int ASD=6;
     Chromosome() = default;
     Chromosome(std::string);
     static ChromosomePair MakePair(std::string);

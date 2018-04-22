@@ -7,7 +7,7 @@
 #include <iostream>
 
 std::ostream &operator<< (std::ostream &stream, const Chromosome &obj) {
-    for (auto gene: obj.genes) {
+    for (auto gene: obj.genes_) {
         stream << gene.get_name();    
     }
     return stream;
