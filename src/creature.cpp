@@ -48,13 +48,13 @@ void Creature::Reproduce(Creature& other){
         Chromosome& female_chromo2 = female_chromo_pairs[chromo_pair_num].second;
         // Role the dice and take one chromosome from each parent to create a new
         
-        child_chromo1 = (std::rand() % 2) ? male_chromo1 : male_chromo2;
-        child_chromo2 = (std::rand() % 2) ? female_chromo1 : female_chromo2;
+        child_chromo1 = (FlipCoin()) ? male_chromo1 : male_chromo2;
+        child_chromo2 = (FlipCoin()) ? female_chromo1 : female_chromo2;
         child_genome.push_back(std::make_pair(child_chromo1, child_chromo2));
     }
 
     // Add the creature to the species
-    Sex sex_of_child = Sex(rand() % 2) ;
+    Sex sex_of_child = Sex(FlipCoin()) ;
     Creature& child = species.AddCreature(sex_of_child, child_genome);
     child.father_ = &father;
     child.mother_ = &mother;

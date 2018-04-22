@@ -27,8 +27,8 @@ Chromosome::Chromosome(std::string genecodes) {
 ChromosomePair Chromosome::MakeRandomPair(std::string genecodes) {
     std::string left_genome, right_genome;
     for (const auto char_code: genecodes) {
-        int left_allele = (std::rand() % 2) ?  toupper(char_code): tolower(char_code);
-        int right_allele = (std::rand() % 2) ? toupper(char_code): tolower(char_code);
+        int left_allele = (FlipCoin()) ?  toupper(char_code): tolower(char_code);
+        int right_allele = (FlipCoin()) ? toupper(char_code): tolower(char_code);
         left_genome.push_back((char) left_allele);
         right_genome.push_back((char) right_allele);
     }

@@ -3,6 +3,7 @@
 
 #include <utility>
 #include <vector>
+#include <cstdlib>
 
 const int MAX_OFFSPRING = 3;
 
@@ -22,5 +23,7 @@ enum Sex{Male, Female};
 // Exceptions
 
 class CannotProcreateError {};
+
+inline bool FlipCoin() {return std::rand() % 2;}
 
 #endif
