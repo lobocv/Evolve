@@ -12,7 +12,7 @@ Creature::Creature(Species& species) : species_(species) {};
 
 void Creature::print() const {
     int chromo_num=0;
-    for (auto &chromosome_pair: get_chromosomes()){
+    for (auto &chromosome_pair: get_genome()){
         std::cout << "Chromosome Pair #" << (chromo_num+1) << ":" << std::endl;
         std::cout << chromosome_pair.first << std::endl;
         std::cout << chromosome_pair.second << std::endl;
@@ -29,8 +29,8 @@ void Creature::Reproduce(const Creature& c1, const Creature& c2){
     // TODO: Check creatures are of reproductive age.
     Species species = c1.get_species();
 
-    Genome c1_chromo_pairs = c1.get_chromosomes();
-    Genome c2_chromo_pairs = c2.get_chromosomes();
+    Genome c1_chromo_pairs = c1.get_genome();
+    Genome c2_chromo_pairs = c2.get_genome();
 
     // Iterate through the chromosome pairs. If both creatures are the same 
     // species, they necessarily have the same number of chromosome pairs
@@ -53,7 +53,7 @@ void Creature::Reproduce(const Creature& c1, const Creature& c2){
 
 const int Creature::get_id() const { return id_;};
 const Species &Creature::get_species() const { return species_;};
-const Genome &Creature::get_chromosomes() const { return chromosomes_;}
+const Genome &Creature::get_genome() const { return genome_;}
 
 /*
     Species
@@ -72,7 +72,7 @@ const std::vector<Creature>& Species::get_creatures() const {
 void Species::AddCreature(Genome genome) {
     Creature creature(*this);
     for (int chromo_num=0; chromo_num < this->get_n_chromosome_pairs(); chromo_num++) {
-        creature.chromosomes_ = genome;
+        creature.genome_ = genome;
         creature.id_ = get_alive_population() + get_deceased_population();
     }
     // Add the creature to the list of recorded creatures in the species

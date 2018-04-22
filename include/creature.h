@@ -31,7 +31,7 @@ public:
 
 class Creature {
     Species& species_;
-    Genome chromosomes_;
+    Genome genome_;
     int id_;
 public:
     Creature() = default;
@@ -39,7 +39,7 @@ public:
     void Reproduce(const Creature& c1, const Creature& c2);    
     friend void Species::AddCreature(Genome);
     friend void Species::InitializeCreatures(int);
-    const Genome& get_chromosomes() const;
+    const Genome& get_genome() const;
     const int get_id() const;
     const Species& get_species() const;
     void print() const;
