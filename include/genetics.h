@@ -20,8 +20,9 @@ class Chromosome {
 public:
     Chromosome() = default;
     Chromosome(std::string);
-    static ChromosomePair MakePair(std::string);
+    static ChromosomePair MakeRandomPair(std::string);
     friend std::ostream &operator<< (std::ostream &ostream, const Chromosome &c);
+    const int get_length() const;
 };
 
 #endif

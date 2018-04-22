@@ -8,25 +8,47 @@
 /*
     Creature
 */
-Creature::Creature(Species& species, int n_chromosome_pairs, int id) : species_(species), n_chromosome_pairs_(n_chromosome_pairs), id_(id) {
-    std::string genecodes;
-    for (int ii=0; ii < N_GENES; ii++) {
-        genecodes.push_back('A' + ii);
-    }    
-    for (int ii=0; ii < n_chromosome_pairs_; ii++) {
-        auto chromosome_pair = Chromosome::MakePair(genecodes);
-        chromosomes_.push_back(chromosome_pair);
+Creature::Creature(Species& species) : species_(species) {};
+
+void Creature::print() const {
+    int creature_num=0;
+    for (auto &chromosome_pair: get_chromosomes()){
+        std::cout << "Chromosome Pair #" << (creature_num+1) << ":" << std::endl;
+        std::cout << chromosome_pair.first << std::endl;
+        std::cout << chromosome_pair.second << std::endl;
+        creature_num++;
     }
 };
 
-void Creature::print() const {
-    int ii=0;
-    for (auto &chromosome_pair: get_chromosomes()){
-        std::cout << "Chromosome Pair #" << (ii+1) << ":" << std::endl;
-        std::cout << chromosome_pair.first << std::endl;
-        std::cout << chromosome_pair.second << std::endl;
-        ii++;
+void Creature::Reproduce(const Creature& c1, const Creature& c2){
+    const int N_offspring = rand() % (MAX_OFFSPRING+1);
+    Chromosome c1_chromo1, c1_chromo2, c2_chromo1, c2_chromo2, child_chromo1, child_chromo2;
+    ChromosomePair childpair;
+    // TODO: Check creatures are of the same species (allowed to mate)
+    // TODO: Check sex of the creatures are opposite
+    // TODO: Check creatures are of reproductive age.
+    Species species = c1.get_species();
+
+    std::vector<ChromosomePair> c1_chromo_pairs = c1.get_chromosomes();
+    std::vector<ChromosomePair> c2_chromo_pairs = c2.get_chromosomes();
+
+    // Iterate through the chromosome pairs. If both creatures are the same 
+    // species, they necessarily have the same number of chromosome pairs
+    for (int creature_num=0; creature_num < c1_chromo_pairs.size(); creature_num++) {
+        // Get the parents chromosomes
+        c1_chromo1 = c1_chromo_pairs[creature_num].first;
+        c1_chromo2 = c1_chromo_pairs[creature_num].second;
+        c2_chromo1 = c2_chromo_pairs[creature_num].first;
+        c2_chromo2 = c2_chromo_pairs[creature_num].second;
+        for (int gene_num=0; gene_num < c1_chromo1.get_length(); gene_num++){
+            // Role the dice and take one chromosome from each parent to create a new
+            int rand_binary = std::rand() % 2;
+            child_chromo1 = (rand_binary) ? c1_chromo1 : c2_chromo1;
+            child_chromo2 = (rand_binary) ? c1_chromo2 : c2_chromo2;
+            childpair = std::make_pair(child_chromo1, child_chromo2);
+        }   
     }
+
 };
 
 const int Creature::get_id() const { return id_;};
@@ -41,6 +63,7 @@ Species::Species(std::string name, int genotype_length, int n_chromosome_pairs)
 
 const std::string Species::get_name() const {return name_;};
 
+const int Species::get_population() const { return alive_;};
 const int Species::get_n_chromosome_pairs() const{return n_chromosome_pairs_;};
 
 const std::vector<Creature>& Species::get_creatures() const {
@@ -48,8 +71,23 @@ const std::vector<Creature>& Species::get_creatures() const {
 
 void Species::AddCreatures(int number) {
     int id = creatures_.size();
-    for (int ii=0; ii < number; ii++) {
-        creatures_.push_back(Creature(*this, n_chromosome_pairs_, id));
+    std::string gene_sequence;
+
+    for (int chromo_num=0; chromo_num < N_GENES; chromo_num++) {
+        gene_sequence.push_back('A' + chromo_num);
+    }        
+
+    // For each creature
+    for (int creature_num=0; creature_num < number; creature_num++) {
+        Creature creature(*this);
+        // Create all the chromosomes for the new creature
+        for (int chromo_num=0; chromo_num < this->get_n_chromosome_pairs(); chromo_num++) {
+            auto chromosome_pair = Chromosome::MakeRandomPair(gene_sequence);
+            creature.chromosomes_.push_back(chromosome_pair);
+            creature.id_ = id;
+        }
+        // Add the creature to the list of recorded creatures in the species
+        creatures_.push_back(creature);
         id++;
     }
 };

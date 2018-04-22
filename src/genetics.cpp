@@ -24,7 +24,7 @@ Chromosome::Chromosome(std::string genecodes) {
 
 // Create a pair of chromosomes for the given gene codes.
 // This creates two chromosomes that have random alleles from each gene in the list provided. 
-ChromosomePair Chromosome::MakePair(std::string genecodes) {
+ChromosomePair Chromosome::MakeRandomPair(std::string genecodes) {
     std::string left_genome, right_genome;
     for (const auto char_code: genecodes) {
         int left_allele = (std::rand() % 2) ?  toupper(char_code): tolower(char_code);
@@ -38,3 +38,4 @@ ChromosomePair Chromosome::MakePair(std::string genecodes) {
     return std::make_pair(left_chromo, right_chromo);
 };
 
+const int Chromosome::get_length() const {return genes_.size();};

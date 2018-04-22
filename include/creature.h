@@ -22,6 +22,7 @@ public:
     const std::string get_name() const;
     const int get_n_chromosome_pairs() const;
     const std::vector<Creature> &get_creatures() const;
+    const int get_population() const;
     
 };
 
@@ -29,11 +30,12 @@ public:
 class Creature {
     Species& species_;
     std::vector<ChromosomePair> chromosomes_;
-    int n_chromosome_pairs_;
     int id_;
 public:
     Creature() = default;
-    Creature(Species& species, int n_chromosome_pairs, int id);    
+    Creature(Species& species);
+    void Reproduce(const Creature& c1, const Creature& c2);    
+    friend void Species::AddCreatures(int);
     const std::vector<ChromosomePair>& get_chromosomes() const;
     const int get_id() const;
     const Species& get_species() const;
