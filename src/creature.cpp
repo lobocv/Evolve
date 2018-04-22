@@ -20,39 +20,39 @@ void Creature::print() const {
     }
 };
 
-void Creature::Reproduce(const Creature& c1, const Creature& c2){
+void Creature::Reproduce(const Creature& other){
     const int N_offspring = rand() % (MAX_OFFSPRING+1);
     Chromosome c1_chromo1, c1_chromo2, c2_chromo1, c2_chromo2, child_chromo1, child_chromo2;
-    ChromosomePair childpair;
     // TODO: Check creatures are of the same species (allowed to mate)
     // TODO: Check sex of the creatures are opposite
     // TODO: Check creatures are of reproductive age.
-    Species species = c1.get_species();
+    Species &species = this->get_species();
 
-    Genome c1_chromo_pairs = c1.get_genome();
-    Genome c2_chromo_pairs = c2.get_genome();
+    Genome c1_chromo_pairs = this->get_genome();
+    Genome c2_chromo_pairs = other.get_genome();
+    Genome child_genome;
 
     // Iterate through the chromosome pairs. If both creatures are the same 
     // species, they necessarily have the same number of chromosome pairs
-    for (int creature_num=0; creature_num < c1_chromo_pairs.size(); creature_num++) {
+    for (int chromo_pair_num=0; chromo_pair_num < c1_chromo_pairs.size(); chromo_pair_num++) {
         // Get the parents chromosomes
-        c1_chromo1 = c1_chromo_pairs[creature_num].first;
-        c1_chromo2 = c1_chromo_pairs[creature_num].second;
-        c2_chromo1 = c2_chromo_pairs[creature_num].first;
-        c2_chromo2 = c2_chromo_pairs[creature_num].second;
-        for (int gene_num=0; gene_num < c1_chromo1.get_length(); gene_num++){
-            // Role the dice and take one chromosome from each parent to create a new
-            int rand_binary = std::rand() % 2;
-            child_chromo1 = (rand_binary) ? c1_chromo1 : c2_chromo1;
-            child_chromo2 = (rand_binary) ? c1_chromo2 : c2_chromo2;
-            childpair = std::make_pair(child_chromo1, child_chromo2);
-        }   
+        c1_chromo1 = c1_chromo_pairs[chromo_pair_num].first;
+        c1_chromo2 = c1_chromo_pairs[chromo_pair_num].second;
+        c2_chromo1 = c2_chromo_pairs[chromo_pair_num].first;
+        c2_chromo2 = c2_chromo_pairs[chromo_pair_num].second;
+        // Role the dice and take one chromosome from each parent to create a new
+        
+        child_chromo1 = (std::rand() % 2) ? c1_chromo1 : c2_chromo1;
+        child_chromo2 = (std::rand() % 2) ? c1_chromo2 : c2_chromo2;
+        child_genome.push_back(std::make_pair(child_chromo1, child_chromo2));
     }
+
+    species.AddCreature(child_genome);
 
 };
 
 const int Creature::get_id() const { return id_;};
-const Species &Creature::get_species() const { return species_;};
+Species &Creature::get_species() const { return species_;};
 const Genome &Creature::get_genome() const { return genome_;}
 
 /*
@@ -82,7 +82,7 @@ void Species::AddCreature(Genome genome) {
 
 void Species::InitializeCreatures(int number) {
     std::string gene_sequence;
-    for (int chromo_num=0; chromo_num < N_GENES; chromo_num++) {
+    for (int chromo_num=0; chromo_num < genotype_length_; chromo_num++) {
         gene_sequence.push_back('A' + chromo_num);
     }        
 
@@ -110,8 +110,9 @@ SpeciesRegistry& SpeciesRegistry::GetRegistry() {
     return registry;
 };
 
-void SpeciesRegistry::RegisterSpecies(std::string species_name, int chromosome_length, int n_chromosome_pairs, int initial_population) {
+Species& SpeciesRegistry::RegisterSpecies(std::string species_name, int chromosome_length, int n_chromosome_pairs, int initial_population) {
     SpeciesRegistry &registery = SpeciesRegistry::GetRegistry();
     registery.species_[species_name] = Species(species_name, chromosome_length, n_chromosome_pairs);
     registery.species_[species_name].InitializeCreatures(initial_population);
+    return registery.species_[species_name];
 };
