@@ -19,6 +19,16 @@ Creature::Creature(Species& species, int n_chromosome_pairs, int id) : species_(
     }
 };
 
+void Creature::print() const {
+    int ii=0;
+    for (auto &chromosome_pair: get_chromosomes()){
+        std::cout << "Chromosome Pair #" << (ii+1) << ":" << std::endl;
+        std::cout << chromosome_pair.first << std::endl;
+        std::cout << chromosome_pair.second << std::endl;
+        ii++;
+    }
+};
+
 const int Creature::get_id() const { return id_;};
 const Species &Creature::get_species() const { return species_;};
 const std::vector<ChromosomePair> &Creature::get_chromosomes() const { return chromosomes_;}

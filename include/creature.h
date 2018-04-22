@@ -37,6 +37,7 @@ public:
     const std::vector<ChromosomePair>& get_chromosomes() const;
     const int get_id() const;
     const Species& get_species() const;
+    void print() const;
 };
 
 
