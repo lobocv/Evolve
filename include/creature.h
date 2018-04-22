@@ -18,11 +18,11 @@ class Species {
 public:
     Species() = default;
     Species(std::string name, int genotype_length, int n_chromosome_pairs);
-    void InitializeCreatures(int number);
-    void AddCreature(Genome);
+    void InitializeCreatures(int n_males, int n_females);
+    Creature& AddCreature(Sex, Genome);
     const std::string get_name() const;
     const int get_n_chromosome_pairs() const;
-    const std::vector<Creature> &get_creatures() const;
+    std::vector<Creature> &get_creatures();
     const int get_alive_population() const;
     const int get_deceased_population() const;
     
@@ -32,15 +32,21 @@ public:
 class Creature {
     Species& species_;
     Genome genome_;
+    Sex sex_;
     int id_;
+    Creature* mother_;
+    Creature* father_;
 public:
     Creature() = default;
-    Creature(Species& species);
-    void Reproduce(const Creature& other);    
-    friend void Species::AddCreature(Genome);
-    friend void Species::InitializeCreatures(int);
+    Creature(Species& species, Sex sex);
+    void Reproduce(Creature& other);    
+    friend Creature& Species::AddCreature(Sex, Genome);
+    friend void Species::InitializeCreatures(int, int);
     const Genome& get_genome() const;
     const int get_id() const;
+    const Sex get_sex() const;
+    Creature* get_father() const;
+    Creature* get_mother() const;
     Species& get_species() const;
     void print() const;
 };
@@ -51,7 +57,7 @@ class SpeciesRegistry {
 public:
     static SpeciesRegistry& GetRegistry();
     std::map<std::string, Species> species_;
-    Species& RegisterSpecies(std::string species_name, int chromosome_length, int n_chromosome_pairs, int initial_population);
+    Species& RegisterSpecies(std::string species_name, int chromosome_length, int n_chromosome_pairs, int initial_population, float male_female_ratio);
 private:
     SpeciesRegistry(){};
     ~SpeciesRegistry(){};

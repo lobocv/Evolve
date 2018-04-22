@@ -15,4 +15,12 @@ class Species;
 
 typedef std::pair<Chromosome, Chromosome> ChromosomePair;
 typedef std::vector<ChromosomePair> Genome;
+
+enum Sex{Male, Female};
+
+
+// Exceptions
+
+class CannotProcreateError {};
+
 #endif

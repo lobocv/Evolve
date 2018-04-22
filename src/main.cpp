@@ -26,15 +26,16 @@ int main()
     // Config
     const auto kMySpeciesName = "Blorp";
     const int kMySpeciesInitPop = 2;
+    const float kMySpeciesMaleFemaleRatio = 0.5;
     const int kMySpeciesChromoPairNum = 1;
     const int N_GENES = 26;
 
     // Change the seed to be based off the current system time
     srand (time(NULL));
-
+    
     // Create a registry of creatures and initialize their species
     SpeciesRegistry &registery = SpeciesRegistry::GetRegistry();
-    Species &myspecies = registery.RegisterSpecies(kMySpeciesName, N_GENES, kMySpeciesChromoPairNum, kMySpeciesInitPop);
+    Species &myspecies = registery.RegisterSpecies(kMySpeciesName, N_GENES, kMySpeciesChromoPairNum, kMySpeciesInitPop, kMySpeciesMaleFemaleRatio);
 
     std::cout << "List of Species" << std::endl;
     std::cout << "===============" << std::endl;
@@ -45,10 +46,10 @@ int main()
    
     int ii=0;
     
-    std::vector<Creature> const &creatures = registery.species_["Blorp"].get_creatures();
+    std::vector<Creature> &creatures = registery.species_[kMySpeciesName].get_creatures();
     
-    Creature c1 = creatures[0];
-    Creature c2 = creatures[1];
+    Creature &c1 = creatures[0];
+    Creature &c2 = creatures[1];
 
     c1.Reproduce(c2);
 
