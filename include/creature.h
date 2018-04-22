@@ -36,12 +36,12 @@ class Creature {
 public:
     Creature() = default;
     Creature(Species& species);
-    void Reproduce(const Creature& c1, const Creature& c2);    
+    void Reproduce(const Creature& other);    
     friend void Species::AddCreature(Genome);
     friend void Species::InitializeCreatures(int);
     const Genome& get_genome() const;
     const int get_id() const;
-    const Species& get_species() const;
+    Species& get_species() const;
     void print() const;
 };
 
@@ -51,7 +51,7 @@ class SpeciesRegistry {
 public:
     static SpeciesRegistry& GetRegistry();
     std::map<std::string, Species> species_;
-    void RegisterSpecies(std::string species_name, int chromosome_length, int n_chromosome_pairs, int initial_population);
+    Species& RegisterSpecies(std::string species_name, int chromosome_length, int n_chromosome_pairs, int initial_population);
 private:
     SpeciesRegistry(){};
     ~SpeciesRegistry(){};

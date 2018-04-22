@@ -15,7 +15,6 @@ public:
 };
 
 class Chromosome {
-    int id_;    
     std::vector<Gene> genes_;
 public:
     Chromosome() = default;

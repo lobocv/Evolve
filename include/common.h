@@ -4,7 +4,6 @@
 #include <utility>
 #include <vector>
 
-const int N_GENES = 26;
 const int MAX_OFFSPRING = 3;
 
 // Forward Declarations
