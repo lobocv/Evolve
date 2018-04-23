@@ -39,3 +39,8 @@ ChromosomePair Chromosome::MakeRandomPair(std::string genecodes) {
 };
 
 const int Chromosome::get_length() const {return genes_.size();};
+
+
+Trait::Trait(std::string name, GeneSequence genes) : name_(name), genes_(genes){}
+const std::string Trait::get_name() const { return name_;}
+const GeneSequence& Trait::get_genes() const {return genes_;}

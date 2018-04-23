@@ -6,9 +6,14 @@
 #include "genetics.h"
 #include <iostream>
 
+std::ostream &operator<< (std::ostream &stream, const Gene &obj) {
+    stream << obj.get_name();    
+    return stream;
+};
+
 std::ostream &operator<< (std::ostream &stream, const Chromosome &obj) {
     for (auto gene: obj.genes_) {
-        stream << gene.get_name();    
+        stream << gene;    
     }
     return stream;
 };
@@ -23,6 +28,17 @@ std::ostream &operator<< (std::ostream &stream, const Creature &obj) {
     stream << "Creature (" << obj.get_species() << ") #" << obj.get_id();
     return stream;
 };
+
+
+std::ostream &operator<< (std::ostream &stream, const Trait &obj) {
+    stream << obj.get_name() << " (";
+    for (auto gene: obj.get_genes()) {
+        stream << gene;
+    }
+    stream << ")";
+    return stream;
+};
+
 
 
 #endif

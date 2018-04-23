@@ -127,16 +127,23 @@ void Species::InitializeCreatures(int n_males, int n_females) {
     Creature Registry (Singleton)
 */
 
-SpeciesRegistry& SpeciesRegistry::GetRegistry() {
-    static SpeciesRegistry registry;
+Ecosystem& Ecosystem::GetRegistry() {
+    static Ecosystem registry;
     return registry;
 };
 
-Species& SpeciesRegistry::RegisterSpecies(std::string species_name, int chromosome_length, int n_chromosome_pairs, int initial_population, float male_female_ratio) {
+Species& Ecosystem::RegisterSpecies(std::string species_name, int chromosome_length, int n_chromosome_pairs, int initial_population, float male_female_ratio) {
     int num_males = male_female_ratio * initial_population;
     int num_females = initial_population - num_males;
-    SpeciesRegistry &registery = SpeciesRegistry::GetRegistry();
-    registery.species_[species_name] = Species(species_name, chromosome_length, n_chromosome_pairs);
-    registery.species_[species_name].InitializeCreatures(num_males, num_females);
-    return registery.species_[species_name];
+    Ecosystem &registry = Ecosystem::GetRegistry();
+    registry.species_[species_name] = Species(species_name, chromosome_length, n_chromosome_pairs);
+    registry.species_[species_name].InitializeCreatures(num_males, num_females);
+    return registry.species_[species_name];
 };
+
+void Ecosystem::RegisterTrait(std::string trait_name, GeneSequence genes) {
+    Trait trait(trait_name, genes);
+    Ecosystem &registry = Ecosystem::GetRegistry();
+    registry.traits_[trait_name] = trait;
+
+}

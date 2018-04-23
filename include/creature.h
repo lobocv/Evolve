@@ -5,6 +5,7 @@
 #include <map>
 #include <ostream>
 #include "common.h"
+#include "genetics.h"
 
 class Species {
 
@@ -53,16 +54,18 @@ public:
 
 
 // Singleton
-class SpeciesRegistry {
+class Ecosystem {
 public:
-    static SpeciesRegistry& GetRegistry();
+    static Ecosystem& GetRegistry();
     std::map<std::string, Species> species_;
+    std::map<std::string, Trait> traits_;
     Species& RegisterSpecies(std::string species_name, int chromosome_length, int n_chromosome_pairs, int initial_population, float male_female_ratio);
+    void RegisterTrait(std::string name, GeneSequence genes);
 private:
-    SpeciesRegistry(){};
-    ~SpeciesRegistry(){};
-    SpeciesRegistry(SpeciesRegistry &c){};
-    void operator=(SpeciesRegistry &c){};
+    Ecosystem(){};
+    ~Ecosystem(){};
+    Ecosystem(Ecosystem &c){};
+    void operator=(Ecosystem &c){};
 };
 
 #endif

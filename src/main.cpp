@@ -33,28 +33,34 @@ int main()
     // Change the seed to be based off the current system time
     srand (time(NULL));
     
-    // Create a registry of creatures and initialize their species
-    SpeciesRegistry &registery = SpeciesRegistry::GetRegistry();
-    Species &myspecies = registery.RegisterSpecies(kMySpeciesName, N_GENES, kMySpeciesChromoPairNum, kMySpeciesInitPop, kMySpeciesMaleFemaleRatio);
+    // Create an Ecosystem to keep track of creatures and initialize their species
+    Ecosystem &registry = Ecosystem::GetRegistry();
+    Species &myspecies = registry.RegisterSpecies(kMySpeciesName, N_GENES, kMySpeciesChromoPairNum, kMySpeciesInitPop, kMySpeciesMaleFemaleRatio);
+
+    // Create a list of traits for species in the ecosystem.
+    GeneSequence trait_genes = {Gene('A'), Gene('B'), Gene('C')}; 
+    registry.RegisterTrait("Height", trait_genes);
 
     std::cout << "List of Species" << std::endl;
     std::cout << "===============" << std::endl;
-    for (auto species: registery.species_) {
+    for (auto species: registry.species_) {
         std::cout << species.second << std::endl;
     }
+    std::cout << std::endl;
+    std::cout << "List of Traits" << std::endl;
     std::cout << "===============" << std::endl;
-   
-    int ii=0;
-    
-    std::vector<Creature> &creatures = registery.species_[kMySpeciesName].get_creatures();
-    
+    for (auto trait: registry.traits_) {
+        std::cout << trait.second;
+    }
+    std::cout << std::endl << std::endl;
+
+    // Get the first two creatures and have them reproduce
+    std::vector<Creature> &creatures = registry.species_[kMySpeciesName].get_creatures();   
     Creature &c1 = creatures[0];
     Creature &c2 = creatures[1];
-
     c1.Reproduce(c2);
 
     std::cout << "Alive = " << myspecies.get_alive_population() << std::endl;
-    
     for (const auto &c: creatures) {
         std::cout << c << std::endl;
         c.print();

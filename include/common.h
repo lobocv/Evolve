@@ -11,11 +11,13 @@ const int MAX_OFFSPRING = 3;
 class Chromosome;
 class Creature;
 class Species;
+class Gene;
 
 // Typedefs
 
 typedef std::pair<Chromosome, Chromosome> ChromosomePair;
 typedef std::vector<ChromosomePair> Genome;
+typedef std::vector<Gene> GeneSequence;
 
 enum Sex{Male, Female};
 

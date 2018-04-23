@@ -15,13 +15,24 @@ public:
 };
 
 class Chromosome {
-    std::vector<Gene> genes_;
+    GeneSequence genes_;
 public:
     Chromosome() = default;
     Chromosome(std::string);
     static ChromosomePair MakeRandomPair(std::string);
     friend std::ostream &operator<< (std::ostream &ostream, const Chromosome &c);
     const int get_length() const;
+};
+
+
+class Trait {
+    std::string name_;
+    GeneSequence genes_;
+public:
+    Trait() = default;
+    Trait(std::string name, GeneSequence genes);
+    const std::string get_name() const;
+    const GeneSequence& get_genes() const;
 };
 
 #endif
