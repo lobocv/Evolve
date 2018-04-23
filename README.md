@@ -32,6 +32,10 @@ Chromosome - Contains many genes and distributes those genes to offspring during
 
 
 
+![alt text](https://github.com/lobocv/Evolve/blob/master/polygene.jpg?raw=true "Polygene")
+![alt text](https://github.com/lobocv/Evolve/blob/master/pleiotropy.jpg?raw=true "Pleiotropy")
+
+
 # List of Traits
 Traits are specific features of an organism that are derived from it's genome. They contribute to an organisms Attributes.
 
@@ -60,7 +64,6 @@ Discrete Non-Binary Traits
 
 
 # List of Attributes
----------------------
 Attributes are descriptors of an organism that govern how fit the organism is for survival.
 Attributes are contributed by multiple traits and their value in conjunction with environmental
 factors decide if the organism lives or dies.
