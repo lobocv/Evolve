@@ -31,40 +31,45 @@ Gene - Contains information about the strength of one or multiple Traits. When t
 Chromosome - Contains many genes and distributes those genes to offspring during reproduction
 
 
+
 # List of Traits
+Traits are specific features of an organism that are derived from it's genome. They contribute to an organisms Attributes.
 
-Continuous
--------------
-Colour   
-Height
-Weight
-Land Speed
-Water Speed
-Air Speed
-Vision
-Smell
-Hearing
-Strength
-Intelligence
-Agility
-Sociability
-Reproductivity
+Continuous Traits
+------------------
+- Colour   
+- Height
+- Weight
+
+Discrete Binary Traits
+-----------------------
+- Nocturnal
+- Handedness
+- Colorblind
+- Hair length 
+- Bipedal
 
 
-Discrete Binary
-----------------
-Nocturnal
-Handedness
-Colorblind
-Hair length 
-Bipedal
+Discrete Non-Binary Traits
+---------------------------
+- Exterior Type (skin, feathers, scales, fur, wool)
+- Eye color (blue, green, brown, grey)
+- Number of Appendages
+- Appendage Weapon (None, Claws, Hooves, Flippers)
+- Diet (Herbivore, Carnivore, Omnivore)
 
 
-Discrete Non-Binary
---------------------
-Exterior Type (skin, feathers, scales, fur, wool)
-Eye color (blue, green, brown, grey)
-Number of Appendages
-Appendage Weapon (None, Claws, Hooves, Flippers)
-Diet (Herbivore, Carnivore, Omnivore)
+# List of Attributes
+---------------------
+Attributes are descriptors of an organism that govern how fit the organism is for survival.
+Attributes are contributed by multiple traits and their value in conjunction with environmental
+factors decide if the organism lives or dies.
 
+- Strength
+- Intelligence
+- Agility
+- Hearing
+- Vision
+- Smell
+- Sociability
+- Reproductivity
