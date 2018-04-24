@@ -21,6 +21,7 @@ configure_file (
  
 # Add the include directory that contains Cmake settings
 include_directories(build/include)
+include_directories(  "${PROJECT_BINARY_DIR}/include/")
 
 # Add headers from the source code
 include_directories(include)

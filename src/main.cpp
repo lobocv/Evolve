@@ -55,15 +55,15 @@ int main()
     std::cout << std::endl << std::endl;
 
     // Get the first two creatures and have them reproduce
-    std::vector<Creature> &creatures = registry.species_[kMySpeciesName].get_creatures();   
-    Creature &c1 = creatures[0];
-    Creature &c2 = creatures[1];
+    auto &creatures = registry.species_[kMySpeciesName].get_creatures();
+    Creature &c1 = *creatures[0];
+    Creature &c2 = *creatures[1];
     c1.Reproduce(c2);
 
     std::cout << "Alive = " << myspecies.get_alive_population() << std::endl;
     for (const auto &c: creatures) {
-        std::cout << c << std::endl;
-        c.print();
+        std::cout << *c << std::endl;
+        c->print();
         std::cout << std::endl;
     }
 

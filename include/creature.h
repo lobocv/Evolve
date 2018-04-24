@@ -6,13 +6,13 @@
 #include <ostream>
 #include "common.h"
 #include "genetics.h"
-
+#include <memory>
 class Species {
 
     int n_chromosome_pairs_;
     int genotype_length_;
     std::string name_;
-    std::vector<Creature> creatures_;
+    std::vector< std::shared_ptr<Creature> > creatures_;
     int alive_=0;
     int deceased_=0;
     
@@ -23,7 +23,7 @@ public:
     Creature& AddCreature(Sex, Genome);
     const std::string get_name() const;
     const int get_n_chromosome_pairs() const;
-    std::vector<Creature> &get_creatures();
+    std::vector<std::shared_ptr<Creature> > & get_creatures();
     const int get_alive_population() const;
     const int get_deceased_population() const;
     

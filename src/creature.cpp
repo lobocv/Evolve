@@ -30,6 +30,7 @@ void Creature::Reproduce(Creature& other){
     Creature& father = (this->get_sex() == Male) ? *this : other;
     Creature& mother = (other.get_sex() == Male) ? *this : other;
     // Throw an error if trying to mate two of the same sex.
+
     if (mother.get_sex() == father.get_sex()) {
         throw(CannotProcreateError());
     }
@@ -78,17 +79,18 @@ const int Species::get_alive_population() const { return alive_;};
 const int Species::get_deceased_population() const { return deceased_;};
 const int Species::get_n_chromosome_pairs() const{return n_chromosome_pairs_;};
 
-std::vector<Creature>& Species::get_creatures() {
-    return creatures_;};
+std::vector< std::shared_ptr<Creature> >& Species::get_creatures() {
+    return creatures_;
+};
 
 Creature& Species::AddCreature(Sex sex, Genome genome) {
-    Creature* creature = new Creature(*this, sex);
+    auto  creature = std::make_shared<Creature>(*this, sex);
     for (int chromo_num=0; chromo_num < this->get_n_chromosome_pairs(); chromo_num++) {
         creature->genome_ = genome;
         creature->id_ = get_alive_population() + get_deceased_population();
     }
     // Add the creature to the list of recorded creatures in the species
-    creatures_.push_back(*creature);
+    creatures_.push_back(creature);
     alive_++;
     return *creature;
 }
