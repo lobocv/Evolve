@@ -56,9 +56,7 @@ int main()
 
     // Get the first two creatures and have them reproduce
     auto &creatures = registry.species_[kMySpeciesName]->get_creatures();
-    Creature &c1 = *creatures[0];
-    Creature &c2 = *creatures[1];
-    c1.Reproduce(c2);
+    Creature::Reproduce(creatures[0], creatures[1]);
 
     std::cout << "Alive = " << myspecies->get_alive_population() << std::endl;
     for (const auto &c: creatures) {
@@ -67,6 +65,8 @@ int main()
         std::cout << std::endl;
     }
 
-
+    auto child = *creatures[2];
+    auto &m = *child.get_father();
+    auto &f = *child.get_mother();
     return 0;
 }

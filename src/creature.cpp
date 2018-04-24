@@ -20,23 +20,24 @@ void Creature::print() const {
     }
 };
 
-void Creature::Reproduce(Creature& other){
+std::shared_ptr<Creature> Creature::Reproduce(std::shared_ptr<Creature> creature1, std::shared_ptr<Creature> creature2)
+{
     const int N_offspring = rand() % (MAX_OFFSPRING+1);
     Chromosome child_chromo1, child_chromo2;
     // TODO: Check creatures are of reproductive age.
-    Species &species = this->get_species();
+    Species &species = creature1->get_species();
 
     // Determine which creature is male (father) and which is female (mother)    
-    Creature& father = (this->get_sex() == Male) ? *this : other;
-    Creature& mother = (other.get_sex() == Male) ? *this : other;
+    std::shared_ptr<Creature>& father = (creature1->get_sex() == Male) ? creature1 : creature2;
+    std::shared_ptr<Creature>& mother = (creature2->get_sex() == Male) ? creature1 : creature2;
     // Throw an error if trying to mate two of the same sex.
 
-    if (mother.get_sex() == father.get_sex()) {
+    if (mother->get_sex() == father->get_sex()) {
         throw(CannotProcreateError());
     }
 
-    Genome male_chromo_pairs = this->get_genome();
-    Genome female_chromo_pairs = other.get_genome();
+    Genome male_chromo_pairs = creature1->get_genome();
+    Genome female_chromo_pairs = creature2->get_genome();
     Genome child_genome;
 
     // Iterate through the chromosome pairs. If both creatures are the same 
@@ -56,18 +57,18 @@ void Creature::Reproduce(Creature& other){
 
     // Add the creature to the species
     Sex sex_of_child = Sex(FlipCoin()) ;
-    std::shared_ptr<Creature> child = species.AddCreature(sex_of_child, child_genome);
-    child->father_ = &father;
-    child->mother_ = &mother;
-    
+    std::shared_ptr<Creature> child = species.AddCreature(sex_of_child, child_genome);    
+    child->mother_ = mother;
+    child->father_ = father;
+    return child;
 };
 
 const int Creature::get_id() const { return id_;};
 Species &Creature::get_species() const { return species_;};
 const Genome &Creature::get_genome() const { return genome_;}
 const Sex Creature::get_sex() const { return sex_;};
-Creature* Creature::get_father() const {return father_;}
-Creature* Creature::get_mother() const {return mother_;}
+std::shared_ptr<Creature> Creature::get_father() const {return father_.lock();}
+std::shared_ptr<Creature> Creature::get_mother() const {return mother_.lock();}
 /*
     Species
 */

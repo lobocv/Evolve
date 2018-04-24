@@ -35,19 +35,19 @@ class Creature {
     Genome genome_;
     Sex sex_;
     int id_;
-    Creature* mother_;
-    Creature* father_;
+    std::weak_ptr<Creature> mother_;
+    std::weak_ptr<Creature> father_;
 public:
     Creature() = default;
     Creature(Species& species, Sex sex);
-    void Reproduce(Creature& other);    
+    static std::shared_ptr<Creature> Reproduce(std::shared_ptr<Creature> creature1, std::shared_ptr<Creature> creature2);    
     friend std::shared_ptr<Creature> Species::AddCreature(Sex, Genome);
     friend void Species::InitializeCreatures(int, int);
     const Genome& get_genome() const;
     const int get_id() const;
     const Sex get_sex() const;
-    Creature* get_father() const;
-    Creature* get_mother() const;
+    std::shared_ptr<Creature> get_father() const;
+    std::shared_ptr<Creature> get_mother() const;
     Species& get_species() const;
     void print() const;
 };
