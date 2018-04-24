@@ -20,7 +20,7 @@ public:
     Species() = default;
     Species(std::string name, int genotype_length, int n_chromosome_pairs);
     void InitializeCreatures(int n_males, int n_females);
-    Creature& AddCreature(Sex, Genome);
+    std::shared_ptr<Creature> AddCreature(Sex, Genome);
     const std::string get_name() const;
     const int get_n_chromosome_pairs() const;
     std::vector<std::shared_ptr<Creature> > & get_creatures();
@@ -41,7 +41,7 @@ public:
     Creature() = default;
     Creature(Species& species, Sex sex);
     void Reproduce(Creature& other);    
-    friend Creature& Species::AddCreature(Sex, Genome);
+    friend std::shared_ptr<Creature> Species::AddCreature(Sex, Genome);
     friend void Species::InitializeCreatures(int, int);
     const Genome& get_genome() const;
     const int get_id() const;

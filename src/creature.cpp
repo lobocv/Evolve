@@ -56,9 +56,9 @@ void Creature::Reproduce(Creature& other){
 
     // Add the creature to the species
     Sex sex_of_child = Sex(FlipCoin()) ;
-    Creature& child = species.AddCreature(sex_of_child, child_genome);
-    child.father_ = &father;
-    child.mother_ = &mother;
+    std::shared_ptr<Creature> child = species.AddCreature(sex_of_child, child_genome);
+    child->father_ = &father;
+    child->mother_ = &mother;
     
 };
 
@@ -83,8 +83,8 @@ std::vector< std::shared_ptr<Creature> >& Species::get_creatures() {
     return creatures_;
 };
 
-Creature& Species::AddCreature(Sex sex, Genome genome) {
-    auto  creature = std::make_shared<Creature>(*this, sex);
+std::shared_ptr<Creature> Species::AddCreature(Sex sex, Genome genome) {
+    std::shared_ptr<Creature> creature = std::make_shared<Creature>(*this, sex);
     for (int chromo_num=0; chromo_num < this->get_n_chromosome_pairs(); chromo_num++) {
         creature->genome_ = genome;
         creature->id_ = get_alive_population() + get_deceased_population();
@@ -92,7 +92,7 @@ Creature& Species::AddCreature(Sex sex, Genome genome) {
     // Add the creature to the list of recorded creatures in the species
     creatures_.push_back(creature);
     alive_++;
-    return *creature;
+    return creature;
 }
 
 void Species::InitializeCreatures(int n_males, int n_females) {
