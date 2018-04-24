@@ -112,7 +112,6 @@ void Species::InitializeCreatures(int n_males, int n_females) {
             sex_of_child = Female;
         }
         
-        Creature creature(*this, sex_of_child);
         Genome genome;
         // Create all the chromosomes for the new creature
         for (int chromo_num=0; chromo_num < this->get_n_chromosome_pairs(); chromo_num++) {
@@ -140,7 +139,7 @@ std::shared_ptr<Species> Ecosystem::RegisterSpecies(std::string species_name, in
     Ecosystem &registry = Ecosystem::GetRegistry();
     auto new_species = std::make_shared<Species>(species_name, chromosome_length, n_chromosome_pairs);
     new_species->InitializeCreatures(num_males, num_females);
-    
+
     registry.species_[species_name] = new_species;
     
     return new_species;
