@@ -35,7 +35,7 @@ int main()
     
     // Create an Ecosystem to keep track of creatures and initialize their species
     Ecosystem &registry = Ecosystem::GetRegistry();
-    Species &myspecies = registry.RegisterSpecies(kMySpeciesName, N_GENES, kMySpeciesChromoPairNum, kMySpeciesInitPop, kMySpeciesMaleFemaleRatio);
+    std::shared_ptr<Species> myspecies = registry.RegisterSpecies(kMySpeciesName, N_GENES, kMySpeciesChromoPairNum, kMySpeciesInitPop, kMySpeciesMaleFemaleRatio);
 
     // Create a list of traits for species in the ecosystem.
     GeneSequence trait_genes = {Gene('A'), Gene('B'), Gene('C')}; 
@@ -44,7 +44,7 @@ int main()
     std::cout << "List of Species" << std::endl;
     std::cout << "===============" << std::endl;
     for (auto species: registry.species_) {
-        std::cout << species.second << std::endl;
+        std::cout << *species.second << std::endl;
     }
     std::cout << std::endl;
     std::cout << "List of Traits" << std::endl;
@@ -55,12 +55,12 @@ int main()
     std::cout << std::endl << std::endl;
 
     // Get the first two creatures and have them reproduce
-    auto &creatures = registry.species_[kMySpeciesName].get_creatures();
+    auto &creatures = registry.species_[kMySpeciesName]->get_creatures();
     Creature &c1 = *creatures[0];
     Creature &c2 = *creatures[1];
     c1.Reproduce(c2);
 
-    std::cout << "Alive = " << myspecies.get_alive_population() << std::endl;
+    std::cout << "Alive = " << myspecies->get_alive_population() << std::endl;
     for (const auto &c: creatures) {
         std::cout << *c << std::endl;
         c->print();

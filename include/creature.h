@@ -57,9 +57,9 @@ public:
 class Ecosystem {
 public:
     static Ecosystem& GetRegistry();
-    std::map<std::string, Species> species_;
+    std::map<std::string, std::shared_ptr<Species>> species_;
     std::map<std::string, Trait> traits_;
-    Species& RegisterSpecies(std::string species_name, int chromosome_length, int n_chromosome_pairs, int initial_population, float male_female_ratio);
+    std::shared_ptr<Species> RegisterSpecies(std::string species_name, int chromosome_length, int n_chromosome_pairs, int initial_population, float male_female_ratio);
     void RegisterTrait(std::string name, GeneSequence genes);
 private:
     Ecosystem(){};

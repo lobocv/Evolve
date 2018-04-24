@@ -1,6 +1,6 @@
 ##class Ecosystem 
 - responsible for holding all information about SPECIES that live in the ecosystem
-- **method: registerSpecies** registers a species. Creates a new shared_ptr<Species> and places it in a std::map
+- ~~**method: registerSpecies** registers a species. Creates a new shared_ptr<Species> and places it in a std::map ~~
 
 ## class Species
 - responsible for **constructing** all creatures of that specific species.

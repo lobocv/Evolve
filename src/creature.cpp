@@ -134,13 +134,16 @@ Ecosystem& Ecosystem::GetRegistry() {
     return registry;
 };
 
-Species& Ecosystem::RegisterSpecies(std::string species_name, int chromosome_length, int n_chromosome_pairs, int initial_population, float male_female_ratio) {
+std::shared_ptr<Species> Ecosystem::RegisterSpecies(std::string species_name, int chromosome_length, int n_chromosome_pairs, int initial_population, float male_female_ratio) {
     int num_males = male_female_ratio * initial_population;
     int num_females = initial_population - num_males;
     Ecosystem &registry = Ecosystem::GetRegistry();
-    registry.species_[species_name] = Species(species_name, chromosome_length, n_chromosome_pairs);
-    registry.species_[species_name].InitializeCreatures(num_males, num_females);
-    return registry.species_[species_name];
+    auto new_species = std::make_shared<Species>(species_name, chromosome_length, n_chromosome_pairs);
+    new_species->InitializeCreatures(num_males, num_females);
+    
+    registry.species_[species_name] = new_species;
+    
+    return new_species;
 };
 
 void Ecosystem::RegisterTrait(std::string trait_name, GeneSequence genes) {
