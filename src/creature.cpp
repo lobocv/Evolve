@@ -70,7 +70,7 @@ const Sex Creature::get_sex() const { return sex_;};
 std::shared_ptr<Creature> Creature::get_father() const {return father_.lock();}
 std::shared_ptr<Creature> Creature::get_mother() const {return mother_.lock();}
 void Creature::print_traits() {
-    Ecosystem &ecosystem = Ecosystem::GetRegistry();
+    Ecosystem &ecosystem = Ecosystem::GetEcosystem();
     std::cout << "Trait Values" << std::endl;
     for (auto trait: ecosystem.traits_) {
         float value = trait.second.CalculateValue(genome_);
@@ -138,26 +138,26 @@ void Species::InitializeCreatures(int n_males, int n_females) {
     Ecosystem (Singleton)
 */
 
-Ecosystem& Ecosystem::GetRegistry() {
-    static Ecosystem registry;
-    return registry;
+Ecosystem& Ecosystem::GetEcosystem() {
+    static Ecosystem ecosystem;
+    return ecosystem;
 };
 
 std::shared_ptr<Species> Ecosystem::RegisterSpecies(std::string species_name, int chromosome_length, int n_chromosome_pairs, int initial_population, float male_female_ratio) {
     int num_males = male_female_ratio * initial_population;
     int num_females = initial_population - num_males;
-    Ecosystem &registry = Ecosystem::GetRegistry();
+    Ecosystem &ecosystem = Ecosystem::GetEcosystem();
     auto new_species = std::make_shared<Species>(species_name, chromosome_length, n_chromosome_pairs);
     new_species->InitializeCreatures(num_males, num_females);
 
-    registry.species_[species_name] = new_species;
+    ecosystem.species_[species_name] = new_species;
     
     return new_species;
 };
 
 void Ecosystem::RegisterTrait(std::string trait_name, GeneSequence genes) {
     Trait trait(trait_name, genes);
-    Ecosystem &registry = Ecosystem::GetRegistry();
-    registry.traits_[trait_name] = trait;
+    Ecosystem &ecosystem = Ecosystem::GetEcosystem();
+    ecosystem.traits_[trait_name] = trait;
 
 }
