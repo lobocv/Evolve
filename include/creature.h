@@ -50,6 +50,7 @@ public:
     std::shared_ptr<Creature> get_mother() const;
     Species& get_species() const;
     void print() const;
+    void print_traits();
 };
 
 

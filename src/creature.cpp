@@ -69,6 +69,15 @@ const Genome &Creature::get_genome() const { return genome_;}
 const Sex Creature::get_sex() const { return sex_;};
 std::shared_ptr<Creature> Creature::get_father() const {return father_.lock();}
 std::shared_ptr<Creature> Creature::get_mother() const {return mother_.lock();}
+void Creature::print_traits() {
+    Ecosystem &ecosystem = Ecosystem::GetRegistry();
+    std::cout << "Trait Values" << std::endl;
+    for (auto trait: ecosystem.traits_) {
+        float value = trait.second.CalculateValue(genome_);
+    }
+}
+
+
 /*
     Species
 */
@@ -126,7 +135,7 @@ void Species::InitializeCreatures(int n_males, int n_females) {
 
 
 /*
-    Creature Registry (Singleton)
+    Ecosystem (Singleton)
 */
 
 Ecosystem& Ecosystem::GetRegistry() {

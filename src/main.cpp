@@ -63,6 +63,8 @@ int main()
         std::cout << *c << std::endl;
         c->print();
         std::cout << std::endl;
+        c->print_traits();
+
     }
 
     auto child = *creatures[2];

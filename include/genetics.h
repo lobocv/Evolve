@@ -22,6 +22,7 @@ public:
     static ChromosomePair MakeRandomPair(std::string);
     friend std::ostream &operator<< (std::ostream &ostream, const Chromosome &c);
     const int get_length() const;
+    const GeneSequence& get_genes() const;
 };
 
 
@@ -33,6 +34,7 @@ public:
     Trait(std::string name, GeneSequence genes);
     const std::string get_name() const;
     const GeneSequence& get_genes() const;
+    float CalculateValue(Genome &genome);
 };
 
 #endif
