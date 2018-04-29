@@ -1,7 +1,7 @@
 # Evolve
 Creature evolution simulator
 
-# Motivation
+## Motivation
 
 I started this project as a way to get a broad yet deep understanding of the C++ language. To me, the theory of
 evolution is one of the most interesting scientific discoveries of all time and hence why I chose to create
@@ -9,28 +9,28 @@ this evolution simulator. The complex and chaotic domain of this project gives a
 different aspects of the C++ language. As I develop this project, I aim to document my journey and list
 the concepts in which I've utilized.
 
-Polymorphism:
-    - Traits come in several forms such as discrete and continuous. They both expose a common interface
-      through the base Trait class.
+### Polymorphism:
+Traits come in several forms such as discrete and continuous. They both expose a common interface
+through the base Trait class.
 
-Smart Pointers
-    - The Ecosystem is responsible for managing and storing all of the species that evolve within it.
-    - The Species is responsible for managing and storing all of the creatures within it.
-    - Creatures are created on the heap and can be allocated (born) and deallocated (killed).
+### Smart Pointers
+* The Ecosystem is responsible for managing and storing all of the species that evolve within it.
+* The Species is responsible for managing and storing all of the creatures within it.
+* Creatures are created on the heap and can be allocated (born) and deallocated (killed).
 
-Operator Overloading
-    - In order to see the results of the simulations, most classes implement ostream &operator<< functions.
+### Operator Overloading
+* In order to see the results of the simulations, most classes implement ostream &operator<< functions.
 
-Singleton
-    - The Ecosystem is a singleton class that always returns a static reference to it's own sole instantiation.
+### Singleton
+* The Ecosystem is a singleton class that always returns a static reference to it's own sole instantiation.
 
-Friendship
-    - Creation of certain objects can only be done via certain methods so that they can be registered with the Ecosystem.
-    - Some ostream& operator<< methods are marked as friend so that they can access private members.
+### Friendship
+* Creation of certain objects can only be done via certain methods so that they can be registered with the Ecosystem.
+* Some ostream& operator<< methods are marked as friend so that they can access private members.
 
 
 
-# Terminology
+## Terminology
 
 
 Creature - An individual organism of a Species which has it's own genotype. This genotype contributes
