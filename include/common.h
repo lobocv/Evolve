@@ -4,7 +4,7 @@
 #include <utility>
 #include <vector>
 #include <cstdlib>
-#include <set>
+#include <map>
 
 const int MAX_OFFSPRING = 3;
 
@@ -18,7 +18,7 @@ class Gene;
 
 typedef std::pair<Chromosome, Chromosome> ChromosomePair;
 typedef std::vector<ChromosomePair> Genome;
-typedef std::set<Gene> GeneSequence;
+typedef std::map<char, Gene> GeneSequence;
 
 enum Sex{Male, Female};
 enum GeneType{Dominant, Recessive};

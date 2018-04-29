@@ -13,7 +13,7 @@ std::ostream &operator<< (std::ostream &stream, const Gene &obj) {
 
 std::ostream &operator<< (std::ostream &stream, const Chromosome &obj) {
     for (auto gene: obj.genes_) {
-        stream << gene;    
+        stream << gene.second;
     }
     return stream;
 };

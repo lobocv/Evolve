@@ -32,8 +32,8 @@ ChromosomePair Chromosome::MakeRandomPair(std::string genecodes) {
     for (const auto char_code: genecodes) {
         GeneType left_allele = (FlipCoin()) ?  Dominant: Recessive;
         GeneType right_allele = (FlipCoin()) ? Dominant: Recessive;
-        left_genome.insert(Gene(char_code, left_allele));
-        right_genome.insert(Gene(char_code, right_allele));
+        left_genome[char_code] = Gene(char_code, left_allele);
+        right_genome[char_code] = Gene(char_code, right_allele);
     }
     Chromosome left_chromo(left_genome);
     Chromosome right_chromo(right_genome);
@@ -47,9 +47,9 @@ const GeneSequence& Chromosome::get_genes() const {return genes_;};
 /*
     Trait
 */
-Trait::Trait(std::string name, GeneSequence genes) : name_(name), genes_(genes){}
+Trait::Trait(std::string name, std::string genes) : name_(name), gene_codes_(genes){}
 const std::string Trait::get_name() const { return name_;}
-const GeneSequence& Trait::get_genes() const {return genes_;}
+const std::string& Trait::get_genes() const {return gene_codes_;}
 float Trait::CalculateValue(Genome &genome) {
     std::cout << "CALCULATE VALUE" << std::endl;
 

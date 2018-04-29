@@ -30,12 +30,12 @@ public:
 
 class Trait {
     std::string name_;
-    GeneSequence genes_;
+    std::string gene_codes_;
 public:
     Trait() = default;
-    Trait(std::string name, GeneSequence genes);
+    Trait(std::string name, std::string genes);
     const std::string get_name() const;
-    const GeneSequence& get_genes() const;
+    const std::string& get_genes() const;
     float CalculateValue(Genome &genome);
 };
 
