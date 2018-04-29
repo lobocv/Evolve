@@ -149,14 +149,12 @@ std::shared_ptr<Species> Ecosystem::RegisterSpecies(std::string species_name, in
     Ecosystem &ecosystem = Ecosystem::GetEcosystem();
     auto new_species = std::make_shared<Species>(species_name, chromosome_length, n_chromosome_pairs);
     new_species->InitializeCreatures(num_males, num_females);
-
     ecosystem.species_[species_name] = new_species;
-    
     return new_species;
 };
 
 void Ecosystem::RegisterTrait(std::shared_ptr<Trait> trait) {
-
+    std::cout << "TRAIT REGISTERED " << trait->get_name() << std::cout;
     Ecosystem &ecosystem = Ecosystem::GetEcosystem();
     ecosystem.traits_[trait->get_name()] = trait;
 
@@ -165,15 +163,12 @@ void Ecosystem::RegisterTrait(std::shared_ptr<Trait> trait) {
 void Ecosystem::RegisterDiscreteTrait(std::string trait_name, std::string gene_codes) {
     auto trait = new DiscreteTrait(trait_name, gene_codes);
     std::shared_ptr<Trait> trait_shared(trait);
-    Ecosystem &ecosystem = Ecosystem::GetEcosystem();
-    ecosystem.traits_[trait_name] = trait_shared;
-
+    RegisterTrait(trait_shared);
 }
 
 void Ecosystem::RegisterContinuousTrait(std::string trait_name, std::string gene_codes, float min, float max) {
     auto trait = new ContinuousTrait(trait_name, gene_codes, min, max);
     std::shared_ptr<Trait> trait_shared(trait);
-    Ecosystem &ecosystem = Ecosystem::GetEcosystem();
-    ecosystem.traits_[trait_name] = trait_shared;
+    RegisterTrait(trait_shared);
 
 }
