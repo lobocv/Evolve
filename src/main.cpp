@@ -37,7 +37,7 @@ int main()
 
     // Create a list of traits for species in the ecosystem.
     ecosystem.RegisterTrait("Height", Polygenic, "ABC");
-//    ecosystem.RegisterTrait("Hair Color", Binary, "D");
+    ecosystem.RegisterTrait("Hair Color", Binary, "D");
 
     std::cout << "List of Species" << std::endl;
     std::cout << "===============" << std::endl;

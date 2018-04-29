@@ -73,7 +73,7 @@ void Creature::print_traits() {
     Ecosystem &ecosystem = Ecosystem::GetEcosystem();
     std::cout << "Trait Values" << std::endl;
     for (auto trait: ecosystem.traits_) {
-        float value = trait.second.CalculateValue(genome_);
+        float value = trait.second->CalculateValue(genome_);
     }
 }
 
@@ -156,7 +156,7 @@ std::shared_ptr<Species> Ecosystem::RegisterSpecies(std::string species_name, in
 };
 
 void Ecosystem::RegisterTrait(std::string trait_name, TraitType type, std::string gene_codes) {
-    Trait trait(trait_name, type, gene_codes);
+    auto trait = std::make_shared<Trait>(trait_name, type, gene_codes);
     Ecosystem &ecosystem = Ecosystem::GetEcosystem();
     ecosystem.traits_[trait_name] = trait;
 

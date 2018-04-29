@@ -109,12 +109,10 @@ std::pair<int, int> GetAlleleRatio(const std::string &gene_codes, Genome &genome
 }
 
 float Trait::ComputeBinaryGeneStrength(Genome &genome) {
-    std::string gene_code = gene_codes_.substr(1);
+    std::string gene_code = gene_codes_.substr(0, 1);
     auto dom_rec_ratio = GetAlleleRatio(gene_code, genome);
-    if (dom_rec_ratio.first > 0) {
-        return 1.0;
-    } else {
-        return 0.0;
-    }
+    float outcome = dom_rec_ratio.first > 0 ? 1.0 : 0.0;
+    std::cout << name_ << "=" << outcome << " (N_DOM=" << dom_rec_ratio.first << ", N_REC=" << dom_rec_ratio.second << ")" << std::endl;
+    return outcome;
 
 }
