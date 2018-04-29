@@ -48,33 +48,34 @@ const GeneSequence& Chromosome::get_genes() const {return genes_;};
 /*
     Trait
 */
-Trait::Trait(std::string name, TraitType type, std::string genes) : name_(name), type_(type), gene_codes_(genes){}
+Trait::Trait(std::string name, std::string genes) : name_(name), gene_codes_(genes){}
 const std::string Trait::get_name() const { return name_;}
 const std::string& Trait::get_genes() const {return gene_codes_;}
-float Trait::CalculateValue(Genome &genome) {
-    /*
-     * Needs to go find the genes that govern this trait in the genome
-     * and determine the strength of the trait. There are three types of
-     * traits which compute their value differently:
-     * Binary: Dominant / Recessive nature of alleles
-     * Dicrete: TBD
-     * Continuous: Frequency of either dominant or recessive
-     *             genes in a polygene group
-     *
-    */
-    if (type_ == Polygenic) {
-        return ComputePolygeneStrength(genome);
-    } else if (type_ == Binary) {
-        return ComputeBinaryGeneStrength(genome);
-    }
 
+ContinuousTrait::ContinuousTrait(std::string name, std::string genes) : Trait(name, genes) {
+    if (gene_codes_.length() < 2) {throw InvalidTraitParameterError();}
 };
 
-float Trait::ComputePolygeneStrength(Genome &genome) {
-        auto dom_rec_ratio = GetAlleleRatio(gene_codes_, genome);
-        std::cout << name_ << " (N_DOM=" << dom_rec_ratio.first << ", N_REC=" << dom_rec_ratio.second << ")" << std::endl;
-        return dom_rec_ratio.first / (dom_rec_ratio.first + dom_rec_ratio.second);
+float ContinuousTrait::CalculateValue(Genome &genome) {
+    auto dom_rec_ratio = GetAlleleRatio(gene_codes_, genome);
+    std::cout << name_ << " (N_DOM=" << dom_rec_ratio.first << ", N_REC=" << dom_rec_ratio.second << ")" << std::endl;
+    return dom_rec_ratio.first / (dom_rec_ratio.first + dom_rec_ratio.second);
 }
+
+DiscreteTrait::DiscreteTrait(std::string name, std::string genes) : Trait(name, genes) {
+    if (gene_codes_.length() != 1) {throw InvalidTraitParameterError();}
+};
+
+float DiscreteTrait::CalculateValue(Genome &genome) {
+    std::string gene_code = gene_codes_.substr(0, 1);
+    auto dom_rec_ratio = GetAlleleRatio(gene_code, genome);
+    float outcome = dom_rec_ratio.first > 0 ? 1.0 : 0.0;
+    std::cout << name_ << "=" << outcome << " (N_DOM=" << dom_rec_ratio.first << ", N_REC=" << dom_rec_ratio.second << ")" << std::endl;
+    return outcome;
+
+}
+
+
 /*
  * Return the number of dominant and
 */
@@ -108,11 +109,3 @@ std::pair<int, int> GetAlleleRatio(const std::string &gene_codes, Genome &genome
     return std::make_pair(n_dominant, n_recessive); // TODO update this to be more representitive of bell-curve-like probability dist.
 }
 
-float Trait::ComputeBinaryGeneStrength(Genome &genome) {
-    std::string gene_code = gene_codes_.substr(0, 1);
-    auto dom_rec_ratio = GetAlleleRatio(gene_code, genome);
-    float outcome = dom_rec_ratio.first > 0 ? 1.0 : 0.0;
-    std::cout << name_ << "=" << outcome << " (N_DOM=" << dom_rec_ratio.first << ", N_REC=" << dom_rec_ratio.second << ")" << std::endl;
-    return outcome;
-
-}

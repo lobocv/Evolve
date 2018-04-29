@@ -30,18 +30,34 @@ public:
 
 
 class Trait {
+protected:
     std::string name_;
     std::string gene_codes_;
-    TraitType type_;
-    float ComputePolygeneStrength(Genome &genome);
-    float ComputeBinaryGeneStrength(Genome &genome);
 public:
     Trait() = default;
-    Trait(std::string name, TraitType type, std::string genes);
+    Trait(std::string name, std::string genes);
     const std::string get_name() const;
     const std::string& get_genes() const;
+    virtual float CalculateValue(Genome &genome)=0;
+};
+
+class ContinuousTrait : public Trait {
+    float max_;
+    float min_;
+  public:
+    ContinuousTrait() = default;
+    ContinuousTrait(std::string name, std::string genes);
     float CalculateValue(Genome &genome);
 };
+
+
+class DiscreteTrait : public Trait {
+  public:
+    DiscreteTrait() = default;
+    DiscreteTrait(std::string name, std::string genes);
+    float CalculateValue(Genome &genome);
+};
+
 
 std::pair<int, int> GetAlleleRatio(const std::string &gene_codes, Genome &genome);
 

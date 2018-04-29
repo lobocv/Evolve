@@ -156,8 +156,15 @@ std::shared_ptr<Species> Ecosystem::RegisterSpecies(std::string species_name, in
 };
 
 void Ecosystem::RegisterTrait(std::string trait_name, TraitType type, std::string gene_codes) {
-    auto trait = std::make_shared<Trait>(trait_name, type, gene_codes);
+    Trait* trait;
+    switch (type) {
+        case Binary: trait = new DiscreteTrait(trait_name, gene_codes); break;
+        case Polygenic: trait = new ContinuousTrait(trait_name, gene_codes); break;
+    }
+
+    std::shared_ptr<Trait> trait_shared(trait);
+
     Ecosystem &ecosystem = Ecosystem::GetEcosystem();
-    ecosystem.traits_[trait_name] = trait;
+    ecosystem.traits_[trait_name] = trait_shared;
 
 }

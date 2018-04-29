@@ -26,8 +26,9 @@ enum TraitType{Binary, Discrete, Polygenic};
 
 // Exceptions
 
-class CannotProcreateError {};    // Thrown when two incompatible creatures try to reproduce.
-class UnrepresentedTraitError {}; // Thrown when not all of the traits genes are represented in the creature.
+class CannotProcreateError {};          // Thrown when two incompatible creatures try to reproduce.
+class UnrepresentedTraitError {};       // Thrown when not all of the traits genes are represented in the creature.
+class InvalidTraitParameterError {};    // When the parameters for trait creation are invalid
 
 inline bool FlipCoin() {return std::rand() % 2;}
 
