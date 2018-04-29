@@ -8,9 +8,10 @@
 
 class Gene {
     char name_;
+    GeneType type_;
 public:
     Gene() = default;
-    Gene(char);
+    Gene(char, GeneType);
     const char& get_name() const;
     bool operator< (const Gene &other) const;
 };
@@ -19,7 +20,7 @@ class Chromosome {
     GeneSequence genes_;
 public:
     Chromosome() = default;
-    Chromosome(std::string);
+    Chromosome(GeneSequence);
     static ChromosomePair MakeRandomPair(std::string);
     friend std::ostream &operator<< (std::ostream &ostream, const Chromosome &c);
     const int get_length() const;

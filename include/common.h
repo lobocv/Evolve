@@ -21,7 +21,7 @@ typedef std::vector<ChromosomePair> Genome;
 typedef std::set<Gene> GeneSequence;
 
 enum Sex{Male, Female};
-
+enum GeneType{Dominant, Recessive};
 
 // Exceptions
 

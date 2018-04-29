@@ -8,33 +8,32 @@
 /*
     Gene
 */
-Gene::Gene(char name) : name_{name} {};
+Gene::Gene(char name, GeneType type) : name_((char) toupper(name)), type_(type) {};
 
-const char &Gene::get_name() const {name_;}
+const char &Gene::get_name() const {
+    return type_ ? (char)toupper(name_) : (char)tolower(name_);
+}
+
 
 bool Gene::operator< (const Gene &other) const {
-    return name_ < other.get_name();
+    return name_ < (char) toupper(other.get_name());
 }
 
 
 /*
     Chromosome
 */
-Chromosome::Chromosome(std::string genecodes) {
-    for (auto genecode: genecodes) {
-        genes_.insert(Gene(genecode));
-    }
-};
+Chromosome::Chromosome(GeneSequence genes) : genes_(genes) {};
 
 // Create a pair of chromosomes for the given gene codes.
 // This creates two chromosomes that have random alleles from each gene in the list provided. 
 ChromosomePair Chromosome::MakeRandomPair(std::string genecodes) {
-    std::string left_genome, right_genome;
+    GeneSequence left_genome, right_genome;
     for (const auto char_code: genecodes) {
-        int left_allele = (FlipCoin()) ?  toupper(char_code): tolower(char_code);
-        int right_allele = (FlipCoin()) ? toupper(char_code): tolower(char_code);
-        left_genome.push_back((char) left_allele);
-        right_genome.push_back((char) right_allele);
+        GeneType left_allele = (FlipCoin()) ?  Dominant: Recessive;
+        GeneType right_allele = (FlipCoin()) ? Dominant: Recessive;
+        left_genome.insert(Gene(char_code, left_allele));
+        right_genome.insert(Gene(char_code, right_allele));
     }
     Chromosome left_chromo(left_genome);
     Chromosome right_chromo(right_genome);
