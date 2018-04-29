@@ -52,14 +52,15 @@ Trait::Trait(std::string name, std::string genes) : name_(name), gene_codes_(gen
 const std::string Trait::get_name() const { return name_;}
 const std::string& Trait::get_genes() const {return gene_codes_;}
 
-ContinuousTrait::ContinuousTrait(std::string name, std::string genes) : Trait(name, genes) {
+ContinuousTrait::ContinuousTrait(std::string name, std::string genes, float min, float max) : Trait(name, genes), min_(min), max_(max) {
     if (gene_codes_.length() < 2) {throw InvalidTraitParameterError();}
 };
 
 float ContinuousTrait::CalculateValue(Genome &genome) {
     auto dom_rec_ratio = GetAlleleRatio(gene_codes_, genome);
-    std::cout << name_ << " (N_DOM=" << dom_rec_ratio.first << ", N_REC=" << dom_rec_ratio.second << ")" << std::endl;
-    return dom_rec_ratio.first / (dom_rec_ratio.first + dom_rec_ratio.second);
+    float value = min_ + (max_ - min_) * dom_rec_ratio.first / (dom_rec_ratio.first + dom_rec_ratio.second);
+    std::cout << name_ << "=" << value << " (N_DOM=" << dom_rec_ratio.first << ", N_REC=" << dom_rec_ratio.second << ")" << std::endl;
+    return value;
 }
 
 DiscreteTrait::DiscreteTrait(std::string name, std::string genes) : Trait(name, genes) {

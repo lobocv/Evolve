@@ -36,8 +36,8 @@ int main()
     std::shared_ptr<Species> myspecies = ecosystem.RegisterSpecies(kMySpeciesName, N_GENES, kMySpeciesChromoPairNum, kMySpeciesInitPop, kMySpeciesMaleFemaleRatio);
 
     // Create a list of traits for species in the ecosystem.
-    ecosystem.RegisterTrait("Height", Polygenic, "ABCDEFGH");
-    ecosystem.RegisterTrait("Hair Color", Binary, "D");
+    ecosystem.RegisterContinuousTrait("Height", "ABCDEF", 100, 300);
+    ecosystem.RegisterDiscreteTrait("Hair Color", "D");
 
     std::cout << "List of Species" << std::endl;
     std::cout << "===============" << std::endl;

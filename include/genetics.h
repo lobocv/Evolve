@@ -46,7 +46,7 @@ class ContinuousTrait : public Trait {
     float min_;
   public:
     ContinuousTrait() = default;
-    ContinuousTrait(std::string name, std::string genes);
+    ContinuousTrait(std::string name, std::string genes, float max, float min);
     float CalculateValue(Genome &genome);
 };
 
