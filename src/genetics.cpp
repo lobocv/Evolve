@@ -62,23 +62,37 @@ float Trait::CalculateValue(Genome &genome) {
      *             genes in a polygene group
      *
     */
+    if (type_ == Polygenic) {
+        return ComputePolygeneStrength(genome);
+    } else if (type_ == Binary) {
+        return ComputeBinaryGeneStrength(genome);
+    }
 
-    return ComputePolygeneStrength(genome);
 };
 
 float Trait::ComputePolygeneStrength(Genome &genome) {
+        auto dom_rec_ratio = GetAlleleRatio(gene_codes_, genome);
+        std::cout << name_ << " (N_DOM=" << dom_rec_ratio.first << ", N_REC=" << dom_rec_ratio.second << ")" << std::endl;
+        return dom_rec_ratio.first / (dom_rec_ratio.first + dom_rec_ratio.second);
+}
+/*
+ * Return the number of dominant and
+*/
+std::pair<int, int> GetAlleleRatio(const std::string &gene_codes, Genome &genome) {
     int n_dominant = 0;
     int n_recessive = 0;
     const GeneSequence *gene_sequence;
     GeneSequence::const_iterator it;
     for (auto chromo_pair: genome)
     {
-        for (int chromo_idx=0; chromo_idx < 2; chromo_idx++) {
+        for (int chromo_idx=0; chromo_idx < 2; chromo_idx++)
+        {
             gene_sequence = &(chromo_idx ? chromo_pair.first.get_genes() : chromo_pair.second.get_genes());
-            for (const auto gene_code: gene_codes_)
+            for (const auto gene_code: gene_codes)
             {
                 it = gene_sequence->find(gene_code);
-                if ( it != gene_sequence->end()) {
+                if ( it != gene_sequence->end())
+                {
                     if (it->second.get_type() == Dominant)
                     {
                         n_dominant++;
@@ -88,9 +102,19 @@ float Trait::ComputePolygeneStrength(Genome &genome) {
                 }
             }
         }
-        if (n_dominant + n_recessive != 2*gene_codes_.length()) {throw UnrepresentedTraitError();}
-        std::cout << name_ << " (N_DOM=" << n_dominant << ", N_REC=" << n_recessive << ")" << std::endl;
+        if (n_dominant + n_recessive != 2*gene_codes.length()) {throw UnrepresentedTraitError();}
     }
 
-    return n_dominant / n_recessive; // TODO update this to be more representitive of bell-curve-like probability dist.
+    return std::make_pair(n_dominant, n_recessive); // TODO update this to be more representitive of bell-curve-like probability dist.
+}
+
+float Trait::ComputeBinaryGeneStrength(Genome &genome) {
+    std::string gene_code = gene_codes_.substr(1);
+    auto dom_rec_ratio = GetAlleleRatio(gene_code, genome);
+    if (dom_rec_ratio.first > 0) {
+        return 1.0;
+    } else {
+        return 0.0;
+    }
+
 }

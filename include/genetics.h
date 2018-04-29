@@ -34,6 +34,7 @@ class Trait {
     std::string gene_codes_;
     TraitType type_;
     float ComputePolygeneStrength(Genome &genome);
+    float ComputeBinaryGeneStrength(Genome &genome);
 public:
     Trait() = default;
     Trait(std::string name, TraitType type, std::string genes);
@@ -41,5 +42,7 @@ public:
     const std::string& get_genes() const;
     float CalculateValue(Genome &genome);
 };
+
+std::pair<int, int> GetAlleleRatio(const std::string &gene_codes, Genome &genome);
 
 #endif
