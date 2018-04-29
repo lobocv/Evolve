@@ -22,6 +22,7 @@ typedef std::map<char, Gene> GeneSequence;
 
 enum Sex{Male, Female};
 enum GeneType{Dominant, Recessive};
+enum TraitType{Binary, Discrete, Polygenic};
 
 // Exceptions
 

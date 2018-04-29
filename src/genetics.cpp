@@ -48,44 +48,10 @@ const GeneSequence& Chromosome::get_genes() const {return genes_;};
 /*
     Trait
 */
-Trait::Trait(std::string name, std::string genes) : name_(name), gene_codes_(genes){}
+Trait::Trait(std::string name, TraitType type, std::string genes) : name_(name), type_(type), gene_codes_(genes){}
 const std::string Trait::get_name() const { return name_;}
 const std::string& Trait::get_genes() const {return gene_codes_;}
 float Trait::CalculateValue(Genome &genome) {
-
-
-    int n_dominant = 0;
-    int n_recessive = 0;
-    const GeneSequence *gene_sequence;
-    GeneSequence::const_iterator it;
-    for (auto chromo_pair: genome) {
-        for (int chromo_idx=0; chromo_idx < 2; chromo_idx++) {
-            gene_sequence = &(chromo_idx ? chromo_pair.first.get_genes() : chromo_pair.second.get_genes());
-            for (const auto gene_code: gene_codes_)
-            {
-//                auto it = gene_sequence->find(gene_code);
-                it = gene_sequence->find(gene_code);
-                if ( it != gene_sequence->end()) {
-                    if (it->second.get_type() == Dominant)
-                    {
-                        n_dominant++;
-                    } else {
-                        n_recessive++;
-                    }
-                }
-            }
-        }
-        if (n_dominant + n_recessive != 2*gene_codes_.length()) {
-            throw UnrepresentedTraitError();
-        }
-        std::cout << name_ << " (N_DOM=" << n_dominant << ", N_REC=" << n_recessive << ")" << std::endl;
-    }
-    // Go through each chromosome pair in the genome
-    // Attempt to find the trait genes in each chromosome
-    // If exists, use it to calculate trait value
-    // if any of the trait's genes don't exist in the genome
-    // then raise error.
-
     /*
      * Needs to go find the genes that govern this trait in the genome
      * and determine the strength of the trait. There are three types of
@@ -97,6 +63,34 @@ float Trait::CalculateValue(Genome &genome) {
      *
     */
 
-
-
+    return ComputePolygeneStrength(genome);
 };
+
+float Trait::ComputePolygeneStrength(Genome &genome) {
+    int n_dominant = 0;
+    int n_recessive = 0;
+    const GeneSequence *gene_sequence;
+    GeneSequence::const_iterator it;
+    for (auto chromo_pair: genome)
+    {
+        for (int chromo_idx=0; chromo_idx < 2; chromo_idx++) {
+            gene_sequence = &(chromo_idx ? chromo_pair.first.get_genes() : chromo_pair.second.get_genes());
+            for (const auto gene_code: gene_codes_)
+            {
+                it = gene_sequence->find(gene_code);
+                if ( it != gene_sequence->end()) {
+                    if (it->second.get_type() == Dominant)
+                    {
+                        n_dominant++;
+                    } else {
+                        n_recessive++;
+                    }
+                }
+            }
+        }
+        if (n_dominant + n_recessive != 2*gene_codes_.length()) {throw UnrepresentedTraitError();}
+        std::cout << name_ << " (N_DOM=" << n_dominant << ", N_REC=" << n_recessive << ")" << std::endl;
+    }
+
+    return n_dominant / n_recessive; // TODO update this to be more representitive of bell-curve-like probability dist.
+}

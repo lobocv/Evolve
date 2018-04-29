@@ -37,7 +37,7 @@ int main()
 
     // Create a list of traits for species in the ecosystem.
     std::string trait_genes = "ABC";
-    ecosystem.RegisterTrait("Height", trait_genes);
+    ecosystem.RegisterTrait("Height", Polygenic, trait_genes);
 
     std::cout << "List of Species" << std::endl;
     std::cout << "===============" << std::endl;

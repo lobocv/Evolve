@@ -32,9 +32,11 @@ public:
 class Trait {
     std::string name_;
     std::string gene_codes_;
+    TraitType type_;
+    float ComputePolygeneStrength(Genome &genome);
 public:
     Trait() = default;
-    Trait(std::string name, std::string genes);
+    Trait(std::string name, TraitType type, std::string genes);
     const std::string get_name() const;
     const std::string& get_genes() const;
     float CalculateValue(Genome &genome);
