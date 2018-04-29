@@ -10,10 +10,11 @@
 */
 Gene::Gene(char name, GeneType type) : name_((char) toupper(name)), type_(type) {};
 
-const char &Gene::get_name() const {
-    return type_ ? (char)toupper(name_) : (char)tolower(name_);
+const char& Gene::get_name() const {
+    return type_ ? (char)tolower(name_) : (char)toupper(name_);
 }
 
+const GeneType& Gene::get_type() const {return type_;};
 
 bool Gene::operator< (const Gene &other) const {
     return name_ < (char) toupper(other.get_name());
@@ -51,8 +52,34 @@ Trait::Trait(std::string name, std::string genes) : name_(name), gene_codes_(gen
 const std::string Trait::get_name() const { return name_;}
 const std::string& Trait::get_genes() const {return gene_codes_;}
 float Trait::CalculateValue(Genome &genome) {
-    std::cout << "CALCULATE VALUE" << std::endl;
 
+
+    int n_dominant = 0;
+    int n_recessive = 0;
+    const GeneSequence *gene_sequence;
+    GeneSequence::const_iterator it;
+    for (auto chromo_pair: genome) {
+        for (int chromo_idx=0; chromo_idx < 2; chromo_idx++) {
+            gene_sequence = &(chromo_idx ? chromo_pair.first.get_genes() : chromo_pair.second.get_genes());
+            for (const auto gene_code: gene_codes_)
+            {
+//                auto it = gene_sequence->find(gene_code);
+                it = gene_sequence->find(gene_code);
+                if ( it != gene_sequence->end()) {
+                    if (it->second.get_type() == Dominant)
+                    {
+                        n_dominant++;
+                    } else {
+                        n_recessive++;
+                    }
+                }
+            }
+        }
+        if (n_dominant + n_recessive != 2*gene_codes_.length()) {
+            throw UnrepresentedTraitError();
+        }
+        std::cout << name_ << " (N_DOM=" << n_dominant << ", N_REC=" << n_recessive << ")" << std::endl;
+    }
     // Go through each chromosome pair in the genome
     // Attempt to find the trait genes in each chromosome
     // If exists, use it to calculate trait value

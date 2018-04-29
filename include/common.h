@@ -25,7 +25,8 @@ enum GeneType{Dominant, Recessive};
 
 // Exceptions
 
-class CannotProcreateError {};
+class CannotProcreateError {};    // Thrown when two incompatible creatures try to reproduce.
+class UnrepresentedTraitError {}; // Thrown when not all of the traits genes are represented in the creature.
 
 inline bool FlipCoin() {return std::rand() % 2;}
 
