@@ -9,22 +9,22 @@ this evolution simulator. The complex and chaotic domain of this project gives a
 different aspects of the C++ language. As I develop this project, I aim to document my journey and list
 the concepts in which I've utilized.
 
-### Polymorphism:
-Traits come in several forms such as discrete and continuous. They both expose a common interface
+#### Polymorphism:
+* Traits come in several forms such as discrete and continuous. They both expose a common interface
 through the base Trait class.
 
-### Smart Pointers
+#### Smart Pointers
 * The Ecosystem is responsible for managing and storing all of the species that evolve within it.
 * The Species is responsible for managing and storing all of the creatures within it.
 * Creatures are created on the heap and can be allocated (born) and deallocated (killed).
 
-### Operator Overloading
+#### Operator Overloading
 * In order to see the results of the simulations, most classes implement ostream &operator<< functions.
 
-### Singleton
+#### Singleton
 * The Ecosystem is a singleton class that always returns a static reference to it's own sole instantiation.
 
-### Friendship
+#### Friendship
 * Creation of certain objects can only be done via certain methods so that they can be registered with the Ecosystem.
 * Some ostream& operator<< methods are marked as friend so that they can access private members.
 
@@ -33,36 +33,47 @@ through the base Trait class.
 ## Terminology
 
 
-Creature - An individual organism of a Species which has it's own genotype. This genotype contributes
-           genes to it's offspring and is used to evaluate the magnitude of Traits.
+#### Creature
+* An individual organism of a Species which has it's own genotype. This genotype contributes
+genes to it's offspring and is used to evaluate the magnitude of Traits.
 
-Trait - A feature of a species that can either be discrete or continuous. It's exact value is computed based
-        on the rules of the specific trait and the genome of the Creature.
-        
-Phenotype - A bin of a particular trait. For a binary trait, there are two phenotypes. For continuous
-            or discrete non-binary traits, there can be many phenotypes. In the discrete case, each
-            phenotype describes a vector in phenospace.
+#### Attributes
+* Descriptors of an organism that govern how fit the organism is for survival.
+Attributes are contributed by multiple traits and their value in conjunction with environmental
+factors decide if the organism lives or dies.
 
-Phenospace - A vector space that spans possible phenotypes. Phenotypes are represented as eigen-vectors in the vector-space
-            The phenospace need not be singular, however if it is not singular, the linearly dependent vectors 
-            must be a negative scaling of one another. This signifies anti-correlation of the corresponding phenotypes.
+#### Trait
+* A feature of a species that can either be discrete or continuous. It's exact value is computed based
+on the rules of the specific trait and the genome of the Creature.
 
-Gene - The building blocks of genetic Traits. When the gene has information about multiple traits
-       it is said to be  pleiotropic. If a non-binary trait has influence from multiple genes, those genes are said to be
-       polygenic. These two concepts are not mutually exclusive. An example of a polygene group is a group of genes that
-       when observed in high numbers, cause the organism to be tall. An example of pleiotropic gene is a gene who's occurance
-       affects both the height and weight of an organism simultaneously.
+#### Phenotype
+* A bin of a particular trait. For a binary trait, there are two phenotypes. For continuous
+or discrete non-binary traits, there can be many phenotypes. In the discrete case, each
+phenotype describes a vector in phenospace.
+
+#### Phenospace
+* A vector space that spans possible phenotypes. Phenotypes are represented as eigen-vectors in the vector-space
+The phenospace need not be singular, however if it is not singular, the linearly dependent vectors
+must be a negative scaling of one another. This signifies anti-correlation of the corresponding phenotypes.
+
+#### Gene
+* The building blocks of genetic Traits. When the gene has information about multiple traits
+it is said to be  pleiotropic. If a non-binary trait has influence from multiple genes, those genes are said to be
+polygenic. These two concepts are not mutually exclusive. An example of a polygene group is a group of genes that
+when observed in high numbers, cause the organism to be tall. An example of pleiotropic gene is a gene who's occurance
+affects both the height and weight of an organism simultaneously.
        
 
-Chromosome - Contains many genes and distributes those genes to offspring during reproduction
+#### Chromosome
+* Contains many genes and distributes those genes to offspring during reproduction
 
 
-
+### Polygenic vs Pleitropic Genes
 ![alt text](https://github.com/lobocv/Evolve/blob/master/polygene.jpg?raw=true "Polygene")
 ![alt text](https://github.com/lobocv/Evolve/blob/master/pleiotropy.jpg?raw=true "Pleiotropy")
 
 
-# List of Traits
+### List of Traits
 Traits are specific features of an organism that are derived from it's genome. They contribute to an organisms Attributes.
 
 Continuous Traits
@@ -89,10 +100,7 @@ Discrete Non-Binary Traits
 - Diet (Herbivore, Carnivore, Omnivore)
 
 
-# List of Attributes
-Attributes are descriptors of an organism that govern how fit the organism is for survival.
-Attributes are contributed by multiple traits and their value in conjunction with environmental
-factors decide if the organism lives or dies.
+### List of Attributes
 
 - Strength
 - Intelligence
@@ -104,7 +112,7 @@ factors decide if the organism lives or dies.
 - Reproductivity
 
 
-# Future Plans
+### Future Plans
 
 The great thing about this project is that it can be almost endlessly expanded upon. Some neat
 features that I would like to one day implement are:
