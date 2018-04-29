@@ -16,10 +16,6 @@ const char Gene::get_name() const {
 
 const GeneType& Gene::get_type() const {return type_;};
 
-bool Gene::operator< (const Gene &other) const {
-    return name_ < (char) toupper(other.get_name());
-}
-
 
 /*
     Chromosome
