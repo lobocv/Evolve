@@ -10,7 +10,7 @@
 */
 Gene::Gene(char name, GeneType type) : name_((char) toupper(name)), type_(type) {};
 
-const char& Gene::get_name() const {
+const char Gene::get_name() const {
     return type_ ? (char)tolower(name_) : (char)toupper(name_);
 }
 

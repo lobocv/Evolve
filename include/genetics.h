@@ -12,7 +12,7 @@ class Gene {
 public:
     Gene() = default;
     Gene(char, GeneType);
-    const char& get_name() const;
+    const char get_name() const;
     const GeneType& get_type() const;
     bool operator< (const Gene &other) const;
 };
