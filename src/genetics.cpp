@@ -12,13 +12,17 @@ Gene::Gene(char name) : name_{name} {};
 
 const char &Gene::get_name() const {name_;}
 
+bool Gene::operator< (const Gene &other) const {
+    return name_ < other.get_name();
+}
+
 
 /*
     Chromosome
 */
 Chromosome::Chromosome(std::string genecodes) {
     for (auto genecode: genecodes) {
-        genes_.push_back(Gene(genecode));
+        genes_.insert(Gene(genecode));
     }
 };
 
@@ -49,4 +53,24 @@ const std::string Trait::get_name() const { return name_;}
 const GeneSequence& Trait::get_genes() const {return genes_;}
 float Trait::CalculateValue(Genome &genome) {
     std::cout << "CALCULATE VALUE" << std::endl;
+
+    // Go through each chromosome pair in the genome
+    // Attempt to find the trait genes in each chromosome
+    // If exists, use it to calculate trait value
+    // if any of the trait's genes don't exist in the genome
+    // then raise error.
+
+    /*
+     * Needs to go find the genes that govern this trait in the genome
+     * and determine the strength of the trait. There are three types of
+     * traits which compute their value differently:
+     * Binary: Dominant / Recessive nature of alleles
+     * Dicrete: TBD
+     * Continuous: Frequency of either dominant or recessive
+     *             genes in a polygene group
+     *
+    */
+
+
+
 };

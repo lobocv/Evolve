@@ -12,6 +12,7 @@ public:
     Gene() = default;
     Gene(char);
     const char& get_name() const;
+    bool operator< (const Gene &other) const;
 };
 
 class Chromosome {
