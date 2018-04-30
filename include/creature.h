@@ -69,6 +69,14 @@ private:
     ~Ecosystem(){};
     Ecosystem(Ecosystem &c){};
     void operator=(Ecosystem &c){};
+
+    class EcosystemDeleter
+    {
+    public:
+        void operator()(Ecosystem * p ) { delete p; }
+    };
+
+    friend class EcosystemDeleter;
 };
 
 #endif
