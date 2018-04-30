@@ -22,14 +22,16 @@ std::ostream &operator<< (std::ostream &stream, const Chromosome &obj)
 
 std::ostream &operator<< (std::ostream &stream, const Species &obj)
 {
-    stream << "Species " << obj.get_name();    
+    stream << "Species:" << obj.get_name();
     return stream;
 }
 
 
 std::ostream &operator<< (std::ostream &stream, const Creature &obj)
 {
-    stream << "Creature (" << obj.get_species() << ") #" << obj.get_id();
+    stream << "Creature (" << "#" << obj.get_id() << ",";
+    (obj.get_sex() == Male) ? (stream << "M") : (stream << "F");
+    stream << "," << obj.get_species() << ")";
     return stream;
 }
 

@@ -83,9 +83,9 @@ int main()
                 try
                 {
                     Creature::Reproduce(c1, c2);
-                    std::cout << "Creatures " << c1_id << " and " << c2_id << " are reproducing." << std::endl;
+                    std::cout << *c1 << " and " << *c2 << " are reproducing." << std::endl;
                 } catch (CannotProcreateError) {
-                    std::cout << "Creatures " << c1_id << " and " << c2_id << " failed to reproduce." << std::endl;
+                    std::cout << *c1 << " and " << *c2 << " failed to reproduce." << std::endl;
                 }
             }
         }
