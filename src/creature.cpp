@@ -139,8 +139,12 @@ void Species::InitializeCreatures(int n_males, int n_females) {
 */
 
 Ecosystem& Ecosystem::GetEcosystem() {
-    static Ecosystem ecosystem;
-    return ecosystem;
+    // static Ecosystem ecosystem;  <-- not usually a good idea to make static
+
+    // static shared ptr will delete when main() exits
+    // since desstructor is private, we have to give it a functor class which is able to call the destructor
+    static std::shared_ptr<Ecosystem> eco( new Ecosystem() , Ecosystem::EcosystemDeleter() );
+    return *eco;
 };
 
 std::shared_ptr<Species> Ecosystem::RegisterSpecies(std::string species_name, int chromosome_length, int n_chromosome_pairs, int initial_population, float male_female_ratio) {
