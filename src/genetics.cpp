@@ -4,6 +4,7 @@
 #include <ctype.h>
 #include <iostream>
 #include <cstdlib>
+#include <cmath>
 
 /*
     Gene
@@ -62,6 +63,26 @@ float ContinuousTrait::CalculateValue(const Genome &genome)
     float value = min_ + (max_ - min_) * dom_rec_ratio.first / (dom_rec_ratio.first + dom_rec_ratio.second);
     std::cout << name_ << "=" << value << " (N_DOM=" << dom_rec_ratio.first << ", N_REC=" << dom_rec_ratio.second << ")" << std::endl;
     return value;
+}
+
+std::pair<float, float> ContinuousTrait::CalculateStatistics(const std::vector<std::shared_ptr<Creature>> creatures) {
+    double sum = 0, mean=0, mean_squared=0, stdev=0;
+    float* values = new float[creatures.size()];
+    int ii=0;
+    for (auto &c : creatures)
+    {
+        values[ii] = CalculateValue(c->get_genome());
+        sum += values[ii];
+        ii++;
+    }
+    mean = sum / creatures.size();
+    for (ii=0; ii < creatures.size(); ii++)
+    {
+        mean_squared += std::pow(values[ii] - mean, 2);
+    }
+    stdev = std::sqrt(mean_squared / creatures.size());
+    return std::make_pair(mean, stdev);
+
 }
 
 DiscreteTrait::DiscreteTrait(std::string name, std::string genes) : Trait(name, genes)

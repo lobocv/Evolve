@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <map>
+#include <memory>
 #include <ostream>
 #include "common.h"
 
@@ -47,6 +48,7 @@ class ContinuousTrait : public Trait {
     ContinuousTrait() = default;
     ContinuousTrait(std::string name, std::string genes, float max, float min);
     float CalculateValue(const Genome &genome);
+    std::pair<float, float> CalculateStatistics(const std::vector<std::shared_ptr<Creature>> creatures);
 };
 
 
