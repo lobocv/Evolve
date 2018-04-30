@@ -26,6 +26,7 @@ public:
     std::vector<std::shared_ptr<Creature> > & get_creatures();
     const int get_alive_population() const;
     const int get_deceased_population() const;
+    const std::vector< std::shared_ptr<Creature> >& get_creatures() const;
     
 };
 

@@ -88,10 +88,7 @@ const std::string Species::get_name() const {return name_;};
 const int Species::get_alive_population() const { return alive_;};
 const int Species::get_deceased_population() const { return deceased_;};
 const int Species::get_n_chromosome_pairs() const{return n_chromosome_pairs_;};
-
-std::vector< std::shared_ptr<Creature> >& Species::get_creatures() {
-    return creatures_;
-};
+std::vector<std::shared_ptr<Creature>>& Species::get_creatures() {return creatures_;};
 
 std::shared_ptr<Creature> Species::AddCreature(Sex sex, Genome genome) {
     std::shared_ptr<Creature> creature = std::make_shared<Creature>(*this, sex);
