@@ -6,38 +6,43 @@
 #include "genetics.h"
 #include <iostream>
 
-std::ostream &operator<< (std::ostream &stream, const Gene &obj) {
+std::ostream &operator<< (std::ostream &stream, const Gene &obj)
+{
     stream << obj.get_name();    
     return stream;
-};
+}
 
-std::ostream &operator<< (std::ostream &stream, const Chromosome &obj) {
+std::ostream &operator<< (std::ostream &stream, const Chromosome &obj)
+{
     for (auto gene: obj.genes_) {
         stream << gene.second;
     }
     return stream;
-};
+}
 
-std::ostream &operator<< (std::ostream &stream, const Species &obj) {
+std::ostream &operator<< (std::ostream &stream, const Species &obj)
+{
     stream << "Species " << obj.get_name();    
     return stream;
-};
+}
 
 
-std::ostream &operator<< (std::ostream &stream, const Creature &obj) {
+std::ostream &operator<< (std::ostream &stream, const Creature &obj)
+{
     stream << "Creature (" << obj.get_species() << ") #" << obj.get_id();
     return stream;
-};
+}
 
 
-std::ostream &operator<< (std::ostream &stream, const Trait &obj) {
+std::ostream &operator<< (std::ostream &stream, const Trait &obj)
+{
     stream << obj.get_name() << " (";
     for (auto gene: obj.get_genes()) {
         stream << gene;
     }
     stream << ")";
     return stream;
-};
+}
 
 
 

@@ -43,13 +43,15 @@ int main()
 
     std::cout << "List of Species" << std::endl;
     std::cout << "===============" << std::endl;
-    for (auto species: ecosystem.species_) {
+    for (auto species: ecosystem.species_)
+    {
         std::cout << *species.second << std::endl;
     }
     std::cout << std::endl;
     std::cout << "List of Traits" << std::endl;
     std::cout << "===============" << std::endl;
-    for (auto trait: ecosystem.traits_) {
+    for (auto trait: ecosystem.traits_)
+    {
         std::cout << *trait.second << std::endl;
     }
     std::cout << "===============" << std::endl;
@@ -60,15 +62,18 @@ int main()
 
     int day_number = 0;
     int epoch_length_days =0;
-    do {
+    do
+    {
         std::cin >> epoch_length_days;
-        for (int epoch_day=0; epoch_day < epoch_length_days; epoch_day++, day_number++) {
+        for (int epoch_day=0; epoch_day < epoch_length_days; epoch_day++, day_number++)
+        {
             /*
              * Implement stochastic interaction events here
              *
             */
 
-            if (std::rand() % 100 <= 100 * INTERACTION_RATE) {
+            if (std::rand() % 100 <= 100 * INTERACTION_RATE)
+            {
 
                 int c1_id = std::rand() % creatures.size();
                 int c2_id = std::rand() % creatures.size();
@@ -88,7 +93,8 @@ int main()
     } while ( epoch_length_days > 0);
 
 
-    for (const auto &c: creatures) {
+    for (const auto &c: creatures)
+    {
         std::cout << *c << std::endl;
         c->print();
         c->print_traits();
