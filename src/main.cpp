@@ -60,7 +60,7 @@ int main()
     std::vector<std::shared_ptr<Creature>> &creatures = ecosystem.species_[kMySpeciesName]->get_creatures();
     Creature::Reproduce(creatures[0], creatures[1]);
 
-    int day_number = 0;
+    int& day_number = ecosystem.get_day();
     int epoch_length_days =0;
     do
     {

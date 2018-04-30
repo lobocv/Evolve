@@ -183,3 +183,5 @@ void Ecosystem::RegisterContinuousTrait(std::string trait_name, std::string gene
     RegisterTrait(trait_shared);
 
 }
+
+int& Ecosystem::get_day() {return day_;}

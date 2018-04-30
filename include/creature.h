@@ -57,6 +57,7 @@ public:
 
 // Singleton
 class Ecosystem {
+    int day_ = 0;
 public:
     static Ecosystem& GetEcosystem();
     std::map<std::string, std::shared_ptr<Species>> species_;
@@ -65,6 +66,7 @@ public:
     void RegisterTrait(std::shared_ptr<Trait> trait);
     void RegisterDiscreteTrait(std::string name, std::string gene_codes);
     void RegisterContinuousTrait(std::string name, std::string gene_codes, float min, float max);
+    int& get_day();
 private:
     Ecosystem(){};
     ~Ecosystem(){};
