@@ -7,8 +7,6 @@
 #include <iostream>
 
 // must wrap operator<< in std namespace
-namespace std
-{
 // must be inline if you are going to define functions inside a header file
 inline std::ostream &operator<< (std::ostream &stream, const Gene &obj) {
     stream << obj.get_name();    
@@ -43,6 +41,5 @@ inline std::ostream &operator<< (std::ostream &stream, const Trait &obj) {
     return stream;
 };
 
-}
 
 #endif
