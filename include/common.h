@@ -13,6 +13,7 @@ class Chromosome;
 class Creature;
 class Species;
 class Gene;
+class Trait;
 
 // Typedefs
 

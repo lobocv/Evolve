@@ -4,9 +4,11 @@
 #include <vector>
 #include <map>
 #include <ostream>
+#include <memory>
 #include "common.h"
 #include "genetics.h"
-#include <memory>
+#include "trait.h"
+
 class Species {
 
     int n_chromosome_pairs_;

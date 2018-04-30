@@ -1,5 +1,6 @@
 #include "creature.h"
 #include "genetics.h"
+#include "trait.h"
 #include "common.h"
 #include <ctype.h>
 #include <iostream>
