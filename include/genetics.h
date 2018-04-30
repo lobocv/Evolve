@@ -22,7 +22,11 @@ public:
     Chromosome() = default;
     Chromosome(GeneSequence);
     static ChromosomePair MakeRandomPair(std::string);
-    friend std::ostream &operator<< (std::ostream &ostream, const Chromosome &c);
+    // this is causing problems. Probably because your implementations
+    // are in a separate header file. Should move it to
+    // a cpp file
+    //friend std::ostream &operator<< (std::ostream &ostream, const Chromosome &c);
+
     const int get_length() const;
     const GeneSequence& get_genes() const;
 };

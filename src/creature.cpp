@@ -1,6 +1,7 @@
 #include "creature.h"
 #include "genetics.h"
 #include "common.h"
+#include "helpers.h"
 #include <ctype.h>
 #include <iostream>
 #include <cstdlib>
