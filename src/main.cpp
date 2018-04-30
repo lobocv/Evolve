@@ -27,6 +27,8 @@ int main()
     const float kMySpeciesMaleFemaleRatio = 0.5;
     const int kMySpeciesChromoPairNum = 1;
     const int N_GENES = 26;
+    const float INTERACTION_RATE = 0.2;
+
 
     // Change the seed to be based off the current system time
     srand (time(NULL));
@@ -53,10 +55,39 @@ int main()
     std::cout << "===============" << std::endl;
 
     // Get the first two creatures and have them reproduce
-    auto &creatures = ecosystem.species_[kMySpeciesName]->get_creatures();
+    std::vector<std::shared_ptr<Creature>> &creatures = ecosystem.species_[kMySpeciesName]->get_creatures();
     Creature::Reproduce(creatures[0], creatures[1]);
 
-    std::cout << "Alive = " << myspecies->get_alive_population() << std::endl;
+    int day_number = 0;
+    int epoch_length_days =0;
+    do {
+        std::cin >> epoch_length_days;
+        for (int epoch_day=0; epoch_day < epoch_length_days; epoch_day++, day_number++) {
+            /*
+             * Implement stochastic interaction events here
+             *
+            */
+
+            if (std::rand() % 100 <= 100 * INTERACTION_RATE) {
+
+                int c1_id = std::rand() % creatures.size();
+                int c2_id = std::rand() % creatures.size();
+
+                auto c1 = creatures[c1_id];
+                auto c2 = creatures[c2_id];
+                try
+                {
+                    Creature::Reproduce(c1, c2);
+                    std::cout << "Creatures " << c1_id << " and " << c2_id << " are reproducing." << std::endl;
+                } catch (CannotProcreateError) {
+                    std::cout << "Creatures " << c1_id << " and " << c2_id << " failed to reproduce." << std::endl;
+                }
+            }
+        }
+        std::cout << "Number of alive creatures after " << day_number << " days = " << myspecies->get_alive_population() << std::endl;
+    } while ( epoch_length_days > 0);
+
+
     for (const auto &c: creatures) {
         std::cout << *c << std::endl;
         c->print();
