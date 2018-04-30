@@ -154,7 +154,7 @@ std::shared_ptr<Species> Ecosystem::RegisterSpecies(std::string species_name, in
 };
 
 void Ecosystem::RegisterTrait(std::shared_ptr<Trait> trait) {
-    std::cout << "TRAIT REGISTERED " << trait->get_name() << std::cout;
+    std::cout << "TRAIT REGISTERED " << trait->get_name() << std::endl;
     Ecosystem &ecosystem = Ecosystem::GetEcosystem();
     ecosystem.traits_[trait->get_name()] = trait;
 
