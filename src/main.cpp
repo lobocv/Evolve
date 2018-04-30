@@ -60,9 +60,8 @@ int main()
     for (const auto &c: creatures) {
         std::cout << *c << std::endl;
         c->print();
-        std::cout << std::endl;
         c->print_traits();
-
+        std::cout << std::endl;
     }
 
     auto child = *creatures[2];
