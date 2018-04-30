@@ -56,7 +56,7 @@ ContinuousTrait::ContinuousTrait(std::string name, std::string genes, float min,
     if (gene_codes_.length() < 2) {throw InvalidTraitParameterError();}
 }
 
-float ContinuousTrait::CalculateValue(Genome &genome)
+float ContinuousTrait::CalculateValue(const Genome &genome)
 {
     auto dom_rec_ratio = GetAlleleRatio(gene_codes_, genome);
     float value = min_ + (max_ - min_) * dom_rec_ratio.first / (dom_rec_ratio.first + dom_rec_ratio.second);
@@ -69,7 +69,7 @@ DiscreteTrait::DiscreteTrait(std::string name, std::string genes) : Trait(name, 
     if (gene_codes_.length() != 1) {throw InvalidTraitParameterError();}
 }
 
-float DiscreteTrait::CalculateValue(Genome &genome)
+float DiscreteTrait::CalculateValue(const Genome &genome)
 {
     std::string gene_code = gene_codes_.substr(0, 1);
     auto dom_rec_ratio = GetAlleleRatio(gene_code, genome);
@@ -82,7 +82,7 @@ float DiscreteTrait::CalculateValue(Genome &genome)
 /*
  * Return the number of dominant and
 */
-std::pair<int, int> GetAlleleRatio(const std::string &gene_codes, Genome &genome)
+std::pair<int, int> GetAlleleRatio(const std::string &gene_codes, const Genome &genome)
 {
     int n_dominant = 0;
     int n_recessive = 0;

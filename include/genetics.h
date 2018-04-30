@@ -37,7 +37,7 @@ public:
     Trait(std::string name, std::string genes);
     const std::string get_name() const;
     const std::string& get_genes() const;
-    virtual float CalculateValue(Genome &genome)=0;
+    virtual float CalculateValue(const Genome &genome)=0;
 };
 
 class ContinuousTrait : public Trait {
@@ -46,7 +46,7 @@ class ContinuousTrait : public Trait {
   public:
     ContinuousTrait() = default;
     ContinuousTrait(std::string name, std::string genes, float max, float min);
-    float CalculateValue(Genome &genome);
+    float CalculateValue(const Genome &genome);
 };
 
 
@@ -54,10 +54,10 @@ class DiscreteTrait : public Trait {
   public:
     DiscreteTrait() = default;
     DiscreteTrait(std::string name, std::string genes);
-    float CalculateValue(Genome &genome);
+    float CalculateValue(const Genome &genome);
 };
 
 
-std::pair<int, int> GetAlleleRatio(const std::string &gene_codes, Genome &genome);
+std::pair<int, int> GetAlleleRatio(const std::string &gene_codes, const Genome &genome);
 
 #endif

@@ -59,9 +59,10 @@ public:
 class Ecosystem {
     int day_ = 0;
 public:
-    static Ecosystem& GetEcosystem();
     std::map<std::string, std::shared_ptr<Species>> species_;
     std::map<std::string, std::shared_ptr<Trait>> traits_;
+
+    static Ecosystem& GetEcosystem();
     std::shared_ptr<Species> RegisterSpecies(std::string species_name, int chromosome_length, int n_chromosome_pairs, int initial_population, float male_female_ratio);
     void RegisterTrait(std::shared_ptr<Trait> trait);
     void RegisterDiscreteTrait(std::string name, std::string gene_codes);

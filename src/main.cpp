@@ -9,7 +9,7 @@
 #include "common.h"
 #include "helpers.h"
 #include <time.h> 
-
+#include <cmath>
 
 
 int main()
@@ -90,16 +90,25 @@ int main()
             }
         }
         std::cout << "Number of alive creatures after " << day_number << " days = " << myspecies->get_alive_population() << std::endl;
+
+        auto trait = ecosystem.traits_["Height"];
+        double height_sum = 0, height_std = 0, height_mean = 0;
+        for (const auto &c: creatures)
+        {
+            height_sum += trait->CalculateValue(c->get_genome());
+        }
+        height_mean = height_sum / creatures.size();
+        for (const auto &c: creatures) {
+            height_std += std::pow(trait->CalculateValue(c->get_genome()) - height_mean, 2);
+        }
+        height_std = std::sqrt(height_std / creatures.size());
+        std::cout << "Height Mean = " << height_mean << std::endl;
+        std::cout << "Height Standard Deviation = " << height_std << std::endl;
+
     } while ( epoch_length_days > 0);
 
 
-    for (const auto &c: creatures)
-    {
-        std::cout << *c << std::endl;
-        c->print();
-        c->print_traits();
-        std::cout << std::endl;
-    }
+
 
     auto child = *creatures[2];
     auto &m = *child.get_father();
