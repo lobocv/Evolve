@@ -29,7 +29,7 @@ int main()
     const int kMySpeciesChromoPairNum = 1;
     const int kMySpeciesLifeExpectanceDays = 50;
     const int N_GENES = 26;
-    const float INTERACTION_RATE = 1.8;
+    const float INTERACTION_RATE = 0.2;
 
 
     // Change the seed to be based off the current system time
@@ -109,10 +109,11 @@ int main()
 
 
         std::shared_ptr<ContinuousTrait> trait = std::static_pointer_cast<ContinuousTrait>(ecosystem.traits_["Height"]);
-        auto stats = trait->CalculateStatistics(creatures);
+
         std::cout << "N CREATURES =" << creatures.size() << std::endl;
         if (creatures.size() > 0)
         {
+            auto stats = trait->CalculateStatistics(creatures);
             std::cout << "Number of alive creatures after " << day_number << " days = " << myspecies->get_alive_population() << std::endl;
             std::cout << "Number of deceased creatures after " << day_number << " days = " << myspecies->get_deceased_population() << std::endl;
             std::cout << "Height Mean = " << stats.first << std::endl;
