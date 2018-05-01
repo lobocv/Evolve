@@ -6,10 +6,10 @@
 #include "EvolveConfig.h"
 #include "genetics.h"
 #include "creature.h"
+#include "ecosystem.h"
 #include "common.h"
 #include "helpers.h"
 #include <time.h> 
-
 
 
 int main()
@@ -43,13 +43,15 @@ int main()
 
     std::cout << "List of Species" << std::endl;
     std::cout << "===============" << std::endl;
-    for (auto species: ecosystem.species_) {
+    for (auto species: ecosystem.species_)
+    {
         std::cout << *species.second << std::endl;
     }
     std::cout << std::endl;
     std::cout << "List of Traits" << std::endl;
     std::cout << "===============" << std::endl;
-    for (auto trait: ecosystem.traits_) {
+    for (auto trait: ecosystem.traits_)
+    {
         std::cout << *trait.second << std::endl;
     }
     std::cout << "===============" << std::endl;
@@ -58,17 +60,20 @@ int main()
     std::vector<std::shared_ptr<Creature>> &creatures = ecosystem.species_[kMySpeciesName]->get_creatures();
     Creature::Reproduce(creatures[0], creatures[1]);
 
-    int day_number = 0;
+    int& day_number = ecosystem.get_day();
     int epoch_length_days =0;
-    do {
+    do
+    {
         std::cin >> epoch_length_days;
-        for (int epoch_day=0; epoch_day < epoch_length_days; epoch_day++, day_number++) {
+        for (int epoch_day=0; epoch_day < epoch_length_days; epoch_day++, day_number++)
+        {
             /*
              * Implement stochastic interaction events here
              *
             */
 
-            if (std::rand() % 100 <= 100 * INTERACTION_RATE) {
+            if (std::rand() % 100 <= 100 * INTERACTION_RATE)
+            {
 
                 int c1_id = std::rand() % creatures.size();
                 int c2_id = std::rand() % creatures.size();
@@ -78,22 +83,23 @@ int main()
                 try
                 {
                     Creature::Reproduce(c1, c2);
-                    std::cout << "Creatures " << c1_id << " and " << c2_id << " are reproducing." << std::endl;
+                    std::cout << *c1 << " and " << *c2 << " are reproducing." << std::endl;
                 } catch (CannotProcreateError) {
-                    std::cout << "Creatures " << c1_id << " and " << c2_id << " failed to reproduce." << std::endl;
+                    std::cout << *c1 << " and " << *c2 << " failed to reproduce." << std::endl;
                 }
             }
         }
         std::cout << "Number of alive creatures after " << day_number << " days = " << myspecies->get_alive_population() << std::endl;
+
+        std::shared_ptr<ContinuousTrait> trait = std::static_pointer_cast<ContinuousTrait>(ecosystem.traits_["Height"]);
+        auto stats = trait->CalculateStatistics(creatures);
+        std::cout << "Height Mean = " << stats.first << std::endl;
+        std::cout << "Height Standard Deviation = " << stats.second << std::endl;
+
     } while ( epoch_length_days > 0);
 
 
-    for (const auto &c: creatures) {
-        std::cout << *c << std::endl;
-        c->print();
-        c->print_traits();
-        std::cout << std::endl;
-    }
+
 
     auto child = *creatures[2];
     auto &m = *child.get_father();

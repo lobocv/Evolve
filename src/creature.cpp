@@ -1,6 +1,8 @@
+#include "common.h"
 #include "creature.h"
 #include "genetics.h"
-#include "common.h"
+#include "trait.h"
+#include "ecosystem.h"
 #include "helpers.h"
 #include <ctype.h>
 #include <iostream>
@@ -11,7 +13,8 @@
 */
 Creature::Creature(Species& species, Sex sex) : species_(species), sex_(sex){};
 
-void Creature::print() const {
+void Creature::print() const
+{
     int chromo_num=0;
     for (auto &chromosome_pair: get_genome()){
         std::cout << "Chromosome Pair #" << (chromo_num+1) << ":" << std::endl;
@@ -19,7 +22,7 @@ void Creature::print() const {
         std::cout << chromosome_pair.second << std::endl;
         chromo_num++;
     }
-};
+}
 
 std::shared_ptr<Creature> Creature::Reproduce(std::shared_ptr<Creature> creature1, std::shared_ptr<Creature> creature2)
 {
@@ -62,7 +65,7 @@ std::shared_ptr<Creature> Creature::Reproduce(std::shared_ptr<Creature> creature
     child->mother_ = mother;
     child->father_ = father;
     return child;
-};
+}
 
 const int Creature::get_id() const { return id_;};
 Species &Creature::get_species() const { return species_;};
@@ -70,7 +73,8 @@ const Genome &Creature::get_genome() const { return genome_;}
 const Sex Creature::get_sex() const { return sex_;};
 std::shared_ptr<Creature> Creature::get_father() const {return father_.lock();}
 std::shared_ptr<Creature> Creature::get_mother() const {return mother_.lock();}
-void Creature::print_traits() {
+void Creature::print_traits()
+{
     Ecosystem &ecosystem = Ecosystem::GetEcosystem();
     std::cout << "Trait Values" << std::endl;
     for (auto trait: ecosystem.traits_) {
@@ -91,7 +95,8 @@ const int Species::get_deceased_population() const { return deceased_;};
 const int Species::get_n_chromosome_pairs() const{return n_chromosome_pairs_;};
 std::vector<std::shared_ptr<Creature>>& Species::get_creatures() {return creatures_;};
 
-std::shared_ptr<Creature> Species::AddCreature(Sex sex, Genome genome) {
+std::shared_ptr<Creature> Species::AddCreature(Sex sex, Genome genome)
+{
     std::shared_ptr<Creature> creature = std::make_shared<Creature>(*this, sex);
     for (int chromo_num=0; chromo_num < this->get_n_chromosome_pairs(); chromo_num++) {
         creature->genome_ = genome;
@@ -103,7 +108,8 @@ std::shared_ptr<Creature> Species::AddCreature(Sex sex, Genome genome) {
     return creature;
 }
 
-void Species::InitializeCreatures(int n_males, int n_females) {
+void Species::InitializeCreatures(int n_males, int n_females)
+{
     std::string gene_sequence;
     for (int chromo_num=0; chromo_num < genotype_length_; chromo_num++) {
         gene_sequence.push_back('A' + chromo_num);
@@ -129,48 +135,5 @@ void Species::InitializeCreatures(int n_males, int n_females) {
         // Add the creature to the species
         AddCreature(sex_of_child, genome);
     }
-};
-
-
-/*
-    Ecosystem (Singleton)
-*/
-
-Ecosystem& Ecosystem::GetEcosystem() {
-    // static Ecosystem ecosystem;  <-- not usually a good idea to make static
-
-    // static shared ptr will delete when main() exits
-    // since desstructor is private, we have to give it a functor class which is able to call the destructor
-    static std::shared_ptr<Ecosystem> eco( new Ecosystem() , Ecosystem::EcosystemDeleter() );
-    return *eco;
-};
-
-std::shared_ptr<Species> Ecosystem::RegisterSpecies(std::string species_name, int chromosome_length, int n_chromosome_pairs, int initial_population, float male_female_ratio) {
-    int num_males = male_female_ratio * initial_population;
-    int num_females = initial_population - num_males;
-    Ecosystem &ecosystem = Ecosystem::GetEcosystem();
-    auto new_species = std::make_shared<Species>(species_name, chromosome_length, n_chromosome_pairs);
-    new_species->InitializeCreatures(num_males, num_females);
-    ecosystem.species_[species_name] = new_species;
-    return new_species;
-};
-
-void Ecosystem::RegisterTrait(std::shared_ptr<Trait> trait) {
-    std::cout << "TRAIT REGISTERED " << trait->get_name() << std::endl;
-    Ecosystem &ecosystem = Ecosystem::GetEcosystem();
-    ecosystem.traits_[trait->get_name()] = trait;
-
 }
 
-void Ecosystem::RegisterDiscreteTrait(std::string trait_name, std::string gene_codes) {
-    auto trait = new DiscreteTrait(trait_name, gene_codes);
-    std::shared_ptr<Trait> trait_shared(trait);
-    RegisterTrait(trait_shared);
-}
-
-void Ecosystem::RegisterContinuousTrait(std::string trait_name, std::string gene_codes, float min, float max) {
-    auto trait = new ContinuousTrait(trait_name, gene_codes, min, max);
-    std::shared_ptr<Trait> trait_shared(trait);
-    RegisterTrait(trait_shared);
-
-}

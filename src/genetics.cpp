@@ -4,29 +4,33 @@
 #include <ctype.h>
 #include <iostream>
 #include <cstdlib>
+#include <cmath>
 
 /*
     Gene
 */
-Gene::Gene(char name, GeneType type) : name_((char) toupper(name)), type_(type) {};
+Gene::Gene(char name, GeneType type) : name_((char) toupper(name)), type_(type) {}
 
-const char Gene::get_name() const {
+const char Gene::get_name() const
+{
     return type_ ? (char)tolower(name_) : (char)toupper(name_);
 }
 
-const GeneType& Gene::get_type() const {return type_;};
+const GeneType& Gene::get_type() const {return type_;}
 
 
 /*
     Chromosome
 */
-Chromosome::Chromosome(GeneSequence genes) : genes_(genes) {};
+Chromosome::Chromosome(GeneSequence genes) : genes_(genes) {}
 
 // Create a pair of chromosomes for the given gene codes.
 // This creates two chromosomes that have random alleles from each gene in the list provided. 
-ChromosomePair Chromosome::MakeRandomPair(std::string genecodes) {
+ChromosomePair Chromosome::MakeRandomPair(std::string genecodes)
+{
     GeneSequence left_genome, right_genome;
-    for (const auto char_code: genecodes) {
+    for (const auto char_code: genecodes)
+    {
         GeneType left_allele = (FlipCoin()) ?  Dominant: Recessive;
         GeneType right_allele = (FlipCoin()) ? Dominant: Recessive;
         left_genome[char_code] = Gene(char_code, left_allele);
@@ -36,47 +40,17 @@ ChromosomePair Chromosome::MakeRandomPair(std::string genecodes) {
     Chromosome right_chromo(right_genome);
 
     return std::make_pair(left_chromo, right_chromo);
-};
-
-const int Chromosome::get_length() const {return genes_.size();};
-const GeneSequence& Chromosome::get_genes() const {return genes_;};
-
-/*
-    Trait
-*/
-Trait::Trait(std::string name, std::string genes) : name_(name), gene_codes_(genes){}
-const std::string Trait::get_name() const { return name_;}
-const std::string& Trait::get_genes() const {return gene_codes_;}
-
-ContinuousTrait::ContinuousTrait(std::string name, std::string genes, float min, float max) : Trait(name, genes), min_(min), max_(max) {
-    if (gene_codes_.length() < 2) {throw InvalidTraitParameterError();}
-};
-
-float ContinuousTrait::CalculateValue(Genome &genome) {
-    auto dom_rec_ratio = GetAlleleRatio(gene_codes_, genome);
-    float value = min_ + (max_ - min_) * dom_rec_ratio.first / (dom_rec_ratio.first + dom_rec_ratio.second);
-    std::cout << name_ << "=" << value << " (N_DOM=" << dom_rec_ratio.first << ", N_REC=" << dom_rec_ratio.second << ")" << std::endl;
-    return value;
 }
 
-DiscreteTrait::DiscreteTrait(std::string name, std::string genes) : Trait(name, genes) {
-    if (gene_codes_.length() != 1) {throw InvalidTraitParameterError();}
-};
-
-float DiscreteTrait::CalculateValue(Genome &genome) {
-    std::string gene_code = gene_codes_.substr(0, 1);
-    auto dom_rec_ratio = GetAlleleRatio(gene_code, genome);
-    float outcome = dom_rec_ratio.first > 0 ? 1.0 : 0.0;
-    std::cout << name_ << "=" << outcome << " (N_DOM=" << dom_rec_ratio.first << ", N_REC=" << dom_rec_ratio.second << ")" << std::endl;
-    return outcome;
-
-}
+const int Chromosome::get_length() const {return genes_.size();}
+const GeneSequence& Chromosome::get_genes() const {return genes_;}
 
 
 /*
  * Return the number of dominant and
 */
-std::pair<int, int> GetAlleleRatio(const std::string &gene_codes, Genome &genome) {
+std::pair<int, int> GetAlleleRatio(const std::string &gene_codes, const Genome &genome)
+{
     int n_dominant = 0;
     int n_recessive = 0;
     const GeneSequence *gene_sequence;
