@@ -24,6 +24,11 @@ void Creature::print() const
     }
 }
 
+Creature::~Creature()
+{
+    std::cout << *this << " has died." << std::endl;
+}
+
 std::shared_ptr<Creature> Creature::Reproduce(std::shared_ptr<Creature> creature1, std::shared_ptr<Creature> creature2)
 {
     Ecosystem &eco = Ecosystem::GetEcosystem();

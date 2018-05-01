@@ -26,8 +26,9 @@ int main()
     const int kMySpeciesInitPop = 2;
     const float kMySpeciesMaleFemaleRatio = 0.5;
     const int kMySpeciesChromoPairNum = 1;
+    const int kMySpeciesLifeExpectanceDays = 50;
     const int N_GENES = 26;
-    const float INTERACTION_RATE = 0.2;
+    const float INTERACTION_RATE = 0.4;
 
 
     // Change the seed to be based off the current system time
@@ -91,15 +92,24 @@ int main()
             }
 
         }
-        std::cout << "Number of alive creatures after " << day_number << " days = " << myspecies->get_alive_population() << std::endl;
 
-        for (auto &c: creatures)
+        std::vector<std::shared_ptr<Creature>> dying_creatures;
+        std::vector<std::shared_ptr<Creature>>::iterator it = creatures.begin();
+        while (it != creatures.end())
         {
-            std::cout << "Age of " << *c << " is " << (day_number - c->get_birth_date()) << std::endl;
+            int age = (day_number - (*it)->get_birth_date());
+            std::cout << "Age of " << **it << " is " << age << std::endl;
+            if (age > kMySpeciesLifeExpectanceDays) {
+                it = creatures.erase(it);
+            } else {
+                it++;
+            }
         }
 
         std::shared_ptr<ContinuousTrait> trait = std::static_pointer_cast<ContinuousTrait>(ecosystem.traits_["Height"]);
         auto stats = trait->CalculateStatistics(creatures);
+        std::cout << "Number of alive creatures after " << day_number << " days = " << myspecies->get_alive_population() << std::endl;
+        std::cout << "Number of deceased creatures after " << day_number << " days = " << myspecies->get_deceased_population() << std::endl;
         std::cout << "Height Mean = " << stats.first << std::endl;
         std::cout << "Height Standard Deviation = " << stats.second << std::endl;
 
