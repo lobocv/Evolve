@@ -4,6 +4,7 @@
 #include "common.h"
 #include "creature.h"
 #include "genetics.h"
+#include "trait.h"
 #include <iostream>
 
 std::ostream &operator<< (std::ostream &stream, const Gene &obj)

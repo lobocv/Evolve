@@ -14,6 +14,7 @@ class Creature;
 class Species;
 class Gene;
 class Trait;
+class Ecosystem;
 
 // Typedefs
 

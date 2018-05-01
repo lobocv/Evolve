@@ -6,6 +6,7 @@
 #include "EvolveConfig.h"
 #include "genetics.h"
 #include "creature.h"
+#include "ecosystem.h"
 #include "common.h"
 #include "helpers.h"
 #include <time.h> 
