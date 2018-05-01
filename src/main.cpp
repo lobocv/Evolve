@@ -108,17 +108,23 @@ int main()
 
         }
 
-
-        std::shared_ptr<ContinuousTrait> trait = std::static_pointer_cast<ContinuousTrait>(ecosystem.traits_["Height"]);
-
         std::cout << "N CREATURES =" << creatures.size() << std::endl;
+        std::cout << "Number of alive creatures after " << day_number << " days = " << myspecies->get_alive_population() << std::endl;
+        std::cout << "Number of deceased creatures after " << day_number << " days = " << myspecies->get_deceased_population() << std::endl;
+
         if (creatures.size() > 0)
         {
-            auto stats = trait->CalculateStatistics(creatures);
-            std::cout << "Number of alive creatures after " << day_number << " days = " << myspecies->get_alive_population() << std::endl;
-            std::cout << "Number of deceased creatures after " << day_number << " days = " << myspecies->get_deceased_population() << std::endl;
-            std::cout << "Height Mean = " << stats.first << std::endl;
-            std::cout << "Height Standard Deviation = " << stats.second << std::endl;
+            // Height stats
+            std::shared_ptr<ContinuousTrait> height = std::static_pointer_cast<ContinuousTrait>(ecosystem.traits_["Height"]);
+            auto height_stats = height->CalculateStatistics(creatures);
+            std::cout << "Height Mean = " << height_stats.first << std::endl;
+            std::cout << "Height Standard Deviation = " << height_stats.second << std::endl;
+
+            std::shared_ptr<DiscreteTrait> hair_color = std::static_pointer_cast<DiscreteTrait>(ecosystem.traits_["Hair Color"]);
+            auto hair_color_stats = hair_color->CalculateStatistics(creatures);
+            std::cout << "Hair Color Mean = " << hair_color_stats.first << std::endl;
+            std::cout << "Hair Color Standard Deviation = " << hair_color_stats.second << std::endl;
+
         }
     } while ( epoch_length_days > 0);
 

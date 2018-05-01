@@ -30,8 +30,11 @@ public:
     const int get_deceased_population() const;
     const std::vector< std::shared_ptr<Creature> >& get_creatures() const;
 
+    friend bool operator==(const Species &lhs, const Species &rhs);
+    friend bool operator!=(const Species &lhs, const Species &rhs);
     friend class Creature;
 };
+
 
 
 std::ostream &operator<< (std::ostream &stream, const Species &obj);

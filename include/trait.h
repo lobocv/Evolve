@@ -20,6 +20,7 @@ public:
     const std::string get_name() const;
     const std::string& get_genes() const;
     virtual float CalculateValue(const Genome &genome)=0;
+    std::pair<float, float> CalculateStatistics(const std::vector<std::shared_ptr<Creature>> creatures);
 };
 
 class ContinuousTrait : public Trait {
@@ -29,7 +30,6 @@ class ContinuousTrait : public Trait {
     ContinuousTrait() = default;
     ContinuousTrait(std::string name, std::string genes, float max, float min);
     float CalculateValue(const Genome &genome);
-    std::pair<float, float> CalculateStatistics(const std::vector<std::shared_ptr<Creature>> creatures);
 };
 
 
