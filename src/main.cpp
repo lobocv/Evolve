@@ -87,9 +87,16 @@ int main()
                 } catch (CannotProcreateError) {
                     std::cout << *c1 << " and " << *c2 << " failed to reproduce." << std::endl;
                 }
+
             }
+
         }
         std::cout << "Number of alive creatures after " << day_number << " days = " << myspecies->get_alive_population() << std::endl;
+
+        for (auto &c: creatures)
+        {
+            std::cout << "Age of " << *c << " is " << (day_number - c->get_birth_date()) << std::endl;
+        }
 
         std::shared_ptr<ContinuousTrait> trait = std::static_pointer_cast<ContinuousTrait>(ecosystem.traits_["Height"]);
         auto stats = trait->CalculateStatistics(creatures);

@@ -11,7 +11,7 @@
 /*
     Creature
 */
-Creature::Creature(Species& species, Sex sex) : species_(species), sex_(sex){};
+Creature::Creature(Species& species, Sex sex) : species_(species), sex_(sex){}
 
 void Creature::print() const
 {
@@ -26,6 +26,7 @@ void Creature::print() const
 
 std::shared_ptr<Creature> Creature::Reproduce(std::shared_ptr<Creature> creature1, std::shared_ptr<Creature> creature2)
 {
+    Ecosystem &eco = Ecosystem::GetEcosystem();
     const int N_offspring = rand() % (MAX_OFFSPRING+1);
     Chromosome child_chromo1, child_chromo2;
     // TODO: Check creatures are of reproductive age.
@@ -62,15 +63,17 @@ std::shared_ptr<Creature> Creature::Reproduce(std::shared_ptr<Creature> creature
     // Add the creature to the species
     Sex sex_of_child = Sex(FlipCoin()) ;
     std::shared_ptr<Creature> child = species.AddCreature(sex_of_child, child_genome);    
+    child->birth_date = eco.get_day();
     child->mother_ = mother;
     child->father_ = father;
     return child;
 }
 
-const int Creature::get_id() const { return id_;};
+const int Creature::get_id() const { return id_;}
 Species &Creature::get_species() const { return species_;};
 const Genome &Creature::get_genome() const { return genome_;}
-const Sex Creature::get_sex() const { return sex_;};
+const Sex Creature::get_sex() const { return sex_;}
+const int Creature::get_birth_date() const {return birth_date;}
 std::shared_ptr<Creature> Creature::get_father() const {return father_.lock();}
 std::shared_ptr<Creature> Creature::get_mother() const {return mother_.lock();}
 void Creature::print_traits()
