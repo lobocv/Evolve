@@ -80,3 +80,18 @@ std::pair<int, int> GetAlleleRatio(const std::string &gene_codes, const Genome &
     return std::make_pair(n_dominant, n_recessive); // TODO update this to be more representitive of bell-curve-like probability dist.
 }
 
+
+std::ostream &operator<<(std::ostream &stream, const Chromosome &obj)
+{
+    for (auto gene: obj.get_genes())
+    {
+        stream << gene.second;
+    }
+    return stream;
+}
+
+std::ostream &operator<<(std::ostream &stream, const Gene &obj)
+{
+    stream << obj.get_name();
+    return stream;
+}

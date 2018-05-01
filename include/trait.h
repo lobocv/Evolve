@@ -39,4 +39,7 @@ class DiscreteTrait : public Trait {
     DiscreteTrait(std::string name, std::string genes);
     float CalculateValue(const Genome &genome);
 };
+
+std::ostream &operator<< (std::ostream &stream, const Trait &obj);
+
 #endif // TRAIT_H

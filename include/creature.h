@@ -7,28 +7,6 @@
 #include "common.h"
 #include "genetics.h"
 #include <memory>
-class Species {
-
-    int n_chromosome_pairs_;
-    int genotype_length_;
-    std::string name_;
-    std::vector< std::shared_ptr<Creature> > creatures_;
-    int alive_=0;
-    int deceased_=0;
-    
-public:
-    Species() = default;
-    Species(std::string name, int genotype_length, int n_chromosome_pairs);
-    void InitializeCreatures(int n_males, int n_females);
-    std::shared_ptr<Creature> AddCreature(Sex, Genome);
-    const std::string get_name() const;
-    const int get_n_chromosome_pairs() const;
-    std::vector<std::shared_ptr<Creature> > & get_creatures();
-    const int get_alive_population() const;
-    const int get_deceased_population() const;
-    const std::vector< std::shared_ptr<Creature> >& get_creatures() const;
-    
-};
 
 
 class Creature {
@@ -44,8 +22,6 @@ public:
     ~Creature();
     Creature(Species& species, Sex sex);
     static std::shared_ptr<Creature> Reproduce(std::shared_ptr<Creature> creature1, std::shared_ptr<Creature> creature2);    
-    friend std::shared_ptr<Creature> Species::AddCreature(Sex, Genome);
-    friend void Species::InitializeCreatures(int, int);
     const Genome& get_genome() const;
     const int get_id() const;
     const Sex get_sex() const;
@@ -55,7 +31,10 @@ public:
     Species& get_species() const;
     void print() const;
     void print_traits();
+
+    friend class Species;
 };
 
+std::ostream &operator<< (std::ostream &stream, const Creature &obj);
 
 #endif

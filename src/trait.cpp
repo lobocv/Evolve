@@ -63,3 +63,14 @@ float DiscreteTrait::CalculateValue(const Genome &genome)
     std::cout << name_ << "=" << outcome << " (N_DOM=" << dom_rec_ratio.first << ", N_REC=" << dom_rec_ratio.second << ")" << std::endl;
     return outcome;
 }
+
+std::ostream &operator<<(std::ostream &stream, const Trait &obj)
+{
+    stream << obj.get_name() << " (";
+    for (auto gene: obj.get_genes())
+    {
+        stream << gene;
+    }
+    stream << ")";
+    return stream;
+}

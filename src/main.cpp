@@ -6,9 +6,10 @@
 #include "EvolveConfig.h"
 #include "genetics.h"
 #include "creature.h"
+#include "species.h"
+#include "trait.h"
 #include "ecosystem.h"
 #include "common.h"
-#include "helpers.h"
 #include <time.h> 
 
 
@@ -106,8 +107,10 @@ int main()
             }
         }
 
+
         std::shared_ptr<ContinuousTrait> trait = std::static_pointer_cast<ContinuousTrait>(ecosystem.traits_["Height"]);
         auto stats = trait->CalculateStatistics(creatures);
+        std::cout << "N CREATURES =" << creatures.size() << std::endl;
         std::cout << "Number of alive creatures after " << day_number << " days = " << myspecies->get_alive_population() << std::endl;
         std::cout << "Number of deceased creatures after " << day_number << " days = " << myspecies->get_deceased_population() << std::endl;
         std::cout << "Height Mean = " << stats.first << std::endl;

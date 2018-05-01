@@ -1,4 +1,5 @@
 #include "ecosystem.h"
+#include "species.h"
 #include "trait.h"
 
 /*

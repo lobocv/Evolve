@@ -28,4 +28,8 @@ public:
 
 std::pair<int, int> GetAlleleRatio(const std::string &gene_codes, const Genome &genome);
 
+std::ostream &operator<< (std::ostream &stream, const Gene &obj);
+
+std::ostream &operator<< (std::ostream &stream, const Chromosome &obj);
+
 #endif
