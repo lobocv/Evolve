@@ -1,6 +1,7 @@
 #include "ecosystem.h"
 #include "species.h"
 #include "trait.h"
+#include "attribute.h"
 
 /*
     Ecosystem (Singleton)
@@ -50,6 +51,26 @@ void Ecosystem::RegisterContinuousTrait(std::string trait_name, std::string gene
     std::shared_ptr<Trait> trait_shared(trait);
     RegisterTrait(trait_shared);
 
+}
+
+void Ecosystem::RegisterAttribute(std::string attr_name, std::vector<std::string> traits)
+{
+    Ecosystem &ecosystem = Ecosystem::GetEcosystem();
+    std::vector<std::shared_ptr<Trait>> traitVec;
+    for (auto trait_name: traits)
+    {
+        auto it = ecosystem.traits_.find(trait_name);
+        if (it != ecosystem.traits_.end())
+        {
+            traitVec.push_back(it->second);
+        } else {
+            throw InvalidAttributeParameterError();
+        }
+    }
+
+    auto attr = new Attribute(attr_name, traitVec);
+    std::shared_ptr<Attribute> attr_shared(attr);
+    ecosystem.attributes_[attr_name] = attr_shared;
 }
 
 int& Ecosystem::get_day() {return day_;}

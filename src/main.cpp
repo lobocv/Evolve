@@ -4,12 +4,13 @@
 #include <memory>
 
 #include "EvolveConfig.h"
+#include "common.h"
 #include "genetics.h"
 #include "creature.h"
 #include "species.h"
 #include "trait.h"
 #include "ecosystem.h"
-#include "common.h"
+#include "attribute.h"
 #include <time.h> 
 
 
@@ -41,9 +42,14 @@ int main()
     std::shared_ptr<Species> myspecies = ecosystem.RegisterSpecies(kMySpeciesName, N_GENES, kMySpeciesChromoPairNum, kMySpeciesMaxOffspring,
                                                                    kMySpeciesInitPop, kMySpeciesMaleFemaleRatio);
 
+
     // Create a list of traits for species in the ecosystem.
     ecosystem.RegisterContinuousTrait("Height", "ABCDEF", 100, 300);
     ecosystem.RegisterDiscreteTrait("Hair Color", "D");
+
+    // Create a list of attributes that the traits contribute towards.
+    ecosystem.RegisterAttribute("Speed", {"Height"});
+
 
     std::cout << "List of Species" << std::endl;
     std::cout << "===============" << std::endl;
