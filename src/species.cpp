@@ -63,6 +63,9 @@ void Species::InitializeCreatures(int n_males, int n_females)
 }
 
 
+bool operator==(const Species &lhs, const Species &rhs) {return lhs.name_ == rhs.name_;}
+bool operator!=(const Species &lhs, const Species &rhs) {return !(lhs == rhs);}
+
 std::ostream &operator<<(std::ostream &stream, const Species &obj)
 {
     stream << "Species " << obj.get_name();
