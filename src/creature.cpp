@@ -34,28 +34,25 @@ Creature::~Creature()
 std::vector<std::shared_ptr<Creature>> Creature::Reproduce(std::shared_ptr<Creature> creature1, std::shared_ptr<Creature> creature2)
 {
     Ecosystem &eco = Ecosystem::GetEcosystem();
-    const int N_offspring = rand() % (MAX_OFFSPRING+1);
-    Chromosome child_chromo1, child_chromo2;
-    // TODO: Check creatures are of reproductive age.
     Species &species = creature1->get_species();
+    const int N_offspring = rand() % (species.max_offspring_+1);
 
     // Determine which creature is male (father) and which is female (mother)    
+    // Throw an error if trying to mate two of the same sex.
     std::shared_ptr<Creature>& father = (creature1->get_sex() == Male) ? creature1 : creature2;
     std::shared_ptr<Creature>& mother = (creature2->get_sex() == Male) ? creature1 : creature2;
-    // Throw an error if trying to mate two of the same sex.
+    if (mother->get_sex() == father->get_sex()) {throw(CannotProcreateError());}
 
-    if (mother->get_sex() == father->get_sex()) {
-        throw(CannotProcreateError());
-    }
+    // TODO: Check creatures are of reproductive age.
 
     Genome male_chromo_pairs = creature1->get_genome();
     Genome female_chromo_pairs = creature2->get_genome();
-
 
     std::vector<std::shared_ptr<Creature>> offspring;
     for (int child_num=0; child_num < N_offspring; child_num++)
     {
         Genome child_genome;
+        Chromosome child_chromo1, child_chromo2;
         // Iterate through the chromosome pairs. If both creatures are the same
         // species, they necessarily have the same number of chromosome pairs
         for (int chromo_pair_num=0; chromo_pair_num < male_chromo_pairs.size(); chromo_pair_num++) {
@@ -72,7 +69,7 @@ std::vector<std::shared_ptr<Creature>> Creature::Reproduce(std::shared_ptr<Creat
         }
 
         // Add the creature to the species
-        Sex sex_of_child = Sex(FlipCoin()) ;
+        Sex sex_of_child = Sex(FlipCoin());
         std::shared_ptr<Creature> child = species.AddCreature(sex_of_child, child_genome);
         child->birth_date = eco.get_day();
         child->mother_ = mother;

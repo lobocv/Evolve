@@ -17,12 +17,13 @@ Ecosystem& Ecosystem::GetEcosystem()
 }
 
 std::shared_ptr<Species> Ecosystem::RegisterSpecies(std::string species_name, int chromosome_length,
-                                                    int n_chromosome_pairs, int initial_population, float male_female_ratio)
+                                                    int n_chromosome_pairs, int max_offspring,
+                                                    int initial_population, float male_female_ratio)
 {
     int num_males = male_female_ratio * initial_population;
     int num_females = initial_population - num_males;
     Ecosystem &ecosystem = Ecosystem::GetEcosystem();
-    auto new_species = std::make_shared<Species>(species_name, chromosome_length, n_chromosome_pairs);
+    auto new_species = std::make_shared<Species>(species_name, chromosome_length, n_chromosome_pairs, max_offspring);
     new_species->InitializeCreatures(num_males, num_females);
     ecosystem.species_[species_name] = new_species;
     return new_species;

@@ -11,8 +11,8 @@
 /*
     Species
 */
-Species::Species(std::string name, int genotype_length, int n_chromosome_pairs) 
-    : name_(name), genotype_length_(genotype_length), n_chromosome_pairs_(n_chromosome_pairs) {}
+Species::Species(std::string name, int genotype_length, int n_chromosome_pairs, int max_offspring)
+    : name_(name), genotype_length_(genotype_length), n_chromosome_pairs_(n_chromosome_pairs), max_offspring_(max_offspring) {}
 
 const std::string Species::get_name() const {return name_;}
 const int Species::get_alive_population() const { return alive_;}

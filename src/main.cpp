@@ -24,12 +24,13 @@ int main()
 
     // Config
     const auto kMySpeciesName = "Blorp";
-    const int kMySpeciesInitPop = 2;
+    const int kMySpeciesInitPop = 100;
     const float kMySpeciesMaleFemaleRatio = 0.5;
     const int kMySpeciesChromoPairNum = 1;
-    const int kMySpeciesLifeExpectanceDays = 50;
+    const int kMySpeciesLifeExpectanceDays = 365;
+    const int kMySpeciesMaxOffspring = 5;
     const int N_GENES = 26;
-    const float INTERACTION_RATE = 0.2;
+    const float INTERACTION_RATE = 0.75;
 
 
     // Change the seed to be based off the current system time
@@ -37,7 +38,8 @@ int main()
     
     // Create an Ecosystem to keep track of creatures and initialize their species
     Ecosystem &ecosystem = Ecosystem::GetEcosystem();
-    std::shared_ptr<Species> myspecies = ecosystem.RegisterSpecies(kMySpeciesName, N_GENES, kMySpeciesChromoPairNum, kMySpeciesInitPop, kMySpeciesMaleFemaleRatio);
+    std::shared_ptr<Species> myspecies = ecosystem.RegisterSpecies(kMySpeciesName, N_GENES, kMySpeciesChromoPairNum, kMySpeciesMaxOffspring,
+                                                                   kMySpeciesInitPop, kMySpeciesMaleFemaleRatio);
 
     // Create a list of traits for species in the ecosystem.
     ecosystem.RegisterContinuousTrait("Height", "ABCDEF", 100, 300);
@@ -60,7 +62,6 @@ int main()
 
     // Get the first two creatures and have them reproduce
     std::vector<std::shared_ptr<Creature>> &creatures = ecosystem.species_[kMySpeciesName]->get_creatures();
-    Creature::Reproduce(creatures[0], creatures[1]);
 
     int& day_number = ecosystem.get_day();
     int epoch_length_days =0;

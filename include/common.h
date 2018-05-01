@@ -6,7 +6,6 @@
 #include <cstdlib>
 #include <map>
 
-const int MAX_OFFSPRING = 3;
 
 // Forward Declarations
 class Chromosome;
