@@ -21,7 +21,7 @@ public:
     Creature() = default;
     ~Creature();
     Creature(Species& species, Sex sex);
-    static std::shared_ptr<Creature> Reproduce(std::shared_ptr<Creature> creature1, std::shared_ptr<Creature> creature2);    
+    static std::vector<std::shared_ptr<Creature>> Reproduce(std::shared_ptr<Creature> creature1, std::shared_ptr<Creature> creature2);
     const Genome& get_genome() const;
     const int get_id() const;
     const Sex get_sex() const;

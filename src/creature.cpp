@@ -31,7 +31,7 @@ Creature::~Creature()
     std::cout << *this << " has died." << std::endl;
 }
 
-std::shared_ptr<Creature> Creature::Reproduce(std::shared_ptr<Creature> creature1, std::shared_ptr<Creature> creature2)
+std::vector<std::shared_ptr<Creature>> Creature::Reproduce(std::shared_ptr<Creature> creature1, std::shared_ptr<Creature> creature2)
 {
     Ecosystem &eco = Ecosystem::GetEcosystem();
     const int N_offspring = rand() % (MAX_OFFSPRING+1);
@@ -50,30 +50,36 @@ std::shared_ptr<Creature> Creature::Reproduce(std::shared_ptr<Creature> creature
 
     Genome male_chromo_pairs = creature1->get_genome();
     Genome female_chromo_pairs = creature2->get_genome();
-    Genome child_genome;
 
-    // Iterate through the chromosome pairs. If both creatures are the same 
-    // species, they necessarily have the same number of chromosome pairs
-    for (int chromo_pair_num=0; chromo_pair_num < male_chromo_pairs.size(); chromo_pair_num++) {
-        // Get the parents chromosomes
-        Chromosome& male_chromo1 = male_chromo_pairs[chromo_pair_num].first;
-        Chromosome& male_chromo2 = male_chromo_pairs[chromo_pair_num].second;
-        Chromosome& female_chromo1 = female_chromo_pairs[chromo_pair_num].first;
-        Chromosome& female_chromo2 = female_chromo_pairs[chromo_pair_num].second;
-        // Role the dice and take one chromosome from each parent to create a new
-        
-        child_chromo1 = (FlipCoin()) ? male_chromo1 : male_chromo2;
-        child_chromo2 = (FlipCoin()) ? female_chromo1 : female_chromo2;
-        child_genome.push_back(std::make_pair(child_chromo1, child_chromo2));
+
+    std::vector<std::shared_ptr<Creature>> offspring;
+    for (int child_num=0; child_num < N_offspring; child_num++)
+    {
+        Genome child_genome;
+        // Iterate through the chromosome pairs. If both creatures are the same
+        // species, they necessarily have the same number of chromosome pairs
+        for (int chromo_pair_num=0; chromo_pair_num < male_chromo_pairs.size(); chromo_pair_num++) {
+            // Get the parents chromosomes
+            Chromosome& male_chromo1 = male_chromo_pairs[chromo_pair_num].first;
+            Chromosome& male_chromo2 = male_chromo_pairs[chromo_pair_num].second;
+            Chromosome& female_chromo1 = female_chromo_pairs[chromo_pair_num].first;
+            Chromosome& female_chromo2 = female_chromo_pairs[chromo_pair_num].second;
+            // Role the dice and take one chromosome from each parent to create a new
+
+            child_chromo1 = (FlipCoin()) ? male_chromo1 : male_chromo2;
+            child_chromo2 = (FlipCoin()) ? female_chromo1 : female_chromo2;
+            child_genome.push_back(std::make_pair(child_chromo1, child_chromo2));
+        }
+
+        // Add the creature to the species
+        Sex sex_of_child = Sex(FlipCoin()) ;
+        std::shared_ptr<Creature> child = species.AddCreature(sex_of_child, child_genome);
+        child->birth_date = eco.get_day();
+        child->mother_ = mother;
+        child->father_ = father;
+        offspring.push_back(child);
     }
-
-    // Add the creature to the species
-    Sex sex_of_child = Sex(FlipCoin()) ;
-    std::shared_ptr<Creature> child = species.AddCreature(sex_of_child, child_genome);    
-    child->birth_date = eco.get_day();
-    child->mother_ = mother;
-    child->father_ = father;
-    return child;
+    return offspring;
 }
 
 const int Creature::get_id() const { return id_;}
