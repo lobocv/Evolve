@@ -19,12 +19,13 @@ Ecosystem& Ecosystem::GetEcosystem()
 
 std::shared_ptr<Species> Ecosystem::RegisterSpecies(std::string species_name, int chromosome_length,
                                                     int n_chromosome_pairs, int max_offspring,
+                                                    int life_expectancy_days,
                                                     int initial_population, float male_female_ratio)
 {
     int num_males = male_female_ratio * initial_population;
     int num_females = initial_population - num_males;
     Ecosystem &ecosystem = Ecosystem::GetEcosystem();
-    auto new_species = std::make_shared<Species>(species_name, chromosome_length, n_chromosome_pairs, max_offspring);
+    auto new_species = std::make_shared<Species>(species_name, chromosome_length, n_chromosome_pairs, max_offspring, life_expectancy_days);
     new_species->InitializeCreatures(num_males, num_females);
     ecosystem.species_[species_name] = new_species;
     return new_species;
@@ -73,4 +74,52 @@ void Ecosystem::RegisterAttribute(std::string attr_name, std::vector<std::string
     ecosystem.attributes_[attr_name] = attr_shared;
 }
 
+void Ecosystem::RunEpoch(int number_of_days)
+{
+    for (int epoch_day=0; epoch_day < number_of_days; epoch_day++, day_++)
+    {
+        /*
+         * Implement stochastic interaction events here
+         *
+        */
+        for (auto &species : species_)
+        {
+            auto creatures = species.second->get_creatures();
+            if (std::rand() % 100 <= 100 * interaction_rate_ && creatures.size() > 0)
+            {
+
+                int c1_id = std::rand() % creatures.size();
+                int c2_id = std::rand() % creatures.size();
+
+                auto c1 = creatures[c1_id];
+                auto c2 = creatures[c2_id];
+                try
+                {
+                    Creature::Reproduce(c1, c2);
+                    std::cout << *c1 << " and " << *c2 << " are reproducing." << std::endl;
+                } catch (CannotProcreateError) {
+                    std::cout << *c1 << " and " << *c2 << " failed to reproduce." << std::endl;
+                }
+
+            }
+
+            std::vector<std::shared_ptr<Creature>>::iterator it = creatures.begin();
+            while (it != creatures.end())
+            {
+                int age = (day_ - (*it)->get_birth_date());
+                std::cout << "Age of " << **it << " is " << age << std::endl;
+                if (age > species.second->life_expectancy_days_) {
+                    it = creatures.erase(it);
+                } else {
+                    it++;
+                }
+            }
+        }
+
+
+    }
+}
+
 int& Ecosystem::get_day() {return day_;}
+
+

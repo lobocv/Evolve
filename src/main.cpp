@@ -39,7 +39,9 @@ int main()
     
     // Create an Ecosystem to keep track of creatures and initialize their species
     Ecosystem &ecosystem = Ecosystem::GetEcosystem();
-    std::shared_ptr<Species> myspecies = ecosystem.RegisterSpecies(kMySpeciesName, N_GENES, kMySpeciesChromoPairNum, kMySpeciesMaxOffspring,
+    ecosystem.interaction_rate_ = 0.75;
+    std::shared_ptr<Species> myspecies = ecosystem.RegisterSpecies(kMySpeciesName, N_GENES, kMySpeciesChromoPairNum,
+                                                                   kMySpeciesMaxOffspring, kMySpeciesLifeExpectanceDays,
                                                                    kMySpeciesInitPop, kMySpeciesMaleFemaleRatio);
 
 
@@ -74,45 +76,7 @@ int main()
     do
     {
         std::cin >> epoch_length_days;
-        for (int epoch_day=0; epoch_day < epoch_length_days; epoch_day++, day_number++)
-        {
-            /*
-             * Implement stochastic interaction events here
-             *
-            */
-
-            if (std::rand() % 100 <= 100 * INTERACTION_RATE && creatures.size() > 0)
-            {
-
-                int c1_id = std::rand() % creatures.size();
-                int c2_id = std::rand() % creatures.size();
-
-                auto c1 = creatures[c1_id];
-                auto c2 = creatures[c2_id];
-                try
-                {
-                    Creature::Reproduce(c1, c2);
-                    std::cout << *c1 << " and " << *c2 << " are reproducing." << std::endl;
-                } catch (CannotProcreateError) {
-                    std::cout << *c1 << " and " << *c2 << " failed to reproduce." << std::endl;
-                }
-
-            }
-
-            std::vector<std::shared_ptr<Creature>>::iterator it = creatures.begin();
-            while (it != creatures.end())
-            {
-                int age = (day_number - (*it)->get_birth_date());
-                std::cout << "Age of " << **it << " is " << age << std::endl;
-                if (age > kMySpeciesLifeExpectanceDays) {
-                    it = creatures.erase(it);
-                } else {
-                    it++;
-                }
-            }
-
-
-        }
+        ecosystem.RunEpoch(epoch_length_days);
 
         std::cout << "N CREATURES =" << creatures.size() << std::endl;
         std::cout << "Number of alive creatures after " << day_number << " days = " << myspecies->get_alive_population() << std::endl;
@@ -134,9 +98,5 @@ int main()
         }
     } while ( epoch_length_days > 0);
 
-
-    auto child = *creatures[2];
-    auto &m = *child.get_father();
-    auto &f = *child.get_mother();
     return 0;
 }
