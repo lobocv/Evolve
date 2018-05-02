@@ -24,7 +24,7 @@ public:
     void RegisterTrait(std::shared_ptr<Trait> trait);
     void RegisterDiscreteTrait(std::string name, std::string gene_codes);
     void RegisterContinuousTrait(std::string name, std::string gene_codes, float min, float max);
-    void RegisterAttribute(std::string attr_name, std::vector<std::string> traits);
+    void RegisterAttribute(std::string attr_name, std::vector<std::string> traits, std::vector<int> weights);
     int& get_day();
     void RunEpoch(int number_of_days);
 private:
