@@ -84,7 +84,7 @@ void Ecosystem::RunEpoch(int number_of_days)
         */
         for (auto &species : species_)
         {
-            auto creatures = species.second->get_creatures();
+            auto &creatures = species.second->get_creatures();
             if (std::rand() % 100 <= 100 * interaction_rate_ && creatures.size() > 0)
             {
 
