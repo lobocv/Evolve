@@ -46,6 +46,11 @@ float ContinuousTrait::CalculateValue(const Genome &genome)
     return value;
 }
 
+// ContinuousTraits don't have phenotypes, per say, the dimensionality of their trait is infinite.
+int ContinuousTrait::ValueToPhenotypeIndex(float value)
+{
+  return 0;
+}
 
 /*
     DiscreteTrait
@@ -66,7 +71,10 @@ float DiscreteTrait::CalculateValue(const Genome &genome)
     return outcome;
 }
 
-
+int DiscreteTrait::ValueToPhenotypeIndex(float value)
+{
+  return (value > 0.5) ? 1 : 0;
+}
 
 std::ostream &operator<<(std::ostream &stream, const Trait &obj)
 {

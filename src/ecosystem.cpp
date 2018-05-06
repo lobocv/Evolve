@@ -54,7 +54,7 @@ void Ecosystem::RegisterContinuousTrait(std::string trait_name, std::string gene
 
 }
 
-void Ecosystem::RegisterAttribute(std::string attr_name, std::vector<std::string> traits, std::vector<int> weights)
+void Ecosystem::RegisterAttribute(std::string attr_name, std::vector<std::string> traits, std::vector<std::vector<float>> weights)
 {
     Ecosystem &ecosystem = Ecosystem::GetEcosystem();
     std::vector<std::shared_ptr<Trait>> traitVec;
@@ -111,9 +111,9 @@ void Ecosystem::RunEpoch(int number_of_days)
                 bool creature_survives = true;
                 for (auto attr: attributes_)
                 {
-                    auto attr_value = 20;//attr.second->CalculateValue(**it);
+                    auto attr_value = attr.second->CalculateValue(**it);
 //                    std::cout << "Attribute " << attr.first << " = " << attr_value << std::endl;
-                    creature_survives = attr_value > 40;
+                    creature_survives = attr_value > (day_ > 1000 ? 60: 50);
                 }
                 if (age > species.second->life_expectancy_days_ || !creature_survives) {
                     it = creatures.erase(it);

@@ -20,6 +20,7 @@ public:
     const std::string get_name() const;
     const std::string& get_genes() const;
     virtual float CalculateValue(const Genome &genome)=0;
+    virtual int ValueToPhenotypeIndex(float value)=0;
     std::pair<float, float> CalculateStatistics(const std::vector<std::shared_ptr<Creature>> creatures);
 };
 
@@ -30,6 +31,7 @@ class ContinuousTrait : public Trait {
     ContinuousTrait() = default;
     ContinuousTrait(std::string name, std::string genes, float max, float min);
     float CalculateValue(const Genome &genome);
+    int ValueToPhenotypeIndex(float value);
 };
 
 
@@ -38,6 +40,7 @@ class DiscreteTrait : public Trait {
     DiscreteTrait() = default;
     DiscreteTrait(std::string name, std::string genes);
     float CalculateValue(const Genome &genome);
+    int ValueToPhenotypeIndex(float value);
 };
 
 std::ostream &operator<< (std::ostream &stream, const Trait &obj);
