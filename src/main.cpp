@@ -51,7 +51,7 @@ int main()
     ecosystem.RegisterDiscreteTrait("Hair Color", "D");
 
     // Create a list of attributes that the traits contribute towards.
-    ecosystem.RegisterAttribute("Temperature Resistance", {"Hair Length", "Body Fat Percentage"}, {3, 5});
+    ecosystem.RegisterAttribute("Temperature Resistance", {"Hair Length", "Body Fat Percentage"}, {5, 3});
 
 
     std::cout << "List of Species" << std::endl;
@@ -85,17 +85,13 @@ int main()
 
         if (creatures.size() > 0)
         {
-            // Hair Length stats
-            std::shared_ptr<ContinuousTrait> hair_length = std::static_pointer_cast<ContinuousTrait>(ecosystem.traits_["Hair Length"]);
-            auto hair_length_stats = hair_length->CalculateStatistics(creatures);
-            std::cout << "Hair Length Mean = " << hair_length_stats.first << std::endl;
-            std::cout << "Hair Length Standard Deviation = " << hair_length_stats.second << std::endl;
-
-            std::shared_ptr<DiscreteTrait> hair_color = std::static_pointer_cast<DiscreteTrait>(ecosystem.traits_["Hair Color"]);
-            auto hair_color_stats = hair_color->CalculateStatistics(creatures);
-            std::cout << "Hair Color Mean = " << hair_color_stats.first << std::endl;
-            std::cout << "Hair Color Standard Deviation = " << hair_color_stats.second << std::endl;
-
+            for (auto &trait_pair: ecosystem.traits_)
+            {
+                auto trait = trait_pair.second;
+                auto stat = trait->CalculateStatistics(creatures);
+                std::cout << *trait << " Mean = " << stat.first << std::endl;
+                std::cout << *trait << " Standard Deviation = " << stat.second << std::endl;
+            }
         }
     } while ( epoch_length_days > 0);
 
