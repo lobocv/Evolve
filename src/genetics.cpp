@@ -77,7 +77,7 @@ std::pair<int, int> GetAlleleRatio(const std::string &gene_codes, const Genome &
         if (n_dominant + n_recessive != 2*gene_codes.length()) {throw UnrepresentedTraitError();}
     }
 
-    return std::make_pair(n_dominant, n_recessive); // TODO update this to be more representitive of bell-curve-like probability dist.
+    return std::make_pair(n_dominant, n_recessive);
 }
 
 
