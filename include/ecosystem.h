@@ -17,6 +17,7 @@ public:
     std::map<std::string, std::shared_ptr<Species>> species_;
     std::map<std::string, std::shared_ptr<Trait>> traits_;
     std::map<std::string, std::shared_ptr<Attribute>> attributes_;
+    std::map<std::string, std::pair<float, float>> environmental_limits_;
 
     static Ecosystem& GetEcosystem();
     std::shared_ptr<Species> RegisterSpecies(std::string species_name, int chromosome_length, int n_chromosome_pairs, int max_offspring,
@@ -24,7 +25,7 @@ public:
     void RegisterTrait(std::shared_ptr<Trait> trait);
     void RegisterDiscreteTrait(std::string name, std::string gene_codes);
     void RegisterContinuousTrait(std::string name, std::string gene_codes, float min, float max);
-    void RegisterAttribute(std::string attr_name, std::vector<std::string> traits, std::vector<std::vector<float>> weights);
+    void RegisterAttribute(std::string attr_name, std::vector<std::string> traits, std::vector<std::vector<float>> weights, float min, float max);
     int& get_day();
     void RunEpoch(int number_of_days);
 private:

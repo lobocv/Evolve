@@ -37,3 +37,5 @@ float Attribute::CalculateValue(const Creature &creature)
     }
     return value;
 }
+
+const std::string Attribute::get_name() const {return name_;}
