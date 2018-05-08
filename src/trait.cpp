@@ -11,7 +11,7 @@
  * @param name
  * @param genes
  */
-Trait::Trait(std::string name, std::string genes) : name_(name), gene_codes_(genes){}
+Trait::Trait(std::string name, std::string genes, int n_phenotypes) : name_(name), gene_codes_(genes), n_phenotypes_(n_phenotypes){}
 const std::string Trait::get_name() const { return name_;}
 const std::string& Trait::get_genes() const {return gene_codes_;}
 
@@ -44,7 +44,7 @@ std::pair<float, float> Trait::CalculateStatistics(const std::vector<std::shared
 /*
     ContinuousTrait
 */
-ContinuousTrait::ContinuousTrait(std::string name, std::string genes, float min, float max) : Trait(name, genes), min_(min), max_(max)
+ContinuousTrait::ContinuousTrait(std::string name, std::string genes, int n_phenotypes, float min, float max) : Trait(name, genes, n_phenotypes), min_(min), max_(max)
 {
     if (gene_codes_.length() < 2) {throw InvalidTraitParameterError();}
 }
@@ -73,9 +73,15 @@ int ContinuousTrait::ValueToPhenotypeIndex(float value)
     DiscreteTrait
 */
 
-DiscreteTrait::DiscreteTrait(std::string name, std::string genes) : Trait(name, genes)
+DiscreteTrait::DiscreteTrait(std::string name, std::string genes, int n_phenotypes) : Trait(name, genes, n_phenotypes)
 {
-    if (gene_codes_.length() != 1) {throw InvalidTraitParameterError();}
+    if (n_phenotypes < 2)
+    {
+        throw InvalidTraitParameterError();
+    } else if (n_phenotypes == 2 && genes.size() != 1) {
+        // If the trait is binary, it can only have 1 gene determine it's value.
+        throw InvalidTraitParameterError();
+    }
 }
 
 /**
@@ -94,7 +100,8 @@ float DiscreteTrait::CalculateValue(const Genome &genome)
 
 int DiscreteTrait::ValueToPhenotypeIndex(float value)
 {
-  return (value > 0.5) ? 1 : 0;
+  // round to the nearest integer
+  return (value+0.5);
 }
 
 std::ostream &operator<<(std::ostream &stream, const Trait &obj)

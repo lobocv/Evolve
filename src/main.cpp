@@ -46,12 +46,12 @@ int main()
 
 
     // Create a list of traits for species in the ecosystem.
-    ecosystem.RegisterContinuousTrait("Hair Length", "ABCDEF", 10, 30);
-    ecosystem.RegisterContinuousTrait("Body Fat Percentage", "GHIKJ", 0, 100);
-    ecosystem.RegisterDiscreteTrait("Hair Color", "D");
+    ecosystem.RegisterContinuousTrait("Hair Length", "ABCDEF", 2, 10, 30);
+    ecosystem.RegisterContinuousTrait("Body Fat Percentage", "GHIKJ", 2, 0, 100);
+    ecosystem.RegisterDiscreteTrait("Hair Color", "D", 2);
 
     // Create a list of attributes that the traits contribute towards.
-    ecosystem.RegisterAttribute("Temperature Resistance", {"Hair Length", "Body Fat Percentage"}, {{5}, {3}}, 10, 25);
+    ecosystem.RegisterAttribute("Temperature Resistance", {"Hair Length", "Body Fat Percentage"}, {{5}, {3}}, 40, 50);
 
 
     std::cout << "List of Species" << std::endl;

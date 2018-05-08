@@ -57,9 +57,9 @@ void Ecosystem::RegisterTrait(std::shared_ptr<Trait> trait)
  * @param trait_name
  * @param gene_codes
  */
-void Ecosystem::RegisterDiscreteTrait(std::string trait_name, std::string gene_codes)
+void Ecosystem::RegisterDiscreteTrait(std::string trait_name, std::string gene_codes, int n_phenotypes)
 {
-    auto trait = new DiscreteTrait(trait_name, gene_codes);
+    auto trait = new DiscreteTrait(trait_name, gene_codes, n_phenotypes);
     std::shared_ptr<Trait> trait_shared(trait);
     RegisterTrait(trait_shared);
 }
@@ -70,9 +70,9 @@ void Ecosystem::RegisterDiscreteTrait(std::string trait_name, std::string gene_c
  * @param trait_name
  * @param gene_codes
  */
-void Ecosystem::RegisterContinuousTrait(std::string trait_name, std::string gene_codes, float min, float max)
+void Ecosystem::RegisterContinuousTrait(std::string trait_name, std::string gene_codes, int n_phenotypes, float min, float max)
 {
-    auto trait = new ContinuousTrait(trait_name, gene_codes, min, max);
+    auto trait = new ContinuousTrait(trait_name, gene_codes, n_phenotypes, min, max);
     std::shared_ptr<Trait> trait_shared(trait);
     RegisterTrait(trait_shared);
 
