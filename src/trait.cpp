@@ -47,7 +47,7 @@ std::pair<float, float> Trait::CalculateStatistics(const std::vector<std::shared
 */
 ContinuousTrait::ContinuousTrait(std::string name, std::string genes, int n_phenotypes, float min, float max) : Trait(name, genes, n_phenotypes), min_(min), max_(max)
 {
-    if (gene_codes_.length() < 2) {throw InvalidTraitParameterError();}
+    if (gene_codes_.length() < 2) {throw InvalidTraitParameterError("ContinuousTrait must be represented by a polygene (more than 2 genes).");}
 }
 
 /**
@@ -78,10 +78,10 @@ DiscreteTrait::DiscreteTrait(std::string name, std::string genes, int n_phenotyp
 {
     if (n_phenotypes < 2)
     {
-        throw InvalidTraitParameterError();
+        throw InvalidTraitParameterError("Traits must have a minimum of 2 phenotypes. Got " + n_phenotypes);
     } else if (n_phenotypes == 2 && genes.size() != 1) {
         // If the trait is binary, it can only have 1 gene determine it's value.
-        throw InvalidTraitParameterError();
+        throw InvalidTraitParameterError("Discrete binary traits must be dependent on only one gene.");
     }
 }
 

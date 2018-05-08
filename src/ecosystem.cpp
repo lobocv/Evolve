@@ -97,7 +97,7 @@ void Ecosystem::RegisterAttribute(std::string attr_name, std::vector<std::string
         {
             traitVec.push_back(it->second);
         } else {
-            throw InvalidAttributeParameterError();
+            throw InvalidAttributeParameterError("No trait by the name of " + trait_name + " has been registered.");
         }
     }
 
@@ -134,8 +134,8 @@ void Ecosystem::RunEpoch(int number_of_days)
                 {
                     Creature::Reproduce(c1, c2);
                     std::cout << *c1 << " and " << *c2 << " are reproducing." << std::endl;
-                } catch (CannotProcreateError) {
-                    std::cout << *c1 << " and " << *c2 << " failed to reproduce." << std::endl;
+                } catch (CannotProcreateError e) {
+                    std::cout << *c1 << " and " << *c2 << " failed to reproduce because " << e.what() << std::endl;
                 }
 
             }

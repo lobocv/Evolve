@@ -90,7 +90,7 @@ std::pair<int, int> GetAlleleRatio(const std::string &gene_codes, const Genome &
                 }
             }
         }
-        if (n_dominant + n_recessive != 2*gene_codes.length()) {throw UnrepresentedTraitError();}
+        if (n_dominant + n_recessive != 2*gene_codes.length()) {throw UnrepresentedTraitError("Not all genes were found in the genome.");}
     }
 
     return std::make_pair(n_dominant, n_recessive);

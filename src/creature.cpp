@@ -51,8 +51,8 @@ std::vector<std::shared_ptr<Creature>> Creature::Reproduce(std::shared_ptr<Creat
     // Throw an error if trying to mate two of the same sex.
     std::shared_ptr<Creature>& father = (creature1->get_sex() == Male) ? creature1 : creature2;
     std::shared_ptr<Creature>& mother = (creature2->get_sex() == Male) ? creature1 : creature2;
-    if (mother->get_sex() == father->get_sex()) {throw(CannotProcreateError());}
-    if (mother->get_species() != father->get_species()) {throw(CannotProcreateError());}
+    if (mother->get_sex() == father->get_sex()) {throw(CannotProcreateError("Creatures are of the same sex."));}
+    if (mother->get_species() != father->get_species()) {throw(CannotProcreateError("Creatures are not of the same species."));}
     // TODO: Check creatures are of reproductive age.
 
     Genome male_chromo_pairs = creature1->get_genome();
