@@ -15,8 +15,8 @@ class Trait
 protected:
     std::string name_;
     std::string gene_codes_;
-    const int n_phenotypes_;
 public:
+    const int n_phenotypes_;
     Trait() = default;
     Trait(std::string name, std::string genes, int n_phenotypes);
     const std::string get_name() const;

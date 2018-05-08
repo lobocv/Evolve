@@ -21,9 +21,12 @@ Attribute::Attribute(std::string name, std::vector<std::shared_ptr<Trait>> trait
 
     // Normalize all the weights.
     auto normalizer = [max_weight](float w) {return w / max_weight;}; // lambda function that normalizes the weights.
+    int ii = 0;
     for (auto &trait_weight: weights)
     {
+        if (traits[ii]->n_phenotypes_ != trait_weight.size()) {throw InvalidAttributeParameterError("Number of weights does not match the number of phenotypes.");}
         std::transform(trait_weight.begin(), trait_weight.end(), trait_weight.begin(), normalizer);
+        ii++;
     }
     weights_ = weights;
 }
