@@ -9,7 +9,8 @@
 #include <memory>
 
 
-class Creature {
+class Creature
+{
     Species& species_;
     Genome genome_;
     Sex sex_;

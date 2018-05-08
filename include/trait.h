@@ -10,7 +10,8 @@
 
 
 
-class Trait {
+class Trait
+{
 protected:
     std::string name_;
     std::string gene_codes_;
@@ -31,7 +32,8 @@ public:
     std::pair<float, float> CalculateStatistics(const std::vector<std::shared_ptr<Creature>> creatures);
 };
 
-class ContinuousTrait : public Trait {
+class ContinuousTrait : public Trait
+{
     float max_;
     float min_;
   public:
@@ -42,7 +44,8 @@ class ContinuousTrait : public Trait {
 };
 
 
-class DiscreteTrait : public Trait {
+class DiscreteTrait : public Trait
+{
   public:
     DiscreteTrait() = default;
     DiscreteTrait(std::string name, std::string genes, int n_phenotypes);

@@ -9,7 +9,8 @@
  * @param traits
  * @param weights
  */
-Attribute::Attribute(std::string name, std::vector<std::shared_ptr<Trait>> traits, std::vector<std::vector<float>> weights) : name_(name), traits_(traits) {
+Attribute::Attribute(std::string name, std::vector<std::shared_ptr<Trait>> traits, std::vector<std::vector<float>> weights) : name_(name), traits_(traits)
+{
     float weight_sum = 0, max_weight=0;
     // Determine the maximum weight from all the phenotypes described by the traits.
     for (auto trait_weight: weights)

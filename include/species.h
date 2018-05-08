@@ -9,8 +9,8 @@
 #include <memory>
 
 
-class Species {
-
+class Species
+{
     int n_chromosome_pairs_;
     int genotype_length_;
     std::string name_;

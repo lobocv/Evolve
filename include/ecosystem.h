@@ -9,9 +9,8 @@
 #include "attribute.h"
 
 // Singleton
-class Ecosystem {
-    int day_ = 0;
-
+class Ecosystem
+{
 public:
     float interaction_rate_ = 0.5;
     std::map<std::string, std::shared_ptr<Species>> species_;
@@ -28,6 +27,7 @@ public:
     int& get_day();
     void RunEpoch(int number_of_days);
 private:
+    int day_ = 0;
     void RegisterTrait(std::shared_ptr<Trait> trait);
     Ecosystem(){}
     ~Ecosystem(){}

@@ -4,7 +4,8 @@
 #include <iostream>
 #include "common.h"
 
-class Gene {
+class Gene
+{
     char name_;
     GeneType type_;
 public:
@@ -14,7 +15,8 @@ public:
     const GeneType& get_type() const;
 };
 
-class Chromosome {
+class Chromosome
+{
     GeneSequence genes_;
 public:
     Chromosome() = default;

@@ -20,7 +20,8 @@ const std::string& Trait::get_genes() const {return gene_codes_;}
  * @param creatures
  * @return
  */
-std::pair<float, float> Trait::CalculateStatistics(const std::vector<std::shared_ptr<Creature>> creatures) {
+std::pair<float, float> Trait::CalculateStatistics(const std::vector<std::shared_ptr<Creature>> creatures)
+{
     double sum = 0, mean=0, mean_squared=0, stdev=0;
     float* values = new float[creatures.size()];
     int ii=0;
