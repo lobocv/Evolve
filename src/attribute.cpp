@@ -19,15 +19,12 @@ Attribute::Attribute(std::string name, std::vector<std::shared_ptr<Trait>> trait
     }
 
     // Normalize all the weights.
+    auto normalizer = [max_weight](float w) {return w / max_weight;}; // lambda function that normalizes the weights.
     for (auto &trait_weight: weights)
     {
-        for (int ii=0; ii < trait_weight.size(); ii++)
-        {
-            trait_weight[ii] /= max_weight;
-        }
+        std::transform(trait_weight.begin(), trait_weight.end(), trait_weight.begin(), normalizer);
     }
     weights_ = weights;
-    auto asd = 4;
 }
 
 /**
