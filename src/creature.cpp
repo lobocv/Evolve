@@ -31,6 +31,16 @@ Creature::~Creature()
     std::cout << *this << " has died." << std::endl;
 }
 
+/**
+ * @brief Attempt to have two creatures reproduce. The creatures will not reproduce if they are the same sex or not the same species.
+ *
+ * If the creatures are successful at reproducing, they will make a random number of offspring (limted by the species).
+ * Each offspring will take one random chromosome from each parent, for each chromsome pair. The created creatures are added
+ * to the creatures list in the species.
+ * @param creature1
+ * @param creature2
+ * @return
+ */
 std::vector<std::shared_ptr<Creature>> Creature::Reproduce(std::shared_ptr<Creature> creature1, std::shared_ptr<Creature> creature2)
 {
     Ecosystem &eco = Ecosystem::GetEcosystem();
@@ -78,6 +88,7 @@ std::vector<std::shared_ptr<Creature>> Creature::Reproduce(std::shared_ptr<Creat
     }
     return offspring;
 }
+
 
 const int Creature::get_id() const { return id_;}
 Species &Creature::get_species() const { return species_;};

@@ -2,6 +2,13 @@
 #include <algorithm>
 
 
+/**
+ * @brief An attribute is a value that the ecosystem uses to determine if the creature is fit enough to survive.
+ * Attributes are contributed by one or more traits by weighting the phenotypes of the traits.
+ * @param name
+ * @param traits
+ * @param weights
+ */
 Attribute::Attribute(std::string name, std::vector<std::shared_ptr<Trait>> traits, std::vector<std::vector<float>> weights) : name_(name), traits_(traits) {
     float weight_sum = 0, max_weight=0;
     // Determine the maximum weight from all the phenotypes described by the traits.
@@ -23,7 +30,11 @@ Attribute::Attribute(std::string name, std::vector<std::shared_ptr<Trait>> trait
     auto asd = 4;
 }
 
-
+/**
+ * @brief Calculates the value of the attribute for the given creatue.
+ * @param creature
+ * @return
+ */
 float Attribute::CalculateValue(const Creature &creature)
 {
     float value = 0;

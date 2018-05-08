@@ -20,6 +20,12 @@ public:
     const std::string get_name() const;
     const std::string& get_genes() const;
     virtual float CalculateValue(const Genome &genome)=0;
+
+    /**
+     * @brief Determine the phenotype index that the given value corresponds to.
+     * @param value
+     * @return
+     */
     virtual int ValueToPhenotypeIndex(float value)=0;
     std::pair<float, float> CalculateStatistics(const std::vector<std::shared_ptr<Creature>> creatures);
 };

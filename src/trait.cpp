@@ -5,10 +5,21 @@
 /*
     Trait
 */
+
+/**
+ * @brief Base-class of traits of creatures / species in the ecosytsem.
+ * @param name
+ * @param genes
+ */
 Trait::Trait(std::string name, std::string genes) : name_(name), gene_codes_(genes){}
 const std::string Trait::get_name() const { return name_;}
 const std::string& Trait::get_genes() const {return gene_codes_;}
 
+/**
+ * @brief Calculate statistics such as mean and standard deviation of the trait for the given creatures.
+ * @param creatures
+ * @return
+ */
 std::pair<float, float> Trait::CalculateStatistics(const std::vector<std::shared_ptr<Creature>> creatures) {
     double sum = 0, mean=0, mean_squared=0, stdev=0;
     float* values = new float[creatures.size()];
@@ -38,6 +49,11 @@ ContinuousTrait::ContinuousTrait(std::string name, std::string genes, float min,
     if (gene_codes_.length() < 2) {throw InvalidTraitParameterError();}
 }
 
+/**
+ * @brief Calculate the value of the continuous trait based on the given genome.
+ * @param genome
+ * @return
+ */
 float ContinuousTrait::CalculateValue(const Genome &genome)
 {
     auto dom_rec_ratio = GetAlleleRatio(gene_codes_, genome);
@@ -45,8 +61,9 @@ float ContinuousTrait::CalculateValue(const Genome &genome)
 //    std::cout << name_ << "=" << value << " (N_DOM=" << dom_rec_ratio.first << ", N_REC=" << dom_rec_ratio.second << ")" << std::endl;
     return value;
 }
-
-// ContinuousTraits don't have phenotypes, per say, the dimensionality of their trait is infinite.
+/**
+ * \brief ContinuousTraits don't have phenotypes, per say, the dimensionality of their trait is infinite.
+ */
 int ContinuousTrait::ValueToPhenotypeIndex(float value)
 {
   return 0;
@@ -61,7 +78,11 @@ DiscreteTrait::DiscreteTrait(std::string name, std::string genes) : Trait(name, 
     if (gene_codes_.length() != 1) {throw InvalidTraitParameterError();}
 }
 
-
+/**
+ * @brief Calculate the value of the discrete trait based on the given genome.
+ * @param genome
+ * @return
+ */
 float DiscreteTrait::CalculateValue(const Genome &genome)
 {
     std::string gene_code = gene_codes_.substr(0, 1);
