@@ -13,11 +13,13 @@
 class Trait
 {
 protected:
+    std::vector<std::shared_ptr<TraitWeighting>> weights_;
     std::string name_;
     std::string gene_codes_;
 public:
     const int n_phenotypes_;
     Trait() = default;
+    virtual ~Trait() {}
     Trait(std::string name, std::string genes, int n_phenotypes);
     const std::string get_name() const;
     const std::string& get_genes() const;
@@ -30,6 +32,7 @@ public:
      */
     virtual int ValueToPhenotypeIndex(float value)=0;
     std::pair<float, float> CalculateStatistics(const std::vector<std::shared_ptr<Creature>> creatures);
+    virtual std::weak_ptr<TraitWeighting> MakeWeighting(std::vector<float> weights)=0;
 };
 
 class ContinuousTrait : public Trait
@@ -41,6 +44,9 @@ class ContinuousTrait : public Trait
     ContinuousTrait(std::string name, std::string genes, int n_phenotypes, float max, float min);
     float CalculateValue(const Genome &genome);
     int ValueToPhenotypeIndex(float value);
+    std::weak_ptr<TraitWeighting> MakeWeighting(std::vector<float> weights);
+
+    friend class ContinuousTraitWeighting;
 };
 
 
@@ -51,8 +57,32 @@ class DiscreteTrait : public Trait
     DiscreteTrait(std::string name, std::string genes, int n_phenotypes);
     float CalculateValue(const Genome &genome);
     int ValueToPhenotypeIndex(float value);
+    std::weak_ptr<TraitWeighting> MakeWeighting(std::vector<float> weights);
+
+    friend class DiscreteTraitWeighting;
 };
 
 std::ostream &operator<< (std::ostream &stream, const Trait &obj);
+
+
+struct TraitWeighting
+{
+   std::vector<float> weights_;
+   TraitWeighting(std::vector<float> weights);
+   virtual ~TraitWeighting() {}
+   virtual float CalculateValue(Trait &trait, const Genome &genome)=0;
+};
+
+struct ContinuousTraitWeighting : public TraitWeighting
+{
+    ContinuousTraitWeighting(std::vector<float> weights);
+    float CalculateValue(Trait &trait, const Genome &genome);
+};
+
+struct DiscreteTraitWeighting : public TraitWeighting
+{
+    DiscreteTraitWeighting(std::vector<float> weights);
+    float CalculateValue(Trait &trait, const Genome &genome);
+};
 
 #endif // TRAIT_H

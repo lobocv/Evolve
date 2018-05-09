@@ -3,6 +3,8 @@
 #include "trait.h"
 #include "attribute.h"
 
+#include <algorithm>
+
 /**
     Ecosystem (Singleton)
 
@@ -86,7 +88,7 @@ void Ecosystem::RegisterContinuousTrait(std::string trait_name, std::string gene
  * @param min
  * @param max
  */
-void Ecosystem::RegisterAttribute(std::string attr_name, std::vector<std::string> traits, std::vector<std::vector<float>> weights, float min, float max)
+void Ecosystem::RegisterAttribute(std::string attr_name, std::vector<std::string> traits, std::vector<std::vector<float>> weightValues, float min, float max)
 {
     Ecosystem &ecosystem = Ecosystem::GetEcosystem();
     std::vector<std::shared_ptr<Trait>> traitVec;
@@ -99,6 +101,26 @@ void Ecosystem::RegisterAttribute(std::string attr_name, std::vector<std::string
         } else {
             throw InvalidAttributeParameterError("No trait by the name of " + trait_name + " has been registered.");
         }
+    }
+
+    float weight_sum = 0, max_weight = 0;
+    // Determine the maximum weight from all the phenotypes described by the traits.
+    for (auto trait_weight: weightValues)
+    {
+        auto max_trait_weight = *std::max_element(trait_weight.begin(), trait_weight.end());
+        max_weight = (max_trait_weight > max_weight) ? max_trait_weight : max_weight;
+    }
+
+    // Normalize all the weights and create weight objects.
+    auto normalizer = [max_weight](float w) {return w / max_weight;}; // lambda function that normalizes the weights.
+    std::vector<std::weak_ptr<TraitWeighting>> weights;
+    int ii = 0;
+    for (auto &w: weightValues)
+    {
+        std::transform(w.begin(), w.end(), w.begin(), normalizer);
+        auto weight_obj = traitVec[ii]->MakeWeighting(w);
+        weights.push_back(weight_obj);
+        ii++;
     }
 
     auto attr = new Attribute(attr_name, traitVec, weights);

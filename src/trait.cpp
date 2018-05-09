@@ -1,6 +1,6 @@
 #include <ostream>
 #include "trait.h"
-
+#include <memory>
 
 /*
     Trait
@@ -70,6 +70,15 @@ int ContinuousTrait::ValueToPhenotypeIndex(float value)
   return 0;
 }
 
+
+std::weak_ptr<TraitWeighting> ContinuousTrait::MakeWeighting(std::vector<float> weights)
+{
+    auto ptr = std::shared_ptr<TraitWeighting>(new ContinuousTraitWeighting(weights));
+    weights_.push_back(ptr);
+    return ptr;
+}
+
+
 /*
     DiscreteTrait
 */
@@ -105,6 +114,15 @@ int DiscreteTrait::ValueToPhenotypeIndex(float value)
   return (value+0.5);
 }
 
+
+std::weak_ptr<TraitWeighting> DiscreteTrait::MakeWeighting(std::vector<float> weights)
+{
+    auto ptr = std::shared_ptr<TraitWeighting>(new DiscreteTraitWeighting(weights));
+    weights_.push_back(ptr);
+    return ptr;
+}
+
+
 std::ostream &operator<<(std::ostream &stream, const Trait &obj)
 {
     stream << obj.get_name() << " (";
@@ -114,4 +132,28 @@ std::ostream &operator<<(std::ostream &stream, const Trait &obj)
     }
     stream << ")";
     return stream;
+}
+
+TraitWeighting::TraitWeighting(std::vector<float> weights) : weights_(weights) {}
+
+ContinuousTraitWeighting::ContinuousTraitWeighting(std::vector<float> weights) : TraitWeighting(weights) {
+    if (weights.size() > 1) {
+        throw InvalidAttributeParameterError("ContinuousTraitWeight can have only a single weighting. Got " + std::to_string(weights.size()) + " weights");
+    }
+}
+
+float ContinuousTraitWeighting::CalculateValue(Trait &trait, const Genome &genome)
+{
+    ContinuousTrait* cont_trait = static_cast<ContinuousTrait*>(&trait);
+    auto value = cont_trait->CalculateValue(genome);
+    return weights_[0] * value;
+}
+
+DiscreteTraitWeighting::DiscreteTraitWeighting(std::vector<float> weights): TraitWeighting(weights) {}
+
+float DiscreteTraitWeighting::CalculateValue(Trait &trait, const Genome &genome)
+{
+    DiscreteTrait* cont_trait = static_cast<DiscreteTrait*>(&trait);
+    auto value = cont_trait->CalculateValue(genome);
+    return weights_[(int) value] * value;
 }

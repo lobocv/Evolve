@@ -51,8 +51,12 @@ int main()
     ecosystem.RegisterDiscreteTrait("Hair Color", "D", 2);
 
     // Create a list of attributes that the traits contribute towards.
-    ecosystem.RegisterAttribute("Temperature Resistance", {"Hair Length", "Body Fat Percentage"}, {{5, 1}, {3, 1}}, 40, 50);
-
+    try
+    {
+        ecosystem.RegisterAttribute("Temperature Resistance", {"Hair Length", "Body Fat Percentage"}, {{5}, {3}}, 40, 50);
+    } catch (
+        InvalidAttributeParameterError e) { std::cout << e.what() <<std::endl;
+    }
 
     std::cout << "List of Species" << std::endl;
     std::cout << "===============" << std::endl;

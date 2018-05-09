@@ -13,8 +13,8 @@ class Creature;
 class Species;
 class Gene;
 class Trait;
+class TraitWeighting;
 class Ecosystem;
-
 // Typedefs
 
 typedef std::pair<Chromosome, Chromosome> ChromosomePair;
