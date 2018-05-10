@@ -103,16 +103,14 @@ void Ecosystem::RegisterAttribute(std::string attr_name, std::vector<std::string
         }
     }
 
-    float weight_sum = 0, max_weight = 0;
+    float weight_sum = 0;
     // Determine the maximum weight from all the phenotypes described by the traits.
     for (auto trait_weight: weightValues)
     {
-        auto max_trait_weight = *std::max_element(trait_weight.begin(), trait_weight.end());
-        max_weight = (max_trait_weight > max_weight) ? max_trait_weight : max_weight;
+        weight_sum += *std::max_element(trait_weight.begin(), trait_weight.end());;
     }
-    float norm_factor = 1.0 / (max_weight * weightValues.size());
     // Normalize all the weights and create weight objects.
-    auto normalizer = [norm_factor](float w) {return norm_factor * w;}; // lambda function that normalizes the weights.
+    auto normalizer = [weight_sum](float w) {return w/ weight_sum;}; // lambda function that normalizes the weights.
     std::vector<std::weak_ptr<TraitWeighting>> weights;
     int ii = 0;
     for (auto &w: weightValues)
