@@ -110,9 +110,9 @@ void Ecosystem::RegisterAttribute(std::string attr_name, std::vector<std::string
         auto max_trait_weight = *std::max_element(trait_weight.begin(), trait_weight.end());
         max_weight = (max_trait_weight > max_weight) ? max_trait_weight : max_weight;
     }
-
+    float norm_factor = 1.0 / (max_weight * weightValues.size());
     // Normalize all the weights and create weight objects.
-    auto normalizer = [max_weight](float w) {return w / max_weight;}; // lambda function that normalizes the weights.
+    auto normalizer = [norm_factor](float w) {return norm_factor * w;}; // lambda function that normalizes the weights.
     std::vector<std::weak_ptr<TraitWeighting>> weights;
     int ii = 0;
     for (auto &w: weightValues)
@@ -172,7 +172,7 @@ void Ecosystem::RunEpoch(int number_of_days)
                 {
                     auto attr_value = attr.second->CalculateValue(**it);
                     auto attr_limit = environmental_limits_[attr.second->get_name()];
-//                    std::cout << "Attribute " << attr.first << " = " << attr_value << std::endl;
+                    std::cout << "Attribute " << attr.first << " = " << attr_value << std::endl;
                     creature_survives = attr_value > attr_limit.first && attr_value < attr_limit.second;
                 }
                 if (age > species.second->life_expectancy_days_ || !creature_survives)

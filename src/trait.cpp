@@ -57,11 +57,23 @@ ContinuousTrait::ContinuousTrait(std::string name, std::string genes, int n_phen
  */
 float ContinuousTrait::CalculateValue(const Genome &genome)
 {
-    auto dom_rec_ratio = GetAlleleRatio(gene_codes_, genome);
-    float value = min_ + (max_ - min_) * dom_rec_ratio.first / (dom_rec_ratio.first + dom_rec_ratio.second);
+    auto dom_rec_ratio = CalculateNormalizedValue(genome);
+    float value = min_ + (max_ - min_) * dom_rec_ratio;
 //    std::cout << name_ << "=" << value << " (N_DOM=" << dom_rec_ratio.first << ", N_REC=" << dom_rec_ratio.second << ")" << std::endl;
     return value;
 }
+
+/**
+ * @brief Calculate the value of the ContinuousTrait as a normalized number (0-1.0).
+ * @param genome
+ * @return
+ */
+float ContinuousTrait::CalculateNormalizedValue(const Genome &genome)
+{
+    auto dom_rec_ratio = GetAlleleRatio(gene_codes_, genome);
+    return float(dom_rec_ratio.first) / (dom_rec_ratio.first + dom_rec_ratio.second);
+}
+
 /**
  * \brief ContinuousTraits don't have phenotypes, per say, the dimensionality of their trait is infinite.
  */
@@ -145,7 +157,7 @@ ContinuousTraitWeighting::ContinuousTraitWeighting(std::vector<float> weights) :
 float ContinuousTraitWeighting::CalculateValue(Trait &trait, const Genome &genome)
 {
     ContinuousTrait* cont_trait = static_cast<ContinuousTrait*>(&trait);
-    auto value = cont_trait->CalculateValue(genome);
+    auto value = cont_trait->CalculateNormalizedValue(genome);
     return weights_[0] * value;
 }
 
@@ -154,6 +166,6 @@ DiscreteTraitWeighting::DiscreteTraitWeighting(std::vector<float> weights): Trai
 float DiscreteTraitWeighting::CalculateValue(Trait &trait, const Genome &genome)
 {
     DiscreteTrait* cont_trait = static_cast<DiscreteTrait*>(&trait);
-    auto value = cont_trait->CalculateValue(genome);
-    return weights_[(int) value] * value;
+    auto phenotype_idx = cont_trait->CalculateValue(genome);
+    return weights_[(int) phenotype_idx];
 }

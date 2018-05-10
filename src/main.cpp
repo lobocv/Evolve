@@ -53,7 +53,7 @@ int main()
     // Create a list of attributes that the traits contribute towards.
     try
     {
-        ecosystem.RegisterAttribute("Temperature Resistance", {"Hair Length", "Body Fat Percentage"}, {{5}, {3}}, 40, 50);
+        ecosystem.RegisterAttribute("Temperature Resistance", {"Hair Length", "Body Fat Percentage"}, {{2}, {1}}, 0.5, 1.0);
     } catch (
         InvalidAttributeParameterError e) { std::cout << e.what() <<std::endl;
     }

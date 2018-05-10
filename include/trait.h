@@ -43,6 +43,7 @@ class ContinuousTrait : public Trait
     ContinuousTrait() = default;
     ContinuousTrait(std::string name, std::string genes, int n_phenotypes, float max, float min);
     float CalculateValue(const Genome &genome);
+    float CalculateNormalizedValue(const Genome &genome);
     int ValueToPhenotypeIndex(float value);
     std::weak_ptr<TraitWeighting> MakeWeighting(std::vector<float> weights);
 
