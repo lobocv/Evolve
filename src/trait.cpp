@@ -76,6 +76,11 @@ float ContinuousTrait::CalculateNormalizedValue(const Genome &genome)
 
 std::weak_ptr<TraitWeighting> ContinuousTrait::MakeWeighting(std::vector<float> weights)
 {
+    if (weights.size() != 1)
+    {
+        throw InvalidAttributeParameterError("ContinuousTraitWeighting must have a single weight value. Got " +
+                                             std::to_string(weights.size()) + " weights instead.");
+    }
     auto ptr = std::shared_ptr<TraitWeighting>(new ContinuousTraitWeighting(weights));
     weights_.push_back(ptr);
     return ptr;
@@ -113,6 +118,11 @@ float DiscreteTrait::CalculateValue(const Genome &genome)
 
 std::weak_ptr<TraitWeighting> DiscreteTrait::MakeWeighting(std::vector<float> weights)
 {
+    if (weights.size() != n_phenotypes_) {
+        throw InvalidAttributeParameterError("DiscreteTraitWeighting '" + name_ + "' must have a " +
+                                             std::to_string(n_phenotypes_) + " weight values. " +
+                                             "Got " + std::to_string(weights.size()) + " weight(s) instead.");
+    }
     auto ptr = std::shared_ptr<TraitWeighting>(new DiscreteTraitWeighting(weights));
     weights_.push_back(ptr);
     return ptr;
