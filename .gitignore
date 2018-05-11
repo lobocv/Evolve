@@ -3,3 +3,4 @@ build/*
 html/*
 index/*
 latex/*
+CMakeLists.txt.user
