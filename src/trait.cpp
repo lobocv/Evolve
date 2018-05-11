@@ -74,15 +74,6 @@ float ContinuousTrait::CalculateNormalizedValue(const Genome &genome)
     return float(dom_rec_ratio.first) / (dom_rec_ratio.first + dom_rec_ratio.second);
 }
 
-/**
- * \brief ContinuousTraits don't have phenotypes, per say, the dimensionality of their trait is infinite.
- */
-int ContinuousTrait::ValueToPhenotypeIndex(float value)
-{
-  return 0;
-}
-
-
 std::weak_ptr<TraitWeighting> ContinuousTrait::MakeWeighting(std::vector<float> weights)
 {
     auto ptr = std::shared_ptr<TraitWeighting>(new ContinuousTraitWeighting(weights));
@@ -119,13 +110,6 @@ float DiscreteTrait::CalculateValue(const Genome &genome)
 //    std::cout << name_ << "=" << outcome << " (N_DOM=" << dom_rec_ratio.first << ", N_REC=" << dom_rec_ratio.second << ")" << std::endl;
     return outcome;
 }
-
-int DiscreteTrait::ValueToPhenotypeIndex(float value)
-{
-  // round to the nearest integer
-  return (value+0.5);
-}
-
 
 std::weak_ptr<TraitWeighting> DiscreteTrait::MakeWeighting(std::vector<float> weights)
 {

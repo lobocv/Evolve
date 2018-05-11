@@ -30,7 +30,6 @@ public:
      * @param value
      * @return
      */
-    virtual int ValueToPhenotypeIndex(float value)=0;
     std::pair<float, float> CalculateStatistics(const std::vector<std::shared_ptr<Creature>> creatures);
     virtual std::weak_ptr<TraitWeighting> MakeWeighting(std::vector<float> weights)=0;
 };
@@ -44,7 +43,6 @@ class ContinuousTrait : public Trait
     ContinuousTrait(std::string name, std::string genes, int n_phenotypes, float max, float min);
     float CalculateValue(const Genome &genome);
     float CalculateNormalizedValue(const Genome &genome);
-    int ValueToPhenotypeIndex(float value);
     std::weak_ptr<TraitWeighting> MakeWeighting(std::vector<float> weights);
 
     friend class ContinuousTraitWeighting;
@@ -57,7 +55,6 @@ class DiscreteTrait : public Trait
     DiscreteTrait() = default;
     DiscreteTrait(std::string name, std::string genes, int n_phenotypes);
     float CalculateValue(const Genome &genome);
-    int ValueToPhenotypeIndex(float value);
     std::weak_ptr<TraitWeighting> MakeWeighting(std::vector<float> weights);
 
     friend class DiscreteTraitWeighting;

@@ -53,7 +53,9 @@ int main()
     // Create a list of attributes that the traits contribute towards.
     try
     {
-        ecosystem.RegisterAttribute("Temperature Resistance", {"Hair Length", "Body Fat Percentage"}, {{2}, {1}}, 0.5, 1.0);
+        ecosystem.RegisterAttribute("Temperature Resistance", {"Hair Length", "Body Fat Percentage", "Hair Color"}, {{1}, {1}, {2}}, 0.25, 0.75);
+//        ecosystem.RegisterAttribute("Temperature Resistance", {"Hair Length", "Body Fat Percentage"}, {{1}, {1}}, 0.25, 0.75);
+//        ecosystem.RegisterAttribute("Temperature Resistance", {"Hair Length"}, {{1}}, 0.25, 0.75);
     } catch (
         InvalidAttributeParameterError e) { std::cout << e.what() <<std::endl;
     }
@@ -83,7 +85,6 @@ int main()
         std::cin >> epoch_length_days;
         ecosystem.RunEpoch(epoch_length_days);
 
-        std::cout << "N CREATURES =" << creatures.size() << std::endl;
         std::cout << "Number of alive creatures after " << day_number << " days = " << myspecies->get_alive_population() << std::endl;
         std::cout << "Number of deceased creatures after " << day_number << " days = " << myspecies->get_deceased_population() << std::endl;
 
@@ -97,6 +98,11 @@ int main()
                 std::cout << *trait << " Standard Deviation = " << stat.second << std::endl;
             }
         }
+        ecosystem.environmental_limits_["Temperature Resistance"].first *= 1.01;
+        ecosystem.environmental_limits_["Temperature Resistance"].second /= 1.01;
+        std::cout << "New Temp Resistance limtis are " << ecosystem.environmental_limits_["Temperature Resistance"].first << ", " << ecosystem.environmental_limits_["Temperature Resistance"].second << std::endl;
+
+
     } while ( epoch_length_days > 0);
 
     return 0;
