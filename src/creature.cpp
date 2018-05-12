@@ -91,7 +91,7 @@ std::vector<std::shared_ptr<Creature>> Creature::Reproduce(std::shared_ptr<Creat
 
 
 const int Creature::get_id() const { return id_;}
-Species &Creature::get_species() const { return species_;};
+Species &Creature::get_species() const { return species_;}
 const Genome &Creature::get_genome() const { return genome_;}
 const Sex Creature::get_sex() const { return sex_;}
 const int Creature::get_birth_date() const {return birth_date;}
@@ -100,10 +100,13 @@ std::shared_ptr<Creature> Creature::get_mother() const {return mother_.lock();}
 void Creature::print_traits()
 {
     Ecosystem &ecosystem = Ecosystem::GetEcosystem();
-    std::cout << "Trait Values" << std::endl;
+    std::cout << *this << " is ";
     for (auto trait: ecosystem.traits_) {
         float value = trait.second->CalculateValue(genome_);
+        auto phenotype = trait.second->ValueToPhenotype(value);
+        std::cout << phenotype << "(" << value << "), ";
     }
+    std::cout << std::endl;
 }
 
 

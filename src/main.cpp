@@ -46,16 +46,14 @@ int main()
 
 
     // Create a list of traits for species in the ecosystem.
-    ecosystem.RegisterContinuousTrait("Hair Length", "ABCDEFGHIJKL", {"Short", "Long"}, 10, 30);
-    ecosystem.RegisterContinuousTrait("Body Fat Percentage", "GHIKJLMNOPQR", {"Thin", "Fat"}, 0, 100);
-    ecosystem.RegisterDiscreteTrait("Hair Color", "D", {"Blond", "Black"});
+    ecosystem.RegisterContinuousTrait("Hair Length", "ABCDEFGHIJKL", {"Short Haired", "Long Haired"}, 10, 30);
+    ecosystem.RegisterContinuousTrait("Body Fat Percentage", "GHIKJLMNOPQR", {"Thin", "Medium", "Fat"}, 0, 100);
+    ecosystem.RegisterDiscreteTrait("Hair Color", "D", {"Blond Haired", "Black Haired"});
 
     // Create a list of attributes that the traits contribute towards.
     try
     {
-        ecosystem.RegisterAttribute("Temperature Resistance", {"Hair Length", "Hair Color"}, {{1}, {3, 1}}, 0.25, 0.75);
-//        ecosystem.RegisterAttribute("Temperature Resistance", {"Hair Length", "Body Fat Percentage"}, {{1}, {1}}, 0.25, 0.75);
-//        ecosystem.RegisterAttribute("Temperature Resistance", {"Hair Color"}, {{1}}, 0.25, 0.75);
+        ecosystem.RegisterAttribute("Temperature Resistance", {"Hair Length", "Body Fat Percentage", "Hair Color"}, {{1}, {1.4}, {1, 1.2}}, 0.25, 0.75);
     } catch (
         InvalidAttributeParameterError e)
     {

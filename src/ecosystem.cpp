@@ -165,6 +165,7 @@ void Ecosystem::RunEpoch(int number_of_days)
             {
                 int age = (day_ - (*it)->get_birth_date());
 //                std::cout << "Age of " << **it << " is " << age << std::endl;
+                (*it)->print_traits();
                 bool creature_survives = true;
                 for (auto attr: attributes_)
                 {

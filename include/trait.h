@@ -24,12 +24,12 @@ public:
     const std::string get_name() const;
     const std::string& get_genes() const;
     virtual float CalculateValue(const Genome &genome)=0;
-
     /**
-     * @brief Determine the phenotype index that the given value corresponds to.
+     * @brief Determine the phenotype that the given value corresponds to.
      * @param value
      * @return
      */
+    virtual std::string ValueToPhenotype(float value)=0;
     std::pair<float, float> CalculateStatistics(const std::vector<std::shared_ptr<Creature>> creatures);
     virtual std::weak_ptr<TraitWeighting> MakeWeighting(std::vector<float> weights)=0;
 };
@@ -43,6 +43,7 @@ class ContinuousTrait : public Trait
     ContinuousTrait(std::string name, std::string genes, std::vector<std::string> phenotypes, float max, float min);
     float CalculateValue(const Genome &genome);
     float CalculateNormalizedValue(const Genome &genome);
+    std::string ValueToPhenotype(float value);
     std::weak_ptr<TraitWeighting> MakeWeighting(std::vector<float> weights);
 
     friend class ContinuousTraitWeighting;
@@ -55,6 +56,7 @@ class DiscreteTrait : public Trait
     DiscreteTrait() = default;
     DiscreteTrait(std::string name, std::string genes, std::vector<std::string> phenotypes);
     float CalculateValue(const Genome &genome);
+    std::string ValueToPhenotype(float value);
     std::weak_ptr<TraitWeighting> MakeWeighting(std::vector<float> weights);
 
     friend class DiscreteTraitWeighting;
