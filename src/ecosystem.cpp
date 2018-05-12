@@ -66,6 +66,17 @@ void Ecosystem::RegisterDiscreteTrait(std::string trait_name, std::string gene_c
     RegisterTrait(trait_shared);
 }
 
+/**
+ * @brief Create and register a new BinaryTrait for all species in the ecosystem.
+ * @param trait_name
+ * @param gene_codes
+ */
+void Ecosystem::RegisterBinaryTrait(std::string trait_name, std::string gene_codes, std::vector<std::string> phenotypes)
+{
+    auto trait = new BinaryTrait(trait_name, gene_codes, phenotypes);
+    std::shared_ptr<Trait> trait_shared(trait);
+    RegisterTrait(trait_shared);
+}
 
 /**
  * @brief Create and register a new ContinuousTrait for all species in the ecosystem.

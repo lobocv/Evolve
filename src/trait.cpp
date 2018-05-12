@@ -113,14 +113,11 @@ std::weak_ptr<TraitWeighting> ContinuousTrait::MakeWeighting(std::vector<float> 
     DiscreteTrait
 */
 
-DiscreteTrait::DiscreteTrait(std::string name, std::string genes, std::vector<std::string> n_phenotypes) : Trait(name, genes, n_phenotypes)
+DiscreteTrait::DiscreteTrait(std::string name, std::string genes, std::vector<std::string> phenotypes) : Trait(name, genes, phenotypes)
 {
-    if (n_phenotypes.size() < 2)
+    if (phenotypes.size() < 3)
     {
-        throw InvalidTraitParameterError("Traits must have a minimum of 2 phenotypes. Got " + n_phenotypes.size());
-    } else if (n_phenotypes.size() == 2 && genes.size() != 1) {
-        // If the trait is binary, it can only have 1 gene determine it's value.
-        throw InvalidTraitParameterError("Discrete binary traits must be dependent on only one gene.");
+        throw InvalidTraitParameterError("DiscreteTraits must have a minimum of 3 phenotypes. Got " + phenotypes.size());
     }
 }
 
@@ -154,6 +151,17 @@ std::weak_ptr<TraitWeighting> DiscreteTrait::MakeWeighting(std::vector<float> we
     auto ptr = std::shared_ptr<TraitWeighting>(new DiscreteTraitWeighting(weights));
     weights_.push_back(ptr);
     return ptr;
+}
+
+BinaryTrait::BinaryTrait(std::string name, std::string genes, std::vector<std::string> phenotypes) : DiscreteTrait(name, genes, phenotypes)
+{
+    if (phenotypes.size() != 2)
+    {
+        throw InvalidTraitParameterError("Binary traits must have only 2 phenotypes. " + std::to_string(phenotypes.size()) + " were given.");
+    } else if (genes.size() != 1)
+    {
+        throw InvalidTraitParameterError("Discrete binary traits must be dependent on only one gene. " + std::to_string(genes.size()) + " were given.");
+    }
 }
 
 

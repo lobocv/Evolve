@@ -48,7 +48,7 @@ int main()
     // Create a list of traits for species in the ecosystem.
     ecosystem.RegisterContinuousTrait("Hair Length", "ABCDEFGHIJKL", {"Short Haired", "Long Haired"}, 10, 30);
     ecosystem.RegisterContinuousTrait("Body Fat Percentage", "GHIKJLMNOPQR", {"Thin", "Medium", "Fat"}, 0, 100);
-    ecosystem.RegisterDiscreteTrait("Hair Color", "D", {"Blond Haired", "Black Haired"});
+    ecosystem.RegisterBinaryTrait("Hair Color", "D", {"Blond Haired", "Black Haired"});
 
     // Create a list of attributes that the traits contribute towards.
     try
