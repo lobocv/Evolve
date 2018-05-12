@@ -13,9 +13,22 @@
 #include "attribute.h"
 #include <time.h> 
 
+#include "spdlog/spdlog.h"
+
 
 int main()
 {
+    auto console = spdlog::stdout_logger_st("console");
+    try
+    {
+        auto my_logger = spdlog::basic_logger_mt("basic_logger", "tmp/EvolveLog.txt");
+    } catch (const spdlog::spdlog_ex& ex)
+    {
+        std::cout << "Log initialization failed: " << ex.what() << std::endl;
+    }
+    console->info("Welcome to spdlog!") ;
+    console->info("An info message example {}..", 1);
+
     std::cout << "       Evolve         " << std::endl;
     std::cout << "======================" << std::endl;
     std::cout << "Author: Calvin Lobo" << std::endl;
