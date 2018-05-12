@@ -83,4 +83,25 @@ struct DiscreteTraitWeighting : public TraitWeighting
     float CalculateValue(Trait &trait, const Genome &genome);
 };
 
+
+struct Phenotype
+{
+  const std::string name_;
+  Phenotype(std::string name);
+  ~Phenotype();
+};
+
+struct ContinuousTraitPhenotype : Phenotype
+{
+    const float value_min_, value_max_;
+    ContinuousTraitPhenotype(std::string name, float min, float max);
+};
+
+
+struct DiscreteTraitPhenotype : Phenotype
+{
+    const int phenotype_index_;
+    DiscreteTraitPhenotype(std::string name, int phenotype_index);
+};
+
 #endif // TRAIT_H
