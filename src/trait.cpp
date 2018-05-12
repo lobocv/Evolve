@@ -11,7 +11,7 @@
  * @param name
  * @param genes
  */
-Trait::Trait(std::string name, std::string genes, int n_phenotypes) : name_(name), gene_codes_(genes), n_phenotypes_(n_phenotypes){}
+Trait::Trait(std::string name, std::string genes, std::vector<std::string> phenotypes) : name_(name), gene_codes_(genes), phenotypes_(phenotypes){}
 const std::string Trait::get_name() const { return name_;}
 const std::string& Trait::get_genes() const {return gene_codes_;}
 
@@ -45,7 +45,7 @@ std::pair<float, float> Trait::CalculateStatistics(const std::vector<std::shared
 /*
     ContinuousTrait
 */
-ContinuousTrait::ContinuousTrait(std::string name, std::string genes, int n_phenotypes, float min, float max) : Trait(name, genes, n_phenotypes), min_(min), max_(max)
+ContinuousTrait::ContinuousTrait(std::string name, std::string genes, std::vector<std::string> n_phenotypes, float min, float max) : Trait(name, genes, n_phenotypes), min_(min), max_(max)
 {
     if (gene_codes_.length() < 2) {throw InvalidTraitParameterError("ContinuousTrait must be represented by a polygene (more than 2 genes).");}
 }
@@ -91,12 +91,12 @@ std::weak_ptr<TraitWeighting> ContinuousTrait::MakeWeighting(std::vector<float> 
     DiscreteTrait
 */
 
-DiscreteTrait::DiscreteTrait(std::string name, std::string genes, int n_phenotypes) : Trait(name, genes, n_phenotypes)
+DiscreteTrait::DiscreteTrait(std::string name, std::string genes, std::vector<std::string> n_phenotypes) : Trait(name, genes, n_phenotypes)
 {
-    if (n_phenotypes < 2)
+    if (n_phenotypes.size() < 2)
     {
-        throw InvalidTraitParameterError("Traits must have a minimum of 2 phenotypes. Got " + n_phenotypes);
-    } else if (n_phenotypes == 2 && genes.size() != 1) {
+        throw InvalidTraitParameterError("Traits must have a minimum of 2 phenotypes. Got " + n_phenotypes.size());
+    } else if (n_phenotypes.size() == 2 && genes.size() != 1) {
         // If the trait is binary, it can only have 1 gene determine it's value.
         throw InvalidTraitParameterError("Discrete binary traits must be dependent on only one gene.");
     }
@@ -118,9 +118,9 @@ float DiscreteTrait::CalculateValue(const Genome &genome)
 
 std::weak_ptr<TraitWeighting> DiscreteTrait::MakeWeighting(std::vector<float> weights)
 {
-    if (weights.size() != n_phenotypes_) {
+    if (weights.size() != phenotypes_.size()) {
         throw InvalidAttributeParameterError("DiscreteTraitWeighting '" + name_ + "' must have a " +
-                                             std::to_string(n_phenotypes_) + " weight values. " +
+                                             std::to_string(phenotypes_.size()) + " weight values. " +
                                              "Got " + std::to_string(weights.size()) + " weight(s) instead.");
     }
     auto ptr = std::shared_ptr<TraitWeighting>(new DiscreteTraitWeighting(weights));

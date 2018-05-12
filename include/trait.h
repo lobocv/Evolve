@@ -17,10 +17,10 @@ protected:
     std::string name_;
     std::string gene_codes_;
 public:
-    const int n_phenotypes_;
+    const std::vector<std::string> phenotypes_;
     Trait() = default;
     virtual ~Trait() {}
-    Trait(std::string name, std::string genes, int n_phenotypes);
+    Trait(std::string name, std::string genes, std::vector<std::string> phenotypes);
     const std::string get_name() const;
     const std::string& get_genes() const;
     virtual float CalculateValue(const Genome &genome)=0;
@@ -40,7 +40,7 @@ class ContinuousTrait : public Trait
     float min_;
   public:
     ContinuousTrait() = default;
-    ContinuousTrait(std::string name, std::string genes, int n_phenotypes, float max, float min);
+    ContinuousTrait(std::string name, std::string genes, std::vector<std::string> phenotypes, float max, float min);
     float CalculateValue(const Genome &genome);
     float CalculateNormalizedValue(const Genome &genome);
     std::weak_ptr<TraitWeighting> MakeWeighting(std::vector<float> weights);
@@ -53,7 +53,7 @@ class DiscreteTrait : public Trait
 {
   public:
     DiscreteTrait() = default;
-    DiscreteTrait(std::string name, std::string genes, int n_phenotypes);
+    DiscreteTrait(std::string name, std::string genes, std::vector<std::string> phenotypes);
     float CalculateValue(const Genome &genome);
     std::weak_ptr<TraitWeighting> MakeWeighting(std::vector<float> weights);
 

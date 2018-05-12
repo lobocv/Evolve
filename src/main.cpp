@@ -46,18 +46,21 @@ int main()
 
 
     // Create a list of traits for species in the ecosystem.
-    ecosystem.RegisterContinuousTrait("Hair Length", "ABCDEF", 2, 10, 30);
-    ecosystem.RegisterContinuousTrait("Body Fat Percentage", "GHIKJ", 2, 0, 100);
-    ecosystem.RegisterDiscreteTrait("Hair Color", "D", 2);
+    ecosystem.RegisterContinuousTrait("Hair Length", "ABCDEFGHIJKL", {"Short", "Long"}, 10, 30);
+    ecosystem.RegisterContinuousTrait("Body Fat Percentage", "GHIKJLMNOPQR", {"Thin", "Fat"}, 0, 100);
+    ecosystem.RegisterDiscreteTrait("Hair Color", "D", {"Blond", "Black"});
 
     // Create a list of attributes that the traits contribute towards.
     try
     {
-        ecosystem.RegisterAttribute("Temperature Resistance", {"Hair Length", "Body Fat Percentage", "Hair Color"}, {{1}, {1}, {2}}, 0.25, 0.75);
+        ecosystem.RegisterAttribute("Temperature Resistance", {"Hair Length", "Hair Color"}, {{1}, {3, 1}}, 0.25, 0.75);
 //        ecosystem.RegisterAttribute("Temperature Resistance", {"Hair Length", "Body Fat Percentage"}, {{1}, {1}}, 0.25, 0.75);
-//        ecosystem.RegisterAttribute("Temperature Resistance", {"Hair Length"}, {{1}}, 0.25, 0.75);
+//        ecosystem.RegisterAttribute("Temperature Resistance", {"Hair Color"}, {{1}}, 0.25, 0.75);
     } catch (
-        InvalidAttributeParameterError e) { std::cout << e.what() <<std::endl;
+        InvalidAttributeParameterError e)
+    {
+        std::cout << e.what() <<std::endl;
+        exit(-1);
     }
 
     std::cout << "List of Species" << std::endl;
