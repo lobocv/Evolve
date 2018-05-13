@@ -191,21 +191,3 @@ float DiscreteTraitWeighting::CalculateValue(Trait &trait, const Genome &genome)
     auto phenotype_idx = cont_trait->CalculateValue(genome);
     return weights_[(int) phenotype_idx];
 }
-
-
-/**
- * @brief Abstract base class. Describes a specific variant or group of a trait with similar values.
- * @param name
- */
-Phenotype::Phenotype(std::string name) : name_(name) {}
-
-ContinuousTraitPhenotype::ContinuousTraitPhenotype(std::string name, float min, float max) : Phenotype(name), value_min_(min), value_max_(max)
-{
-    //if (max > min) { //TODO throw error}
-}
-
-DiscreteTraitPhenotype::DiscreteTraitPhenotype(std::string name, int phenotype_index) : Phenotype(name), phenotype_index_(phenotype_index)
-{
-
-}
-

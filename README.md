@@ -11,7 +11,7 @@ the concepts in which I've utilized.
 
 #### Polymorphism:
 * Traits come in several forms such as discrete and continuous. They both expose a common interface
-through the base Trait class.
+through the base Trait class and their closely related classes for trait weighting and phenotypes.
 
 #### Smart Pointers
 * The Ecosystem is responsible for managing and storing all of the species that evolve within it.
@@ -35,12 +35,13 @@ through the base Trait class.
 
 #### Creature
 * An individual organism of a Species which has it's own genotype. This genotype contributes
-genes to it's offspring and is used to evaluate the magnitude of Traits.
+genes to it's offspring and is used to evaluate the magnitude of Traits. The magnitudes of the
+traits can fall into certain bins (or ranges) that categorize the trait's phenotype.
 
 #### Attributes
 * Descriptors of an organism that govern how fit the organism is for survival.
-Attributes are contributed by multiple traits and their value in conjunction with environmental
-factors decide if the organism lives or dies.
+Attributes are contributed by weighting the significance of a subset of traits. Their value, in
+conjunction with environmental factors, decide if the organism lives or dies.
 
 #### Trait
 * A feature of a species that can either be discrete or continuous. It's exact value is computed based
@@ -58,46 +59,77 @@ must be a negative scaling of one another. This signifies anti-correlation of th
 
 #### Gene
 * The building blocks of genetic Traits. When the gene has information about multiple traits
-it is said to be  pleiotropic. If a non-binary trait has influence from multiple genes, those genes are said to be
-polygenic. These two concepts are not mutually exclusive. An example of a polygene group is a group of genes that
+it is said to be  pleiotropic. If a trait has influence from multiple genes, those genes are said to be
+polygenic. These two concepts are not mutually exclusive. An example of a polygene group is a group of alleles that
 when observed in high numbers, cause the organism to be tall. An example of pleiotropic gene is a gene who's occurance
 affects both the height and weight of an organism simultaneously.
-       
+
+#### Allele
+* A specific variant of a gene. For simplicity, we limit the number of alleles per gene to 2.
+We call these alleles dominant (upper-case, eg "A") or recessive (lower-case, eg "a") for lack of better terminology.
+The relationship between dominant and recessive allele is not necessarily complete-dominance, in fact, this is only
+the case for binary discrete traits.
 
 #### Chromosome
 * Contains many genes and distributes those genes to offspring during reproduction
 
 
 ### Polygenic vs Pleitropic Genes
+Poylgenic Genes
 ![alt text](https://github.com/lobocv/Evolve/blob/master/polygene.jpg?raw=true "Polygene")
+Pleiotropic Genes
 ![alt text](https://github.com/lobocv/Evolve/blob/master/pleiotropy.jpg?raw=true "Pleiotropy")
 
 
 ### List of Traits
 Traits are specific features of an organism that are derived from it's genome. They contribute to an organisms Attributes.
 
-Continuous Traits
+#### Continuous Traits
+
+Continuous traits are determined by a polygene group, whos ratio of dominant to recessive alleles
+determines the value of the trait. This ratio follows a bell-curve distribution and reasonably
+models a large population of creatures with trait values near the mean and low probability of
+having extremely high or low values.
+
+Examples
 ------------------
 - Colour   
 - Height
-- Weight
+- Body Fat percentage
+- Hair length
 
-Discrete Binary Traits
+#### Discrete Binary Traits
+
+Discrete Binary traits are calculated following a complete-dominance relationship.
+If the genome contains just one dominant allele, then the trait is of the dominant phenotype,
+otherwise it is of the recessive phenotype.
+
+Examples
 -----------------------
 - Nocturnal
 - Handedness
 - Colorblind
-- Hair length 
 - Bipedal
 
 
-Discrete Non-Binary Traits
+#### Discrete Non-Binary (DNB) Traits
+
+If P is the number of phenotypes for a DNB trait, and N is the number of
+genes that describe the trait, then N = k*P for k > 0. Then each gene
+in the trait describes a vector (phenovector) in the P dimensional phenospace. The
+two alleles of the gene are anti-phenovectors with respect to one another, in other
+words Phenovector A = - Phenovector a. The phenovectors must be normalized and evenly
+spaced throughout the phenospace in order to minimize bias towards a particular phenotype.
+The value of the DNB trait is then found by summing all the phenovectors in the genome and
+projecting it along the eigen-vectors of the phenospace. The largest projection determines
+the phenotype.
+
+Examples
 ---------------------------
 - Exterior Type (skin, feathers, scales, fur, wool)
 - Eye color (blue, green, brown, grey)
 - Number of Appendages
 - Appendage Weapon (None, Claws, Hooves, Flippers)
-- Diet (Herbivore, Carnivore, Omnivore)
 
 
 ### List of Attributes
@@ -116,7 +148,12 @@ Discrete Non-Binary Traits
 
 The great thing about this project is that it can be almost endlessly expanded upon. Some neat
 features that I would like to one day implement are:
+- GUI: To help change / view ecosystem details.
 - Environmental Factors: Interact with creatures to decide whether they are fit enough for survival.
 - Calendar: Creatures would reproduce at certain intervals, have a life extectancy. Environment can have seasons.
 - Multi-threaded: Parallelize some of the code
 - Data Publishing: Expose creature statistics via a socket so that other programs can visualize the evolution.
+- Divergence of species: If a group of creature's genomes begins to diverge then we could define a new species.
+- Multidimensional Continuous Traits: For example, color could be any value of RGB.
+- Fatal Creature Interaction: Two creatures could interact and fight.
+- Carnivores: Carivorous creatures may need to eat other creatures (of weak fitness) in order to survive.
