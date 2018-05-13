@@ -44,18 +44,15 @@ int main()
                                                                    kMySpeciesMaxOffspring, kMySpeciesLifeExpectanceDays,
                                                                    kMySpeciesInitPop, kMySpeciesMaleFemaleRatio);
 
-
-    // Create a list of traits for species in the ecosystem.
-    ecosystem.RegisterContinuousTrait("Hair Length", "ABCDEFGHIJKL", {"Short Haired", "Long Haired"}, 10, 30);
-    ecosystem.RegisterContinuousTrait("Body Fat Percentage", "GHIKJLMNOPQR", {"Thin", "Medium", "Fat"}, 0, 100);
-    ecosystem.RegisterBinaryTrait("Hair Color", "D", {"Blond Haired", "Black Haired"});
-
-    // Create a list of attributes that the traits contribute towards.
     try
     {
-        ecosystem.RegisterAttribute("Temperature Resistance", {"Hair Length", "Body Fat Percentage", "Hair Color"}, {{1}, {1.4}, {1, 1.2}}, 0.25, 0.75);
-    } catch (
-        InvalidAttributeParameterError e)
+        // Create a list of traits for species in the ecosystem.
+        ecosystem.RegisterContinuousTrait("Hair Length", "ABCDEFGHIJKL", {"Short Haired", "Long Haired"}, 10, 30);
+        ecosystem.RegisterContinuousTrait("Body Fat Percentage", "GHIKJLMNOPQR", {"Thin", "Medium", "Fat"}, 0, 100);
+        ecosystem.RegisterBinaryTrait("Hair Color", "D", {"Blond Haired", "Black Haired"});
+        // Create a list of attributes that the traits contribute towards.
+        ecosystem.RegisterAttribute("Temperature Resistance", {"Hair Length", "Body Fat Percentage", "Hair Color"}, {{1}, {1.4}, {1.2, 1}}, 0.25, 0.75);
+    } catch (EvolveException e)
     {
         std::cout << e.what() <<std::endl;
         exit(-1);
@@ -101,7 +98,7 @@ int main()
         }
         ecosystem.environmental_limits_["Temperature Resistance"].first *= 1.01;
         ecosystem.environmental_limits_["Temperature Resistance"].second /= 1.01;
-        std::cout << "New Temp Resistance limtis are " << ecosystem.environmental_limits_["Temperature Resistance"].first << ", " << ecosystem.environmental_limits_["Temperature Resistance"].second << std::endl;
+        std::cout << "New Temp Resistance limits are " << ecosystem.environmental_limits_["Temperature Resistance"].first << ", " << ecosystem.environmental_limits_["Temperature Resistance"].second << std::endl;
 
 
     } while ( epoch_length_days > 0);

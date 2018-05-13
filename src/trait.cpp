@@ -115,10 +115,7 @@ std::weak_ptr<TraitWeighting> ContinuousTrait::MakeWeighting(std::vector<float> 
 
 DiscreteTrait::DiscreteTrait(std::string name, std::string genes, std::vector<std::string> phenotypes) : Trait(name, genes, phenotypes)
 {
-    if (phenotypes.size() < 3)
-    {
-        throw InvalidTraitParameterError("DiscreteTraits must have a minimum of 3 phenotypes. Got " + phenotypes.size());
-    }
+
 }
 
 /**
@@ -128,11 +125,6 @@ DiscreteTrait::DiscreteTrait(std::string name, std::string genes, std::vector<st
  */
 float DiscreteTrait::CalculateValue(const Genome &genome)
 {
-    std::string gene_code = gene_codes_.substr(0, 1);
-    auto dom_rec_ratio = GetAlleleRatio(gene_code, genome);
-    float outcome = dom_rec_ratio.first > 0 ? 1.0 : 0.0;
-//    std::cout << name_ << "=" << outcome << " (N_DOM=" << dom_rec_ratio.first << ", N_REC=" << dom_rec_ratio.second << ")" << std::endl;
-    return outcome;
 }
 
 std::string DiscreteTrait::ValueToPhenotype(float value)
@@ -160,8 +152,16 @@ BinaryTrait::BinaryTrait(std::string name, std::string genes, std::vector<std::s
         throw InvalidTraitParameterError("Binary traits must have only 2 phenotypes. " + std::to_string(phenotypes.size()) + " were given.");
     } else if (genes.size() != 1)
     {
-        throw InvalidTraitParameterError("Discrete binary traits must be dependent on only one gene. " + std::to_string(genes.size()) + " were given.");
+        throw InvalidTraitParameterError("Binary traits must be dependent on only one gene. " + std::to_string(genes.size()) + " were given.");
     }
+}
+
+float BinaryTrait::CalculateValue(const Genome &genome)
+{
+    auto dom_rec_ratio = GetAlleleRatio(gene_codes_, genome);
+    float outcome = dom_rec_ratio.first > 0 ? 1.0 : 0.0;
+//    std::cout << name_ << "=" << outcome << " (N_DOM=" << dom_rec_ratio.first << ", N_REC=" << dom_rec_ratio.second << ")" << std::endl;
+    return outcome;
 }
 
 
