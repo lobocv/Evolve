@@ -18,23 +18,23 @@
 
 int main()
 {
-    auto console = spdlog::stdout_logger_st("console");
+    auto console = spdlog::stdout_color_mt("console");
+    std::shared_ptr<spdlog::logger> my_logger;
     try
     {
-        auto my_logger = spdlog::basic_logger_mt("basic_logger", "tmp/EvolveLog.txt");
+        my_logger = spdlog::basic_logger_st("basic_logger", "/tmp/EvolveLog.txt");
+
     } catch (const spdlog::spdlog_ex& ex)
     {
         std::cout << "Log initialization failed: " << ex.what() << std::endl;
     }
-    console->info("Welcome to spdlog!") ;
-    console->info("An info message example {}..", 1);
 
-    std::cout << "       Evolve         " << std::endl;
-    std::cout << "======================" << std::endl;
-    std::cout << "Author: Calvin Lobo" << std::endl;
-    std::cout << "Major Version: " << Evolve_VERSION_MAJOR << std::endl;
-    std::cout << "Minor Version: " << Evolve_VERSION_MINOR << std::endl;
-    std::cout << "======================" << std::endl;
+    console->info("       Evolve         ");
+    console->info("======================");
+    console->info("Author: Calvin Lobo");
+    console->info("Major Version: "  , Evolve_VERSION_MAJOR);
+    console->info("Minor Version: {}", Evolve_VERSION_MINOR);
+    console->info("======================");
 
     // Config
     const auto kMySpeciesName = "Blorp";
