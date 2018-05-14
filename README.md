@@ -115,14 +115,16 @@ Examples
 #### Discrete Non-Binary (DNB) Traits
 
 If P is the number of phenotypes for a DNB trait, and N is the number of
-genes that describe the trait, then N = k*P for k > 0. Then each gene
-in the trait describes a vector (phenovector) in the P dimensional phenospace. The
-two alleles of the gene are anti-phenovectors with respect to one another, in other
-words Phenovector A = - Phenovector a. The phenovectors must be normalized and evenly
+genes that describe the trait, then there are N gene vectors that spans the
+P dimensional phenospace of the DNB trait. The two alleles of each gene in the trait
+are anti-genevectors with respect to one another, in other words
+genevector A = -genevector a. The genevectors must be normalized and evenly
 spaced throughout the phenospace in order to minimize bias towards a particular phenotype.
-The value of the DNB trait is then found by summing all the phenovectors in the genome and
-projecting it along the eigen-vectors of the phenospace. The largest projection determines
-the phenotype.
+In general, it is hard to evenly distribute an arbitrary number of genevectors throughout
+any phenospace larger than 2 dimensions so a basic approach of randomizing the genevectors
+is taken instead. The value of the DNB trait is then found by summing all the genevectors
+in the genome and projecting it along the eigen-vectors (phenovectors) of the phenospace.
+The largest projection determines the phenotype.
 
 Examples
 ---------------------------
