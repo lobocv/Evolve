@@ -52,7 +52,7 @@ int main()
         ecosystem.RegisterBinaryTrait("Hair Color", "D", {"Blond Haired", "Black Haired"});
         ecosystem.RegisterDiscreteTrait("Exterior Type", "LMNOP", {"Fur", "Skin", "Feathers", "Scales"});
         // Create a list of attributes that the traits contribute towards.
-        ecosystem.RegisterAttribute("Temperature Resistance", {"Hair Length", "Body Fat Percentage", "Hair Color"}, {{1}, {1.4}, {1.2, 1}}, 0.25, 0.75);
+        ecosystem.RegisterAttribute("Temperature Resistance", {"Hair Length", "Exterior Type", "Hair Color"}, {{1}, {1, 1, 1, 2}, {1.2, 1}}, 0.25, 0.75);
     } catch (EvolveException e)
     {
         std::cout << e.what() <<std::endl;

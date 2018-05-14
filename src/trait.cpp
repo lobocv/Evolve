@@ -129,22 +129,25 @@ void DiscreteTrait::InitializePhenospace()
 
     for (int ii=0; ii < N_row; ii++)
     {
-        float sq_sum=0;
-        std::vector<float> gene_vec;
-        for (int jj=0; jj < N_col; jj++)
+        for (int upper=0; upper < 2; upper++)
         {
-            int v = std::rand() % 101 - 51;
-            sq_sum += v*v;
-            gene_vec.push_back(v);
+            float sq_sum=0;
+            std::vector<float> gene_vec;
+            for (int jj=0; jj < N_col; jj++)
+            {
+                int v = std::rand() % 101 - 51;
+                sq_sum += v*v;
+                gene_vec.push_back(v);
 
+            }
+            float norm = 1.0 / std::sqrt(sq_sum);
+            for (auto &v : gene_vec)
+            {
+                 v *= norm;
+            }
+            char gene = upper ? std::toupper(gene_codes_[ii]) : std::tolower(gene_codes_[ii]);
+            genevectors_[gene] = gene_vec;
         }
-        float norm = 1.0 / std::sqrt(sq_sum);
-        for (auto &v : gene_vec)
-        {
-             v *= norm;
-        }
-        char gene = std::toupper(gene_codes_[ii]);
-        genevectors_[gene] = gene_vec;
     }
 
     phenovectors_ = std::vector<std::vector<int> >(N_col, std::vector<int>(N_col, 0));
@@ -179,11 +182,12 @@ float DiscreteTrait::CalculateValue(const Genome &genome)
                 it = gene_sequence->find(gene_code);
                 if ( it != gene_sequence->end())
                 {
-                    std::vector<float> gene_vec = genevectors_[gene_code];
                     if (it->second.get_type() == Dominant) {
+                        std::vector<float> gene_vec = genevectors_[std::toupper(gene_code)];
                         std::transform(gene_vec_sum.begin(), gene_vec_sum.end(), gene_vec.begin(),
                                        gene_vec_sum.begin(), std::plus<float>());
                     } else {
+                        std::vector<float> gene_vec = genevectors_[std::tolower(gene_code)];
                         std::transform(gene_vec_sum.begin(), gene_vec_sum.end(), gene_vec.begin(),
                                        gene_vec_sum.begin(), std::minus<float>());
                     }
