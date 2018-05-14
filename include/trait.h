@@ -52,7 +52,11 @@ class ContinuousTrait : public Trait
 
 class DiscreteTrait : public Trait
 {
-  public:
+    std::vector<std::vector<int>> phenovectors_;
+    std::map<char, std::vector<float>> genevectors_;
+
+    void InitializePhenospace();
+public:
     DiscreteTrait() = default;
     DiscreteTrait(std::string name, std::string genes, std::vector<std::string> phenotypes);
     float CalculateValue(const Genome &genome);
