@@ -9,6 +9,13 @@
 /*
     Gene
 */
+/**
+ * @brief The gene is the smallest building block of genetic material.
+ * Genes are found in variant forms called Alleles. The combinations of particular alleles are used
+ * to determine the value of certain traits.
+ * @param name
+ * @param type
+ */
 Gene::Gene(char name, GeneType type) : name_((char) toupper(name)), type_(type) {}
 
 const char Gene::get_name() const
@@ -22,6 +29,12 @@ const GeneType& Gene::get_type() const {return type_;}
 /*
     Chromosome
 */
+/**
+ * @brief A chromosome is a sequence of alleles (genes).
+ * They are used during the reproduction of two creatures by passing one chromosome from each parent
+ * to the child.
+ * @param genes
+ */
 Chromosome::Chromosome(GeneSequence genes) : genes_(genes) {}
 
 // Create a pair of chromosomes for the given gene codes.
@@ -46,9 +59,12 @@ const int Chromosome::get_length() const {return genes_.size();}
 const GeneSequence& Chromosome::get_genes() const {return genes_;}
 
 
-/*
- * Return the number of dominant and
-*/
+/**
+ * @brief Return the number of of each allele type.
+ * @param gene_codes
+ * @param genome
+ * @return
+ */
 std::pair<int, int> GetAlleleRatio(const std::string &gene_codes, const Genome &genome)
 {
     int n_dominant = 0;
@@ -74,10 +90,10 @@ std::pair<int, int> GetAlleleRatio(const std::string &gene_codes, const Genome &
                 }
             }
         }
-        if (n_dominant + n_recessive != 2*gene_codes.length()) {throw UnrepresentedTraitError();}
+        if (n_dominant + n_recessive != 2*gene_codes.length()) {throw UnrepresentedTraitError("Not all genes were found in the genome.");}
     }
 
-    return std::make_pair(n_dominant, n_recessive); // TODO update this to be more representitive of bell-curve-like probability dist.
+    return std::make_pair(n_dominant, n_recessive);
 }
 
 

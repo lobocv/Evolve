@@ -46,12 +46,20 @@ int main()
 
 
     // Create a list of traits for species in the ecosystem.
-    ecosystem.RegisterContinuousTrait("Hair Length", "ABCDEF", 10, 30);
-    ecosystem.RegisterDiscreteTrait("Hair Color", "D");
+    ecosystem.RegisterContinuousTrait("Hair Length", "ABCDEFGHIJKL", {"Short Haired", "Long Haired"}, 10, 30);
+    ecosystem.RegisterContinuousTrait("Body Fat Percentage", "GHIKJLMNOPQR", {"Thin", "Medium", "Fat"}, 0, 100);
+    ecosystem.RegisterDiscreteTrait("Hair Color", "D", {"Blond Haired", "Black Haired"});
 
     // Create a list of attributes that the traits contribute towards.
-    ecosystem.RegisterAttribute("Temperature Resistance", {"Hair Length"});
-
+    try
+    {
+        ecosystem.RegisterAttribute("Temperature Resistance", {"Hair Length", "Body Fat Percentage", "Hair Color"}, {{1}, {1.4}, {1, 1.2}}, 0.25, 0.75);
+    } catch (
+        InvalidAttributeParameterError e)
+    {
+        std::cout << e.what() <<std::endl;
+        exit(-1);
+    }
 
     std::cout << "List of Species" << std::endl;
     std::cout << "===============" << std::endl;
@@ -78,24 +86,24 @@ int main()
         std::cin >> epoch_length_days;
         ecosystem.RunEpoch(epoch_length_days);
 
-        std::cout << "N CREATURES =" << creatures.size() << std::endl;
         std::cout << "Number of alive creatures after " << day_number << " days = " << myspecies->get_alive_population() << std::endl;
         std::cout << "Number of deceased creatures after " << day_number << " days = " << myspecies->get_deceased_population() << std::endl;
 
         if (creatures.size() > 0)
         {
-            // Hair Length stats
-            std::shared_ptr<ContinuousTrait> hair_length = std::static_pointer_cast<ContinuousTrait>(ecosystem.traits_["Hair Length"]);
-            auto hair_length_stats = hair_length->CalculateStatistics(creatures);
-            std::cout << "Hair Length Mean = " << hair_length_stats.first << std::endl;
-            std::cout << "Hair Length Standard Deviation = " << hair_length_stats.second << std::endl;
-
-            std::shared_ptr<DiscreteTrait> hair_color = std::static_pointer_cast<DiscreteTrait>(ecosystem.traits_["Hair Color"]);
-            auto hair_color_stats = hair_color->CalculateStatistics(creatures);
-            std::cout << "Hair Color Mean = " << hair_color_stats.first << std::endl;
-            std::cout << "Hair Color Standard Deviation = " << hair_color_stats.second << std::endl;
-
+            for (auto &trait_pair: ecosystem.traits_)
+            {
+                auto trait = trait_pair.second;
+                auto stat = trait->CalculateStatistics(creatures);
+                std::cout << *trait << " Mean = " << stat.first << std::endl;
+                std::cout << *trait << " Standard Deviation = " << stat.second << std::endl;
+            }
         }
+        ecosystem.environmental_limits_["Temperature Resistance"].first *= 1.01;
+        ecosystem.environmental_limits_["Temperature Resistance"].second /= 1.01;
+        std::cout << "New Temp Resistance limtis are " << ecosystem.environmental_limits_["Temperature Resistance"].first << ", " << ecosystem.environmental_limits_["Temperature Resistance"].second << std::endl;
+
+
     } while ( epoch_length_days > 0);
 
     return 0;

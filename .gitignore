@@ -1,2 +1,6 @@
 build/*
 .idea/*
+html/*
+index/*
+latex/*
+CMakeLists.txt.user

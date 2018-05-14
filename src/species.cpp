@@ -21,6 +21,12 @@ const int Species::get_deceased_population() const { return deceased_;}
 const int Species::get_n_chromosome_pairs() const{return n_chromosome_pairs_;}
 std::vector<std::shared_ptr<Creature>>& Species::get_creatures() {return creatures_;}
 
+/**
+ * @brief Create a new creature of this species.
+ * @param sex
+ * @param genome
+ * @return
+ */
 std::shared_ptr<Creature> Species::AddCreature(Sex sex, Genome genome)
 {
     std::shared_ptr<Creature> creature = std::make_shared<Creature>(*this, sex);
@@ -34,6 +40,11 @@ std::shared_ptr<Creature> Species::AddCreature(Sex sex, Genome genome)
     return creature;
 }
 
+/**
+ * @brief Create the initial population of creatures in the ecosystem.
+ * @param n_males
+ * @param n_females
+ */
 void Species::InitializeCreatures(int n_males, int n_females)
 {
     std::string gene_sequence;

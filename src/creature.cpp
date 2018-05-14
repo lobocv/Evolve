@@ -31,6 +31,16 @@ Creature::~Creature()
     std::cout << *this << " has died." << std::endl;
 }
 
+/**
+ * @brief Attempt to have two creatures reproduce. The creatures will not reproduce if they are the same sex or not the same species.
+ *
+ * If the creatures are successful at reproducing, they will make a random number of offspring (limted by the species).
+ * Each offspring will take one random chromosome from each parent, for each chromsome pair. The created creatures are added
+ * to the creatures list in the species.
+ * @param creature1
+ * @param creature2
+ * @return
+ */
 std::vector<std::shared_ptr<Creature>> Creature::Reproduce(std::shared_ptr<Creature> creature1, std::shared_ptr<Creature> creature2)
 {
     Ecosystem &eco = Ecosystem::GetEcosystem();
@@ -41,8 +51,8 @@ std::vector<std::shared_ptr<Creature>> Creature::Reproduce(std::shared_ptr<Creat
     // Throw an error if trying to mate two of the same sex.
     std::shared_ptr<Creature>& father = (creature1->get_sex() == Male) ? creature1 : creature2;
     std::shared_ptr<Creature>& mother = (creature2->get_sex() == Male) ? creature1 : creature2;
-    if (mother->get_sex() == father->get_sex()) {throw(CannotProcreateError());}
-    if (mother->get_species() != father->get_species()) {throw(CannotProcreateError());}
+    if (mother->get_sex() == father->get_sex()) {throw(CannotProcreateError("Creatures are of the same sex."));}
+    if (mother->get_species() != father->get_species()) {throw(CannotProcreateError("Creatures are not of the same species."));}
     // TODO: Check creatures are of reproductive age.
 
     Genome male_chromo_pairs = creature1->get_genome();
@@ -79,8 +89,9 @@ std::vector<std::shared_ptr<Creature>> Creature::Reproduce(std::shared_ptr<Creat
     return offspring;
 }
 
+
 const int Creature::get_id() const { return id_;}
-Species &Creature::get_species() const { return species_;};
+Species &Creature::get_species() const { return species_;}
 const Genome &Creature::get_genome() const { return genome_;}
 const Sex Creature::get_sex() const { return sex_;}
 const int Creature::get_birth_date() const {return birth_date;}
@@ -89,10 +100,13 @@ std::shared_ptr<Creature> Creature::get_mother() const {return mother_.lock();}
 void Creature::print_traits()
 {
     Ecosystem &ecosystem = Ecosystem::GetEcosystem();
-    std::cout << "Trait Values" << std::endl;
+    std::cout << *this << " is ";
     for (auto trait: ecosystem.traits_) {
         float value = trait.second->CalculateValue(genome_);
+        auto phenotype = trait.second->ValueToPhenotype(value);
+        std::cout << phenotype << "(" << value << "), ";
     }
+    std::cout << std::endl;
 }
 
 

@@ -9,7 +9,8 @@
 #include <memory>
 
 
-class Creature {
+class Creature
+{
     Species& species_;
     Genome genome_;
     Sex sex_;
@@ -17,8 +18,8 @@ class Creature {
     int birth_date=0;
     std::weak_ptr<Creature> mother_;
     std::weak_ptr<Creature> father_;
-public:
     Creature() = default;
+public:
     ~Creature();
     Creature(Species& species, Sex sex);
     static std::vector<std::shared_ptr<Creature>> Reproduce(std::shared_ptr<Creature> creature1, std::shared_ptr<Creature> creature2);
