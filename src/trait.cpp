@@ -36,6 +36,7 @@ std::pair<float, float> Trait::CalculateStatistics(const std::vector<std::shared
     {
         mean_squared += std::pow(values[ii] - mean, 2);
     }
+    delete[] values;
     stdev = std::sqrt(mean_squared / creatures.size());
     return std::make_pair(mean, stdev);
 
