@@ -53,9 +53,9 @@ or discrete non-binary traits, there can be many phenotypes. In the discrete cas
 phenotype describes a vector in phenospace.
 
 #### Phenospace
-* A vector space that spans possible phenotypes. Phenotypes are represented as eigen-vectors in the vector-space
-The phenospace need not be singular, however if it is not singular, the linearly dependent vectors
-must be a negative scaling of one another. This signifies anti-correlation of the corresponding phenotypes.
+* A vector space that spans possible phenotypes. Phenotypes are represented as eigen-vectors (phenovectors)
+in the vector-space. Gene alleles will correspond to anti-vectors in the phenospace and the cummulative sum
+of the genevectors from a genome will determine the overall phenotype for a discrete non-binary trait.
 
 #### Gene
 * The building blocks of genetic Traits. When the gene has information about multiple traits
