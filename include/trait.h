@@ -13,6 +13,9 @@
 class Trait
 {
 protected:
+    std::vector<std::vector<int>> phenovectors_;
+    std::map<char, std::vector<float>> genevectors_;
+    void InitializePhenospace();
     std::vector<std::shared_ptr<TraitWeighting>> weights_;
     std::string name_;
     std::string gene_codes_;
@@ -23,6 +26,7 @@ public:
     Trait(std::string name, std::string genes, std::vector<std::string> phenotypes);
     const std::string get_name() const;
     const std::string& get_genes() const;
+    std::vector<float> CalculateTraitVector(const Genome &genome);
     virtual float CalculateValue(const Genome &genome)=0;
     /**
      * @brief Determine the phenotype that the given value corresponds to.
@@ -52,10 +56,6 @@ class ContinuousTrait : public Trait
 
 class DiscreteTrait : public Trait
 {
-    std::vector<std::vector<int>> phenovectors_;
-    std::map<char, std::vector<float>> genevectors_;
-
-    void InitializePhenospace();
 public:
     DiscreteTrait() = default;
     DiscreteTrait(std::string name, std::string genes, std::vector<std::string> phenotypes);
