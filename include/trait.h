@@ -95,5 +95,4 @@ struct DiscreteTraitWeighting : public TraitWeighting
     float CalculateValue(Trait &trait, const Genome &genome);
 };
 
-
 #endif // TRAIT_H

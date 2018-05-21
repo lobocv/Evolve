@@ -1,6 +1,5 @@
 #include "attribute.h"
 
-
 /**
  * @brief An attribute is a value that the ecosystem uses to determine if the creature is fit enough to survive.
  * Attributes are contributed by one or more traits by weighting the phenotypes of the traits.
