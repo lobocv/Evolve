@@ -92,6 +92,22 @@ std::vector<float> Trait::CalculateTraitVector(const Genome &genome)
     {
         throw UnrepresentedTraitError("Not all genes that describe this trait are present.");
     }
+
+    return NormalizeTraitVector(trait_vec);
+}
+
+std::vector<float> Trait::NormalizeTraitVector(std::vector<float> trait_vec)
+{
+    double sq_sum = 0;
+    for (auto const &v: trait_vec)
+    {
+        sq_sum += v*v;
+    }
+    sq_sum = std::sqrt(sq_sum);
+    for (auto &v: trait_vec)
+    {
+        v /= sq_sum;
+    }
     return trait_vec;
 }
 

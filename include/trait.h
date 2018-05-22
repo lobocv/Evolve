@@ -27,6 +27,7 @@ public:
     const std::string get_name() const;
     const std::string& get_genes() const;
     std::vector<float> CalculateTraitVector(const Genome &genome);
+    std::vector<float> NormalizeTraitVector(std::vector<float> trait_vec);
     int ValueToPhenotypeDimension(std::vector<float> trait_vec);
     std::string ValueToPhenotype(std::vector<float> trait_vec);
     std::pair<std::vector<float>, std::vector<float>> CalculateStatistics(const std::vector<std::shared_ptr<Creature>> creatures);
