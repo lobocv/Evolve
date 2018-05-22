@@ -183,7 +183,7 @@ void Ecosystem::RunEpoch(int number_of_days)
                     auto attr_value = attr.second->CalculateValue(**it);
                     auto attr_limit = environmental_limits_[attr.second->get_name()];
                     std::cout << "Attribute " << attr.first << " = " << attr_value << std::endl;
-                    creature_survives = attr_value > attr_limit.first && attr_value < attr_limit.second;
+                    creature_survives = attr_value >= attr_limit.first && attr_value <= attr_limit.second;
                 }
                 if (age > species.second->life_expectancy_days_ || !creature_survives)
                 {
