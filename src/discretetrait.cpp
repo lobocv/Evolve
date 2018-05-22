@@ -13,9 +13,14 @@ DiscreteTrait::DiscreteTrait(std::string name, std::string genes, std::vector<st
  * @param genome
  * @return
  */
-float DiscreteTrait::CalculateValue(const Genome &genome)
+std::vector<float> DiscreteTrait::CalculateValue(const Genome &genome)
 {
     auto trait_vec = CalculateTraitVector(genome);
+    return trait_vec;
+}
+
+std::string DiscreteTrait::ValueToPhenotype(std::vector<float> trait_vec)
+{
     // Find the largest projection onto the eigenvectors of the phenospace to determine
     // the phenotype of the trait.
 
@@ -39,11 +44,8 @@ float DiscreteTrait::CalculateValue(const Genome &genome)
     auto largest_projection = std::max_element(phenovectors_.begin(), phenovectors_.end(), projector);
     // Convert the iterator to an index
     int phenotype_index = std::distance(phenovectors_.begin(), largest_projection);
-    return phenotype_index;
-
+    return phenotypes_[phenotype_index];
 }
-
-std::string DiscreteTrait::ValueToPhenotype(float value){return phenotypes_[int(value)];}
 
 
 std::weak_ptr<TraitWeighting> DiscreteTrait::MakeWeighting(std::vector<float> weights)

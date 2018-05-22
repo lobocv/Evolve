@@ -2,6 +2,7 @@
 #include "trait.h"
 #include <memory>
 #include <algorithm>
+
 /*
     Trait
 */
@@ -70,15 +71,18 @@ std::vector<float> Trait::CalculateTraitVector(const Genome &genome)
         for (int chromo_idx=0; chromo_idx < 2; chromo_idx++)
         {
             const GeneSequence *gene_sequence = &(chromo_idx ? chromo_pair.first.get_genes() : chromo_pair.second.get_genes());
+
+            // Look for the trait's genes in the genome and sum the gene vector associated with the gene.
             for (const auto gene_code: gene_codes_)
             {
                 GeneSequence::const_iterator it = gene_sequence->find(gene_code);
                 if ( it != gene_sequence->end())
                 {
-                    std::vector<float> gene_vec = genevectors_[toupper(gene_code)];
-                    std::transform(trait_vec.begin(), trait_vec.end(), gene_vec.begin(),
+                    std::vector<float> gene_vec;
+                    char allele_code = (it->second.get_type() == Dominant) ? toupper(gene_code) : tolower(gene_code);
+                    gene_vec = genevectors_[allele_code];
+                    std::transform(gene_vec.begin(), gene_vec.end(), trait_vec.begin(),
                                    trait_vec.begin(), std::plus<float>());
-
                     genes_found++;
                 }
             }
@@ -97,24 +101,38 @@ std::vector<float> Trait::CalculateTraitVector(const Genome &genome)
  * @param creatures
  * @return
  */
-std::pair<float, float> Trait::CalculateStatistics(const std::vector<std::shared_ptr<Creature>> creatures)
+std::pair<std::vector<float>, std::vector<float>> Trait::CalculateStatistics(const std::vector<std::shared_ptr<Creature>> creatures)
 {
-    double sum = 0, mean=0, mean_squared=0, stdev=0;
-    float* values = new float[creatures.size()];
+    std::vector<float> sum(phenovectors_.size(), 0), mean(phenovectors_.size(), 0), mean_squared(phenovectors_.size(),0), stdev(phenovectors_.size(), 0);
+    std::vector<float> *values = new std::vector<float>[creatures.size()];
     int ii=0;
     for (auto &c : creatures)
     {
         values[ii] = CalculateValue(c->get_genome());
-        sum += values[ii];
+        for (int jj=0; jj< gene_codes_.size(); jj++)
+        {
+            sum[jj] += values[ii][jj];
+        }
+
         ii++;
     }
-    mean = sum / creatures.size();
+    for (int jj=0; jj < gene_codes_.size(); jj++)
+    {
+        mean[jj] = sum[jj] / creatures.size();
+    }
+
     for (ii=0; ii < creatures.size(); ii++)
     {
-        mean_squared += std::pow(values[ii] - mean, 2);
+        for (int jj=0; jj < gene_codes_.size(); jj++)
+        {
+            mean_squared[jj] += std::pow(values[ii][jj] - mean[jj], 2);
+        }
     }
     delete[] values;
-    stdev = std::sqrt(mean_squared / creatures.size());
+    for (int jj=0; jj < gene_codes_.size(); jj++)
+    {
+        stdev[jj] = std::sqrt(mean_squared[jj] / creatures.size());
+    }
     return std::make_pair(mean, stdev);
 
 }

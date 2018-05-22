@@ -67,4 +67,18 @@ public:
 
 inline bool FlipCoin() {return std::rand() % 2;}
 
+template <class T>
+inline std::ostream &operator<<(std::ostream &stream, const std::vector<T> &obj)
+{
+    if (obj.size() > 0)
+    {
+        for (int ii=0; ii < obj.size()-1; ii++)
+        {
+            stream << obj[ii] << ", ";
+        }
+        stream << obj[obj.size()-1];
+    }
+    return stream;
+}
+
 #endif
