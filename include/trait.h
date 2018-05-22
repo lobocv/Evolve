@@ -33,7 +33,8 @@ public:
      * @param value
      * @return
      */
-    virtual std::string ValueToPhenotype(std::vector<float> trait_vec)=0;
+    int ValueToPhenotypeDimension(std::vector<float> trait_vec);
+    std::string ValueToPhenotype(std::vector<float> trait_vec);
     std::pair<std::vector<float>, std::vector<float>> CalculateStatistics(const std::vector<std::shared_ptr<Creature>> creatures);
     virtual std::weak_ptr<TraitWeighting> MakeWeighting(std::vector<float> weights)=0;
 };
@@ -44,7 +45,6 @@ public:
     DiscreteTrait() = default;
     DiscreteTrait(std::string name, std::string genes, std::vector<std::string> phenotypes);
     std::vector<float> CalculateValue(const Genome &genome);
-    std::string ValueToPhenotype(std::vector<float> trait_vec);
     std::weak_ptr<TraitWeighting> MakeWeighting(std::vector<float> weights);
 
     friend class DiscreteTraitWeighting;

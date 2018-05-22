@@ -95,6 +95,34 @@ std::vector<float> Trait::CalculateTraitVector(const Genome &genome)
     return trait_vec;
 }
 
+/**
+ * @brief Return the dimension of the trait vector that has the largest projection
+ * onto the eigen-vectors (phenotypes) of the phenospace described by this trait.
+ * @param trait_vec
+ * @return
+ */
+int Trait::ValueToPhenotypeDimension(std::vector<float> trait_vec)
+{
+    // Since the eigen-vectors of the phenospace are designed to be the identity matrix,
+    // The largest projections ends up becoming the dimension with the largest value.
+    // Therefore find the largest element and the index it corresponds to (the dimension)
+    auto max_val_func = [](float a, float b) {return (fabs(a) < fabs(b));};
+    auto max_iter = std::max_element(trait_vec.begin(), trait_vec.end(), max_val_func);
+    int phenotype_index = std::distance(trait_vec.begin(), max_iter);
+    return phenotype_index;
+}
+
+/**
+ * @brief Return the phenotype that this trait vector most closely resembles.
+ * @param trait_vec
+ * @return
+ */
+std::string Trait::ValueToPhenotype(std::vector<float> trait_vec)
+{
+    int phenotype_index = ValueToPhenotypeDimension(trait_vec);
+    return phenotypes_[phenotype_index];
+}
+
 
 /**
  * @brief Calculate statistics such as mean and standard deviation of the trait for the given creatures.

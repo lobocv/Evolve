@@ -19,33 +19,6 @@ std::vector<float> DiscreteTrait::CalculateValue(const Genome &genome)
     return trait_vec;
 }
 
-std::string DiscreteTrait::ValueToPhenotype(std::vector<float> trait_vec)
-{
-    // Find the largest projection onto the eigenvectors of the phenospace to determine
-    // the phenotype of the trait.
-
-    /**
-     * @brief The PhenospaceProjector struct is a comparator functor that returns True
-     * if the vector it is projecting has a larger projection on the second argument vector,
-     * when compared to the projection onto the first argument vector.
-     */
-    struct PhenospaceProjector
-    {
-        std::vector<float> vect_;
-        PhenospaceProjector(std::vector<float> vect)  : vect_(vect){}
-        bool operator() (std::vector<int> a, std::vector<int> b)
-        {
-            auto ainner = std::inner_product(a.begin(), a.end(), vect_.begin(), 0.0);
-            auto binner = std::inner_product(b.begin(), b.end(), vect_.begin(), 0.0);
-            return std::fabs(ainner) < std::fabs(binner);
-        }
-    } projector(trait_vec);
-    // Find the largest projection. This returns an iterator
-    auto largest_projection = std::max_element(phenovectors_.begin(), phenovectors_.end(), projector);
-    // Convert the iterator to an index
-    int phenotype_index = std::distance(phenovectors_.begin(), largest_projection);
-    return phenotypes_[phenotype_index];
-}
 
 
 std::weak_ptr<TraitWeighting> DiscreteTrait::MakeWeighting(std::vector<float> weights)
