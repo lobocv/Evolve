@@ -37,7 +37,7 @@ std::string DiscreteTrait::ValueToPhenotype(std::vector<float> trait_vec)
         {
             auto ainner = std::inner_product(a.begin(), a.end(), vect_.begin(), 0.0);
             auto binner = std::inner_product(b.begin(), b.end(), vect_.begin(), 0.0);
-            return std::abs(ainner) < std::abs(binner);
+            return std::fabs(ainner) < std::fabs(binner);
         }
     } projector(trait_vec);
     // Find the largest projection. This returns an iterator

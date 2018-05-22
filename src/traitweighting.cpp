@@ -23,7 +23,7 @@ float DiscreteTraitWeighting::CalculateValue(Trait &trait, const Genome &genome)
     DiscreteTrait* cont_trait = static_cast<DiscreteTrait*>(&trait);
     auto trait_vec = cont_trait->CalculateValue(genome);
 
-    auto max = std::max_element(trait_vec.begin(), trait_vec.end());
+    auto max = std::max_element(trait_vec.begin(), trait_vec.end(), [](float a, float b) {return (fabs(a) < fabs(b));});
     // Convert the iterator to an index
     int phenotype_index = std::distance(trait_vec.begin(), max);
     return weights_[(int) phenotype_index];
