@@ -60,12 +60,11 @@ public:
 //};
 
 
-//class BinaryTrait : public DiscreteTrait
-//{
-//public:
-//    BinaryTrait(std::string name, std::string genes, std::vector<std::string> phenotypes);
-//    float CalculateValue(const Genome &genome);
-//};
+class BinaryTrait : public DiscreteTrait
+{
+public:
+    BinaryTrait(std::string name, std::string genes, std::vector<std::string> phenotypes);
+};
 
 std::ostream &operator<< (std::ostream &stream, const Trait &obj);
 
