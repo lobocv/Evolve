@@ -21,7 +21,7 @@ DiscreteTraitWeighting::DiscreteTraitWeighting(std::vector<float> weights): Trai
 float DiscreteTraitWeighting::CalculateValue(Trait &trait, const Genome &genome)
 {
     DiscreteTrait* cont_trait = static_cast<DiscreteTrait*>(&trait);
-    auto trait_vec = cont_trait->CalculateValue(genome);
+    auto trait_vec = cont_trait->CalculateTraitVector(genome);
     int phenotype_index = cont_trait->ValueToPhenotypeDimension(trait_vec);
     return weights_[(int) phenotype_index];
 }

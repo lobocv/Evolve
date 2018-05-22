@@ -136,7 +136,7 @@ std::pair<std::vector<float>, std::vector<float>> Trait::CalculateStatistics(con
     int ii=0;
     for (auto &c : creatures)
     {
-        values[ii] = CalculateValue(c->get_genome());
+        values[ii] = CalculateTraitVector(c->get_genome());
         for (int jj=0; jj< gene_codes_.size(); jj++)
         {
             sum[jj] += values[ii][jj];

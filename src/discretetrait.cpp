@@ -8,18 +8,6 @@ DiscreteTrait::DiscreteTrait(std::string name, std::string genes, std::vector<st
     InitializePhenospace();
 }
 
-/**
- * @brief Calculate the value of the discrete trait based on the given genome.
- * @param genome
- * @return
- */
-std::vector<float> DiscreteTrait::CalculateValue(const Genome &genome)
-{
-    auto trait_vec = CalculateTraitVector(genome);
-    return trait_vec;
-}
-
-
 
 std::weak_ptr<TraitWeighting> DiscreteTrait::MakeWeighting(std::vector<float> weights)
 {

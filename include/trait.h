@@ -27,12 +27,6 @@ public:
     const std::string get_name() const;
     const std::string& get_genes() const;
     std::vector<float> CalculateTraitVector(const Genome &genome);
-    virtual std::vector<float> CalculateValue(const Genome &genome)=0;
-    /**
-     * @brief Determine the phenotype that the given value corresponds to.
-     * @param value
-     * @return
-     */
     int ValueToPhenotypeDimension(std::vector<float> trait_vec);
     std::string ValueToPhenotype(std::vector<float> trait_vec);
     std::pair<std::vector<float>, std::vector<float>> CalculateStatistics(const std::vector<std::shared_ptr<Creature>> creatures);
@@ -44,7 +38,6 @@ class DiscreteTrait : public Trait
 public:
     DiscreteTrait() = default;
     DiscreteTrait(std::string name, std::string genes, std::vector<std::string> phenotypes);
-    std::vector<float> CalculateValue(const Genome &genome);
     std::weak_ptr<TraitWeighting> MakeWeighting(std::vector<float> weights);
 
     friend class DiscreteTraitWeighting;
