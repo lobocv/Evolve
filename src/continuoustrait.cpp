@@ -13,13 +13,20 @@ ContinuousTrait::ContinuousTrait(std::string name, std::string genes, std::vecto
         throw InvalidTraitParameterError("ContinuousTrait must be represented by a polygene (more than 2 genes).");
     }
     InitializePhenospace();
+
+}
+
+
+void ContinuousTrait::InitializeGenevectors()
+{
     // Make all upper-case alleles point towards one phenovector and
     // all lower-case alleles point towards the other. The sum of
     // all of these vectors gives the ratio of dominant to recessive
     // alleles which follows a normal distribution.
     // This normal distribution is then used to find the physical
     // value of the continuous trait.
-    for (auto c: genes)
+
+    for (auto c: gene_codes_)
     {
         genevectors_[toupper(c)] = {1, 0};
         genevectors_[tolower(c)] = {0, 1};

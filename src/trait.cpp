@@ -19,8 +19,24 @@ const std::string& Trait::get_genes() const {return gene_codes_;}
 
 /**
  * @brief Create the phenospace that the genes alleles will reside in.
+ * Each eigenvector in the phenospace corresponds to a specific phenotype
  */
 void Trait::InitializePhenospace()
+{
+    int N_col = phenotypes_.size();
+    phenovectors_ = std::vector<std::vector<int> >(N_col, std::vector<int>(N_col, 0));
+    for (unsigned int ii=0; ii < N_col; ii++)
+    {
+        phenovectors_[ii][ii] = 1;
+    }
+    InitializeGenevectors();;
+
+}
+
+/**
+ * @brief Generate vectors in the phenospace for each gene in the trait.
+ */
+void Trait::InitializeGenevectors()
 {
     int N_col = phenotypes_.size();
     int N_row = gene_codes_.size();
@@ -43,17 +59,10 @@ void Trait::InitializePhenospace()
             {
                  v *= norm;
             }
-            char gene = upper ? std::toupper(gene_codes_[ii]) : std::tolower(gene_codes_[ii]);
+            char gene = upper ? toupper(gene_codes_[ii]) : tolower(gene_codes_[ii]);
             genevectors_[gene] = gene_vec;
         }
     }
-
-    phenovectors_ = std::vector<std::vector<int> >(N_col, std::vector<int>(N_col, 0));
-    for (unsigned int ii=0; ii < N_col; ii++)
-    {
-        phenovectors_[ii][ii] = 1;
-    }
-
 }
 
 /**

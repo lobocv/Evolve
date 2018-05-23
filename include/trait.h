@@ -16,6 +16,7 @@ protected:
     std::vector<std::vector<int>> phenovectors_;
     std::map<char, std::vector<float>> genevectors_;
     void InitializePhenospace();
+    virtual void InitializeGenevectors();
     std::vector<std::shared_ptr<TraitWeighting>> weights_;
     std::string name_;
     std::string gene_codes_;
@@ -48,6 +49,7 @@ class ContinuousTrait : public Trait
 {
     float max_;
     float min_;
+    void InitializeGenevectors();
   public:
     ContinuousTrait() = default;
     ContinuousTrait(std::string name, std::string genes, std::vector<std::string> phenotypes, float max, float min);
@@ -61,6 +63,7 @@ class ContinuousTrait : public Trait
 
 class BinaryTrait : public DiscreteTrait
 {
+    void InitializeGenevectors();
 public:
     BinaryTrait(std::string name, std::string genes, std::vector<std::string> phenotypes);
 };
