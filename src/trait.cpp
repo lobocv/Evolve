@@ -121,7 +121,7 @@ std::string Trait::ValueToPhenotype(std::vector<float> trait_vec)
 std::weak_ptr<TraitWeighting> Trait::MakeWeighting(std::vector<float> weights)
 {
     if (weights.size() != phenotypes_.size()) {
-        throw InvalidAttributeParameterError("DiscreteTraitWeighting '" + name_ + "' must have a " +
+        throw InvalidAttributeParameterError("TraitWeighting '" + name_ + "' must have a " +
                                              std::to_string(phenotypes_.size()) + " weight values. " +
                                              "Got " + std::to_string(weights.size()) + " weight(s) instead.");
     }

@@ -49,10 +49,10 @@ int main()
         // Create a list of traits for species in the ecosystem.
         ecosystem.RegisterContinuousTrait("Hair Length", "ABCDEFGHIJKL", {"Short Haired", "Long Haired"}, 10, 30);
         ecosystem.RegisterBinaryTrait("Hair Color", "D", {"Blond Haired", "Black Haired"});
-        ecosystem.RegisterDiscreteTrait("Exterior Type", "LMNOP", {"Fur", "Skin", "Feathers", "Scales"});
+        ecosystem.RegisterDiscreteTrait("Exterior Type", "LMNOP", {"Fur", "Skin", "Scales"});
 
         // Create a list of attributes that the traits contribute towards.
-        ecosystem.RegisterAttribute("Temperature Resistance", {"Hair Color", "Hair Length", "Exterior Type",}, {{1, 1}, {1, 1}, {1, 1, 1, 1},}, 0.25, 1.0);
+        ecosystem.RegisterAttribute("Temperature Resistance", {"Hair Color", "Hair Length", "Exterior Type",}, {{1, 1}, {1, 1}, {1, 4, 1}}, 0.25, 1.0);
 
     } catch (EvolveException e)
     {
