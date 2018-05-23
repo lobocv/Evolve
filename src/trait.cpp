@@ -200,7 +200,7 @@ std::pair<std::vector<float>, std::vector<float>> Trait::CalculateStatistics(con
 */
 TraitWeighting::TraitWeighting(std::vector<float> weights) : weights_(weights) {}
 
-float TraitWeighting::CalculateValue(Trait &trait, const Genome &genome)
+float TraitWeighting::operator()(Trait &trait, const Genome &genome)
 {
     auto trait_vec = trait.CalculateTraitVector(genome);
     int phenotype_index = trait.ValueToPhenotypeDimension(trait_vec);

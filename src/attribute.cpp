@@ -20,7 +20,8 @@ float Attribute::CalculateValue(const Creature &creature)
     int ii = 0;
     for (auto trait: traits_)
     {
-        value += weights_[ii].lock()->CalculateValue(*trait, creature.get_genome());
+        auto &weight = *weights_[ii].lock();
+        value += weight(*trait, creature.get_genome());
         ii ++;
     }
     return value;

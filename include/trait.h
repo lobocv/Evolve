@@ -71,7 +71,7 @@ struct TraitWeighting
 {
    std::vector<float> weights_;
    TraitWeighting(std::vector<float> weights);
-   float CalculateValue(Trait &trait, const Genome &genome);
+   float operator()(Trait &trait, const Genome &genome);
 };
 
 
