@@ -153,27 +153,27 @@ std::pair<std::vector<float>, std::vector<float>> Trait::CalculateStatistics(con
     for (auto &c : creatures)
     {
         values[ii] = CalculateTraitVector(c->get_genome());
-        for (int jj=0; jj< gene_codes_.size(); jj++)
+        for (int jj=0; jj< phenovectors_.size(); jj++)
         {
             sum[jj] += values[ii][jj];
         }
 
         ii++;
     }
-    for (int jj=0; jj < gene_codes_.size(); jj++)
+    for (int jj=0; jj < phenovectors_.size(); jj++)
     {
         mean[jj] = sum[jj] / creatures.size();
     }
 
     for (ii=0; ii < creatures.size(); ii++)
     {
-        for (int jj=0; jj < gene_codes_.size(); jj++)
+        for (int jj=0; jj < phenovectors_.size(); jj++)
         {
             mean_squared[jj] += std::pow(values[ii][jj] - mean[jj], 2);
         }
     }
     delete[] values;
-    for (int jj=0; jj < gene_codes_.size(); jj++)
+    for (int jj=0; jj < phenovectors_.size(); jj++)
     {
         stdev[jj] = std::sqrt(mean_squared[jj] / creatures.size());
     }
