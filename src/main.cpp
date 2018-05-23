@@ -51,7 +51,7 @@ int main()
 //        ecosystem.RegisterContinuousTrait("Body Fat Percentage", "GHIKJLMNOPQR", {"Thin", "Medium", "Fat"}, 0, 100);
         ecosystem.RegisterBinaryTrait("Hair Color", "D", {"Blond Haired", "Black Haired"});
         ecosystem.RegisterDiscreteTrait("Exterior Type", "LMNOP", {"Fur", "Skin", "Feathers", "Scales"});
-        ecosystem.RegisterAttribute("Temperature Resistance", {"Hair Color", "Exterior Type",}, {{1, 2}, {1, 1, 1, 1},}, 0.25, 1.0);
+        ecosystem.RegisterAttribute("Temperature Resistance", {"Hair Color", "Exterior Type",}, {{1, 1}, {1, 1, 1, 1},}, 0.25, 1.0);
         // Create a list of attributes that the traits contribute towards.
 //        ecosystem.RegisterAttribute("Temperature Resistance", {"Hair Length", "Exterior Type", "Hair Color"}, {{1}, {1, 1, 1, 2}, {1.2, 1}}, 0.25, 0.75);
     } catch (EvolveException e)
@@ -98,8 +98,8 @@ int main()
                 std::cout << *trait << " Standard Deviation = " << stat.second << std::endl;
             }
         }
-//        ecosystem.environmental_limits_["Temperature Resistance"].first *= 1.01;
-//        ecosystem.environmental_limits_["Temperature Resistance"].second /= 1.01;
+        ecosystem.environmental_limits_["Temperature Resistance"].first *= 1.01;
+        ecosystem.environmental_limits_["Temperature Resistance"].second /= 1.01;
         std::cout << "New Temp Resistance limits are " << ecosystem.environmental_limits_["Temperature Resistance"].first << ", " << ecosystem.environmental_limits_["Temperature Resistance"].second << std::endl;
 
 

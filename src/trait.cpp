@@ -140,6 +140,20 @@ std::string Trait::ValueToPhenotype(std::vector<float> trait_vec)
 }
 
 
+
+std::weak_ptr<TraitWeighting> Trait::MakeWeighting(std::vector<float> weights)
+{
+    if (weights.size() != phenotypes_.size()) {
+        throw InvalidAttributeParameterError("DiscreteTraitWeighting '" + name_ + "' must have a " +
+                                             std::to_string(phenotypes_.size()) + " weight values. " +
+                                             "Got " + std::to_string(weights.size()) + " weight(s) instead.");
+    }
+    auto ptr = std::make_shared<TraitWeighting>(weights);
+    weights_.push_back(ptr);
+    return ptr;
+}
+
+
 /**
  * @brief Calculate statistics such as mean and standard deviation of the trait for the given creatures.
  * @param creatures
@@ -179,6 +193,18 @@ std::pair<std::vector<float>, std::vector<float>> Trait::CalculateStatistics(con
     }
     return std::make_pair(mean, stdev);
 
+}
+
+/*
+ *  TraitWeighting
+*/
+TraitWeighting::TraitWeighting(std::vector<float> weights) : weights_(weights) {}
+
+float TraitWeighting::CalculateValue(Trait &trait, const Genome &genome)
+{
+    auto trait_vec = trait.CalculateTraitVector(genome);
+    int phenotype_index = trait.ValueToPhenotypeDimension(trait_vec);
+    return weights_[phenotype_index] * trait_vec[phenotype_index];
 }
 
 

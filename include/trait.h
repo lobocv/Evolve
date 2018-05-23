@@ -31,7 +31,7 @@ public:
     int ValueToPhenotypeDimension(std::vector<float> trait_vec);
     std::string ValueToPhenotype(std::vector<float> trait_vec);
     std::pair<std::vector<float>, std::vector<float>> CalculateStatistics(const std::vector<std::shared_ptr<Creature>> creatures);
-    virtual std::weak_ptr<TraitWeighting> MakeWeighting(std::vector<float> weights)=0;
+    std::weak_ptr<TraitWeighting> MakeWeighting(std::vector<float> weights);
 };
 
 class DiscreteTrait : public Trait
@@ -73,20 +73,8 @@ struct TraitWeighting
 {
    std::vector<float> weights_;
    TraitWeighting(std::vector<float> weights);
-   virtual ~TraitWeighting() {}
-   virtual float CalculateValue(Trait &trait, const Genome &genome)=0;
+   float CalculateValue(Trait &trait, const Genome &genome);
 };
 
-struct ContinuousTraitWeighting : public TraitWeighting
-{
-    ContinuousTraitWeighting(std::vector<float> weights);
-    float CalculateValue(Trait &trait, const Genome &genome);
-};
-
-struct DiscreteTraitWeighting : public TraitWeighting
-{
-    DiscreteTraitWeighting(std::vector<float> weights);
-    float CalculateValue(Trait &trait, const Genome &genome);
-};
 
 #endif // TRAIT_H
