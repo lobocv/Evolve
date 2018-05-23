@@ -41,24 +41,22 @@ public:
     DiscreteTrait(std::string name, std::string genes, std::vector<std::string> phenotypes);
     std::weak_ptr<TraitWeighting> MakeWeighting(std::vector<float> weights);
 
-    friend class DiscreteTraitWeighting;
 };
 
 
-//class ContinuousTrait : public Trait
-//{
-//    float max_;
-//    float min_;
-//  public:
-//    ContinuousTrait() = default;
-//    ContinuousTrait(std::string name, std::string genes, std::vector<std::string> phenotypes, float max, float min);
-//    float CalculateValue(const Genome &genome);
-//    float CalculateNormalizedValue(const Genome &genome);
-//    std::string ValueToPhenotype(float value);
-//    std::weak_ptr<TraitWeighting> MakeWeighting(std::vector<float> weights);
+class ContinuousTrait : public Trait
+{
+    float max_;
+    float min_;
+  public:
+    ContinuousTrait() = default;
+    ContinuousTrait(std::string name, std::string genes, std::vector<std::string> phenotypes, float max, float min);
+    float CalculateValue(const Genome &genome);
+    float CalculateNormalizedValue(const Genome &genome);
+    std::string ValueToPhenotype(std::vector<float> trait_vec);
+    std::weak_ptr<TraitWeighting> MakeWeighting(std::vector<float> weights);
 
-//    friend class ContinuousTraitWeighting;
-//};
+};
 
 
 class BinaryTrait : public DiscreteTrait
