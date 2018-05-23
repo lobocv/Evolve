@@ -23,5 +23,5 @@ float DiscreteTraitWeighting::CalculateValue(Trait &trait, const Genome &genome)
     DiscreteTrait* cont_trait = static_cast<DiscreteTrait*>(&trait);
     auto trait_vec = cont_trait->CalculateTraitVector(genome);
     int phenotype_index = cont_trait->ValueToPhenotypeDimension(trait_vec);
-    return weights_[(int) phenotype_index];
+    return weights_[phenotype_index] * trait_vec[phenotype_index];
 }
