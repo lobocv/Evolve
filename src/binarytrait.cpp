@@ -21,7 +21,7 @@ void BinaryTrait::InitializeGenevectors()
     // The values were chosen such that the normalized trait vector has
     // "nice" looking numbers.
 
-    genevectors_[toupper(gene_codes_[0])] = {4, 0};   // dominant
-    genevectors_[tolower(gene_codes_[0])] = {0, 3};   // recessive
+    gene_phenovectors_[toupper(gene_codes_[0])] = {4, 0};   // dominant
+    gene_phenovectors_[tolower(gene_codes_[0])] = {0, 3};   // recessive
 
 }

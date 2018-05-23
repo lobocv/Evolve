@@ -26,8 +26,8 @@ void ContinuousTrait::InitializeGenevectors()
 
     for (auto c: gene_codes_)
     {
-        genevectors_[toupper(c)] = {1, 0};
-        genevectors_[tolower(c)] = {0, 1};
+        gene_phenovectors_[toupper(c)] = {1, 0};
+        gene_phenovectors_[tolower(c)] = {0, 1};
     }
 }
 

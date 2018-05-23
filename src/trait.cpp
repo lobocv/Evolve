@@ -24,10 +24,10 @@ const std::string& Trait::get_genes() const {return gene_codes_;}
 void Trait::InitializePhenospace()
 {
     int N_col = phenotypes_.size();
-    phenovectors_ = std::vector<std::vector<int> >(N_col, std::vector<int>(N_col, 0));
+    phenotype_vectors_ = std::vector<Phenovector>(N_col, Phenovector(N_col, 0));
     for (unsigned int ii=0; ii < N_col; ii++)
     {
-        phenovectors_[ii][ii] = 1;
+        phenotype_vectors_[ii][ii] = 1;
     }
     InitializeGenevectors();
 
@@ -38,9 +38,9 @@ void Trait::InitializePhenospace()
  * @param genome
  * @return
  */
-std::vector<float> Trait::CalculateTraitVector(const Genome &genome)
+Phenovector Trait::CalculateTraitVector(const Genome &genome)
 {
-    std::vector<float> trait_vec(phenotypes_.size());
+    Phenovector trait_vec(phenotypes_.size());
     int genes_found = 0;
 
     for (auto chromo_pair: genome)
@@ -55,9 +55,9 @@ std::vector<float> Trait::CalculateTraitVector(const Genome &genome)
                 GeneSequence::const_iterator it = gene_sequence->find(gene_code);
                 if ( it != gene_sequence->end())
                 {
-                    std::vector<float> gene_vec;
+                    Phenovector gene_vec;
                     char allele_code = (it->second.get_type() == Dominant) ? toupper(gene_code) : tolower(gene_code);
-                    gene_vec = genevectors_[allele_code];
+                    gene_vec = gene_phenovectors_[allele_code];
                     std::transform(gene_vec.begin(), gene_vec.end(), trait_vec.begin(),
                                    trait_vec.begin(), std::plus<float>());
                     genes_found++;
@@ -73,7 +73,7 @@ std::vector<float> Trait::CalculateTraitVector(const Genome &genome)
     return NormalizeTraitVector(trait_vec);
 }
 
-std::vector<float> Trait::NormalizeTraitVector(std::vector<float> trait_vec)
+Phenovector Trait::NormalizeTraitVector(Phenovector trait_vec)
 {
     double sq_sum = 0;
     for (auto const &v: trait_vec)
@@ -94,7 +94,7 @@ std::vector<float> Trait::NormalizeTraitVector(std::vector<float> trait_vec)
  * @param trait_vec
  * @return
  */
-int Trait::ValueToPhenotypeDimension(std::vector<float> trait_vec)
+int Trait::ValueToPhenotypeDimension(Phenovector trait_vec)
 {
     // Since the eigen-vectors of the phenospace are designed to be the identity matrix,
     // The largest projections ends up becoming the dimension with the largest value.
@@ -110,7 +110,7 @@ int Trait::ValueToPhenotypeDimension(std::vector<float> trait_vec)
  * @param trait_vec
  * @return
  */
-std::string Trait::ValueToPhenotype(std::vector<float> trait_vec)
+std::string Trait::ValueToPhenotype(Phenovector trait_vec)
 {
     int phenotype_index = ValueToPhenotypeDimension(trait_vec);
     return phenotypes_[phenotype_index];
@@ -143,33 +143,33 @@ std::weak_ptr<TraitWeighting> Trait::MakeWeighting(std::vector<float> weights)
  */
 std::pair<std::vector<float>, std::vector<float>> Trait::CalculateStatistics(const std::vector<std::shared_ptr<Creature>> creatures)
 {
-    std::vector<float> sum(phenovectors_.size(), 0), mean(phenovectors_.size(), 0), mean_squared(phenovectors_.size(),0), stdev(phenovectors_.size(), 0);
-    std::vector<float> *values = new std::vector<float>[creatures.size()];
+    std::vector<float> sum(phenotype_vectors_.size(), 0), mean(phenotype_vectors_.size(), 0), mean_squared(phenotype_vectors_.size(),0), stdev(phenotype_vectors_.size(), 0);
+    Phenovector *values = new std::vector<float>[creatures.size()];
     int ii=0;
     for (auto &c : creatures)
     {
         values[ii] = CalculateTraitVector(c->get_genome());
-        for (int jj=0; jj< phenovectors_.size(); jj++)
+        for (int jj=0; jj< phenotype_vectors_.size(); jj++)
         {
             sum[jj] += values[ii][jj];
         }
 
         ii++;
     }
-    for (int jj=0; jj < phenovectors_.size(); jj++)
+    for (int jj=0; jj < phenotype_vectors_.size(); jj++)
     {
         mean[jj] = sum[jj] / creatures.size();
     }
 
     for (ii=0; ii < creatures.size(); ii++)
     {
-        for (int jj=0; jj < phenovectors_.size(); jj++)
+        for (int jj=0; jj < phenotype_vectors_.size(); jj++)
         {
             mean_squared[jj] += std::pow(values[ii][jj] - mean[jj], 2);
         }
     }
     delete[] values;
-    for (int jj=0; jj < phenovectors_.size(); jj++)
+    for (int jj=0; jj < phenotype_vectors_.size(); jj++)
     {
         stdev[jj] = std::sqrt(mean_squared[jj] / creatures.size());
     }

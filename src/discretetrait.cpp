@@ -21,7 +21,7 @@ void DiscreteTrait::InitializeGenevectors()
         for (int upper=0; upper < 2; upper++)
         {
             float sq_sum=0;
-            std::vector<float> gene_vec;
+            Phenovector gene_vec;
             for (int jj=0; jj < N_col; jj++)
             {
                 int v = std::rand() % 101 - 51;
@@ -35,7 +35,7 @@ void DiscreteTrait::InitializeGenevectors()
                  v *= norm;
             }
             char gene = upper ? toupper(gene_codes_[ii]) : tolower(gene_codes_[ii]);
-            genevectors_[gene] = gene_vec;
+            gene_phenovectors_[gene] = gene_vec;
         }
     }
 }
