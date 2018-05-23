@@ -50,6 +50,7 @@ void Ecosystem::RegisterTrait(std::shared_ptr<Trait> trait)
 {
     std::cout << "TRAIT REGISTERED " << trait->get_name() << std::endl;
     Ecosystem &ecosystem = Ecosystem::GetEcosystem();
+    trait->InitializePhenospace();
     ecosystem.traits_[trait->get_name()] = trait;
 
 }

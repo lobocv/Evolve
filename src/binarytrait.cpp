@@ -10,8 +10,6 @@ BinaryTrait::BinaryTrait(std::string name, std::string gene_code, std::vector<st
     {
         throw InvalidTraitParameterError("Binary traits must be dependent on only one gene. " + std::to_string(gene_code.size()) + " were given.");
     }
-
-    InitializeGenevectors();
 }
 
 

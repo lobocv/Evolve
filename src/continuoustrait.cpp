@@ -12,8 +12,6 @@ ContinuousTrait::ContinuousTrait(std::string name, std::string genes, std::vecto
     {
         throw InvalidTraitParameterError("ContinuousTrait must be represented by a polygene (more than 2 genes).");
     }
-    InitializePhenospace();
-
 }
 
 

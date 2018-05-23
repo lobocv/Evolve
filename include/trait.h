@@ -15,8 +15,7 @@ class Trait
 protected:
     std::vector<std::vector<int>> phenovectors_;
     std::map<char, std::vector<float>> genevectors_;
-    void InitializePhenospace();
-    virtual void InitializeGenevectors();
+    virtual void InitializeGenevectors()=0;
     std::vector<std::shared_ptr<TraitWeighting>> weights_;
     std::string name_;
     std::string gene_codes_;
@@ -24,6 +23,7 @@ public:
     const std::vector<std::string> phenotypes_;
     Trait() = default;
     virtual ~Trait() {}
+    void InitializePhenospace();
     Trait(std::string name, std::string genes, std::vector<std::string> phenotypes);
     const std::string get_name() const;
     const std::string& get_genes() const;
@@ -37,6 +37,7 @@ public:
 
 class DiscreteTrait : public Trait
 {
+    void InitializeGenevectors();
 public:
     DiscreteTrait() = default;
     DiscreteTrait(std::string name, std::string genes, std::vector<std::string> phenotypes);
