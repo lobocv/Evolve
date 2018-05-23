@@ -31,7 +31,9 @@ public:
     std::vector<float> NormalizeTraitVector(std::vector<float> trait_vec);
     int ValueToPhenotypeDimension(std::vector<float> trait_vec);
     std::string ValueToPhenotype(std::vector<float> trait_vec);
+    std::string ValueToPhenotype(std::shared_ptr<Creature> c);
     std::pair<std::vector<float>, std::vector<float>> CalculateStatistics(const std::vector<std::shared_ptr<Creature>> creatures);
+    std::map<std::string, int> CalculatePhenotypeStatistics(const std::vector<std::shared_ptr<Creature>> creatures);
     std::weak_ptr<TraitWeighting> MakeWeighting(std::vector<float> weights);
 };
 

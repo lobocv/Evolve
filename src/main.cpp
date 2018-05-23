@@ -93,9 +93,16 @@ int main()
             for (auto &trait_pair: ecosystem.traits_)
             {
                 auto trait = trait_pair.second;
-                auto stat = trait->CalculateStatistics(creatures);
-                std::cout << *trait << " Mean = " << stat.first << std::endl;
-                std::cout << *trait << " Standard Deviation = " << stat.second << std::endl;
+                  auto phenotype_counter = trait->CalculatePhenotypeStatistics(creatures);
+                  std::cout << *trait << " : ";
+                  for (auto it: phenotype_counter)
+                  {
+                      std::cout << it.first  << " = " << it.second << ", ";
+                  }
+                  std::cout << std::endl;
+//                auto stat = trait->CalculateStatistics(creatures);
+//                std::cout << *trait << " Mean = " << stat.first << std::endl;
+//                std::cout << *trait << " Standard Deviation = " << stat.second << std::endl;
             }
         }
         ecosystem.environmental_limits_["Temperature Resistance"].first *= 1.02;

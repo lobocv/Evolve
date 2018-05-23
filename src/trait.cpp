@@ -116,6 +116,11 @@ std::string Trait::ValueToPhenotype(std::vector<float> trait_vec)
     return phenotypes_[phenotype_index];
 }
 
+std::string Trait::ValueToPhenotype(std::shared_ptr<Creature> c)
+{
+    auto trait_vec = CalculateTraitVector(c->get_genome());
+    return ValueToPhenotype(trait_vec);
+}
 
 
 std::weak_ptr<TraitWeighting> Trait::MakeWeighting(std::vector<float> weights)
@@ -170,6 +175,27 @@ std::pair<std::vector<float>, std::vector<float>> Trait::CalculateStatistics(con
     }
     return std::make_pair(mean, stdev);
 
+}
+
+/**
+ * @brief Calculate the frequency of all the phenotypes within the given creature population
+ * @param creatures
+ * @return
+ */
+std::map<std::string, int> Trait::CalculatePhenotypeStatistics(const std::vector<std::shared_ptr<Creature>> creatures)
+{
+    std::map<std::string, int> counter;
+    for (auto phenotype: phenotypes_)
+    {
+        counter[phenotype] = 0;
+    }
+    for (auto c : creatures)
+    {
+        std::string phenotype = ValueToPhenotype(c);
+        counter[phenotype]++;
+
+    }
+    return counter;
 }
 
 /*
