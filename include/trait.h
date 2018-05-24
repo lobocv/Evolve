@@ -28,7 +28,7 @@ public:
     const std::string get_name() const;
     const std::string& get_genes() const;
     Phenovector CumulativePhenovector(const Genome &genome);
-    int ValueToPhenotypeDimension(Phenovector trait_vec);
+    int PhenovectorMaxDimension(Phenovector trait_vec);
     std::string ValueToPhenotype(Phenovector trait_vec);
     std::string ValueToPhenotype(std::shared_ptr<Creature> c);
     std::pair<std::vector<float>, std::vector<float>> CalculateStatistics(const std::vector<std::shared_ptr<Creature>> creatures);

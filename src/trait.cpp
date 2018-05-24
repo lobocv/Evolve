@@ -79,7 +79,7 @@ Phenovector Trait::CumulativePhenovector(const Genome &genome)
  * @param trait_vec
  * @return
  */
-int Trait::ValueToPhenotypeDimension(Phenovector trait_vec)
+int Trait::PhenovectorMaxDimension(Phenovector trait_vec)
 {
     // Since the eigen-vectors of the phenospace are designed to be the identity matrix,
     // The largest projections ends up becoming the dimension with the largest value.
@@ -97,7 +97,7 @@ int Trait::ValueToPhenotypeDimension(Phenovector trait_vec)
  */
 std::string Trait::ValueToPhenotype(Phenovector trait_vec)
 {
-    int phenotype_index = ValueToPhenotypeDimension(trait_vec);
+    int phenotype_index = PhenovectorMaxDimension(trait_vec);
     return phenotypes_[phenotype_index];
 }
 
@@ -191,7 +191,7 @@ TraitWeighting::TraitWeighting(std::vector<float> weights) : weights_(weights) {
 float TraitWeighting::operator()(Trait &trait, const Genome &genome)
 {
     auto trait_vec = trait.CumulativePhenovector(genome);
-    int phenotype_index = trait.ValueToPhenotypeDimension(trait_vec);
+    int phenotype_index = trait.PhenovectorMaxDimension(trait_vec);
     return weights_[phenotype_index] * trait_vec[phenotype_index];
 }
 
