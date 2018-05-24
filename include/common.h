@@ -6,6 +6,7 @@
 #include <cstdlib>
 #include <map>
 #include <exception>
+#include <cmath>
 
 // Forward Declarations
 class Chromosome;
@@ -15,12 +16,13 @@ class Gene;
 class Trait;
 class TraitWeighting;
 class Ecosystem;
-// Typedefs
 
+// Typedefs
 typedef std::pair<Chromosome, Chromosome> ChromosomePair;
 typedef std::vector<ChromosomePair> Genome;
 typedef std::map<char, Gene> GeneSequence;
 typedef std::vector<float> Phenovector;
+
 enum Sex{Male, Female};
 enum GeneType{Dominant, Recessive};
 enum TraitType{Binary, Discrete, Polygenic};
@@ -66,6 +68,22 @@ public:
 };
 
 inline bool FlipCoin() {return std::rand() % 2;}
+
+inline Phenovector NormalizeTraitVector(Phenovector trait_vec)
+{
+    double sq_sum = 0;
+    for (auto const &v: trait_vec)
+    {
+        sq_sum += v*v;
+    }
+    sq_sum = std::sqrt(sq_sum);
+    for (auto &v: trait_vec)
+    {
+        v /= sq_sum;
+    }
+    return trait_vec;
+}
+
 
 template <class T>
 inline std::ostream &operator<<(std::ostream &stream, const std::vector<T> &obj)

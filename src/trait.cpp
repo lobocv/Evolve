@@ -38,7 +38,7 @@ void Trait::InitializePhenospace()
  * @param genome
  * @return
  */
-Phenovector Trait::CalculateTraitVector(const Genome &genome)
+Phenovector Trait::CumulativePhenovector(const Genome &genome)
 {
     Phenovector trait_vec(phenotypes_.size());
     int genes_found = 0;
@@ -73,21 +73,6 @@ Phenovector Trait::CalculateTraitVector(const Genome &genome)
     return NormalizeTraitVector(trait_vec);
 }
 
-Phenovector Trait::NormalizeTraitVector(Phenovector trait_vec)
-{
-    double sq_sum = 0;
-    for (auto const &v: trait_vec)
-    {
-        sq_sum += v*v;
-    }
-    sq_sum = std::sqrt(sq_sum);
-    for (auto &v: trait_vec)
-    {
-        v /= sq_sum;
-    }
-    return trait_vec;
-}
-
 /**
  * @brief Return the dimension of the trait vector that has the largest projection
  * onto the eigen-vectors (phenotypes) of the phenospace described by this trait.
@@ -118,7 +103,7 @@ std::string Trait::ValueToPhenotype(Phenovector trait_vec)
 
 std::string Trait::ValueToPhenotype(std::shared_ptr<Creature> c)
 {
-    auto trait_vec = CalculateTraitVector(c->get_genome());
+    auto trait_vec = CumulativePhenovector(c->get_genome());
     return ValueToPhenotype(trait_vec);
 }
 
@@ -148,7 +133,7 @@ std::pair<std::vector<float>, std::vector<float>> Trait::CalculateStatistics(con
     int ii=0;
     for (auto &c : creatures)
     {
-        values[ii] = CalculateTraitVector(c->get_genome());
+        values[ii] = CumulativePhenovector(c->get_genome());
         for (int jj=0; jj< phenotype_vectors_.size(); jj++)
         {
             sum[jj] += values[ii][jj];
@@ -205,7 +190,7 @@ TraitWeighting::TraitWeighting(std::vector<float> weights) : weights_(weights) {
 
 float TraitWeighting::operator()(Trait &trait, const Genome &genome)
 {
-    auto trait_vec = trait.CalculateTraitVector(genome);
+    auto trait_vec = trait.CumulativePhenovector(genome);
     int phenotype_index = trait.ValueToPhenotypeDimension(trait_vec);
     return weights_[phenotype_index] * trait_vec[phenotype_index];
 }

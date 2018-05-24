@@ -102,7 +102,7 @@ void Creature::print_traits()
     Ecosystem &ecosystem = Ecosystem::GetEcosystem();
     std::cout << *this << " is ";
     for (auto trait: ecosystem.traits_) {
-        auto value = trait.second->CalculateTraitVector(genome_);
+        auto value = trait.second->CumulativePhenovector(genome_);
         auto phenotype = trait.second->ValueToPhenotype(value);
         std::cout << phenotype << "(" << value << "), ";
     }

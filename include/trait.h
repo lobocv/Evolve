@@ -27,8 +27,7 @@ public:
     Trait(std::string name, std::string genes, std::vector<std::string> phenotypes);
     const std::string get_name() const;
     const std::string& get_genes() const;
-    Phenovector CalculateTraitVector(const Genome &genome);
-    Phenovector NormalizeTraitVector(Phenovector trait_vec);
+    Phenovector CumulativePhenovector(const Genome &genome);
     int ValueToPhenotypeDimension(Phenovector trait_vec);
     std::string ValueToPhenotype(Phenovector trait_vec);
     std::string ValueToPhenotype(std::shared_ptr<Creature> c);
