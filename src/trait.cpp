@@ -13,8 +13,8 @@
  * @param genes
  */
 Trait::Trait(std::string name, std::string genes, std::vector<std::string> phenotypes) : name_(name), gene_codes_(genes), phenotypes_(phenotypes){}
-const std::string Trait::get_name() const { return name_;}
-const std::string& Trait::get_genes() const {return gene_codes_;}
+const std::string Trait::GetName() const { return name_;}
+const std::string& Trait::GetGenes() const {return gene_codes_;}
 
 
 /**
@@ -47,7 +47,7 @@ Phenovector Trait::CumulativePhenovector(const Genome &genome)
     {
         for (int chromo_idx=0; chromo_idx < 2; chromo_idx++)
         {
-            const GeneSequence *gene_sequence = &(chromo_idx ? chromo_pair.first.get_genes() : chromo_pair.second.get_genes());
+            const GeneSequence *gene_sequence = &(chromo_idx ? chromo_pair.first.GetGenes() : chromo_pair.second.GetGenes());
 
             // Look for the trait's genes in the genome and sum the gene vector associated with the gene.
             for (const auto gene_code: gene_codes_)
@@ -56,7 +56,7 @@ Phenovector Trait::CumulativePhenovector(const Genome &genome)
                 if ( it != gene_sequence->end())
                 {
                     Phenovector gene_vec;
-                    char allele_code = (it->second.get_type() == Dominant) ? toupper(gene_code) : tolower(gene_code);
+                    char allele_code = (it->second.GetType() == Dominant) ? toupper(gene_code) : tolower(gene_code);
                     gene_vec = gene_phenovectors_[allele_code];
                     std::transform(gene_vec.begin(), gene_vec.end(), trait_vec.begin(),
                                    trait_vec.begin(), std::plus<float>());
@@ -103,7 +103,7 @@ std::string Trait::ValueToPhenotype(Phenovector trait_vec)
 
 std::string Trait::ValueToPhenotype(std::shared_ptr<Creature> c)
 {
-    auto trait_vec = CumulativePhenovector(c->get_genome());
+    auto trait_vec = CumulativePhenovector(c->GetGenome());
     return ValueToPhenotype(trait_vec);
 }
 
@@ -133,7 +133,7 @@ std::pair<std::vector<float>, std::vector<float>> Trait::CalculateStatistics(con
     int ii=0;
     for (auto &c : creatures)
     {
-        values[ii] = CumulativePhenovector(c->get_genome());
+        values[ii] = CumulativePhenovector(c->GetGenome());
         for (int jj=0; jj< phenotype_vectors_.size(); jj++)
         {
             sum[jj] += values[ii][jj];
@@ -198,8 +198,8 @@ float TraitWeighting::operator()(Trait &trait, const Genome &genome)
 
 std::ostream &operator<<(std::ostream &stream, const Trait &obj)
 {
-    stream << obj.get_name() << " (";
-    for (auto gene: obj.get_genes())
+    stream << obj.GetName() << " (";
+    for (auto gene: obj.GetGenes())
     {
         stream << gene;
     }

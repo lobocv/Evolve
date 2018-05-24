@@ -13,10 +13,10 @@
 */
 Creature::Creature(Species& species, Sex sex) : species_(species), sex_(sex){}
 
-void Creature::print() const
+void Creature::Print() const
 {
     int chromo_num=0;
-    for (auto &chromosome_pair: get_genome()){
+    for (auto &chromosome_pair: GetGenome()){
         std::cout << "Chromosome Pair #" << (chromo_num+1) << ":" << std::endl;
         std::cout << chromosome_pair.first << std::endl;
         std::cout << chromosome_pair.second << std::endl;
@@ -44,19 +44,19 @@ Creature::~Creature()
 std::vector<std::shared_ptr<Creature>> Creature::Reproduce(std::shared_ptr<Creature> creature1, std::shared_ptr<Creature> creature2)
 {
     Ecosystem &eco = Ecosystem::GetEcosystem();
-    Species &species = creature1->get_species();
+    Species &species = creature1->GetSpecies();
     const int N_offspring = rand() % (species.max_offspring_+1);
 
     // Determine which creature is male (father) and which is female (mother)    
     // Throw an error if trying to mate two of the same sex.
-    std::shared_ptr<Creature>& father = (creature1->get_sex() == Male) ? creature1 : creature2;
-    std::shared_ptr<Creature>& mother = (creature2->get_sex() == Male) ? creature1 : creature2;
-    if (mother->get_sex() == father->get_sex()) {throw(CannotProcreateError("Creatures are of the same sex."));}
-    if (mother->get_species() != father->get_species()) {throw(CannotProcreateError("Creatures are not of the same species."));}
+    std::shared_ptr<Creature>& father = (creature1->GetSex() == Male) ? creature1 : creature2;
+    std::shared_ptr<Creature>& mother = (creature2->GetSex() == Male) ? creature1 : creature2;
+    if (mother->GetSex() == father->GetSex()) {throw(CannotProcreateError("Creatures are of the same sex."));}
+    if (mother->GetSpecies() != father->GetSpecies()) {throw(CannotProcreateError("Creatures are not of the same species."));}
     // TODO: Check creatures are of reproductive age.
 
-    Genome male_chromo_pairs = creature1->get_genome();
-    Genome female_chromo_pairs = creature2->get_genome();
+    Genome male_chromo_pairs = creature1->GetGenome();
+    Genome female_chromo_pairs = creature2->GetGenome();
 
     std::vector<std::shared_ptr<Creature>> offspring;
     for (int child_num=0; child_num < N_offspring; child_num++)
@@ -81,7 +81,7 @@ std::vector<std::shared_ptr<Creature>> Creature::Reproduce(std::shared_ptr<Creat
         // Add the creature to the species
         Sex sex_of_child = Sex(FlipCoin());
         std::shared_ptr<Creature> child = species.AddCreature(sex_of_child, child_genome);
-        child->birth_date = eco.get_day();
+        child->birth_date = eco.GetDay();
         child->mother_ = mother;
         child->father_ = father;
         offspring.push_back(child);
@@ -90,14 +90,14 @@ std::vector<std::shared_ptr<Creature>> Creature::Reproduce(std::shared_ptr<Creat
 }
 
 
-const int Creature::get_id() const { return id_;}
-Species &Creature::get_species() const { return species_;}
-const Genome &Creature::get_genome() const { return genome_;}
-const Sex Creature::get_sex() const { return sex_;}
-const int Creature::get_birth_date() const {return birth_date;}
-std::shared_ptr<Creature> Creature::get_father() const {return father_.lock();}
-std::shared_ptr<Creature> Creature::get_mother() const {return mother_.lock();}
-void Creature::print_traits()
+const int Creature::GetID() const { return id_;}
+Species &Creature::GetSpecies() const { return species_;}
+const Genome &Creature::GetGenome() const { return genome_;}
+const Sex Creature::GetSex() const { return sex_;}
+const int Creature::GetBirthDate() const {return birth_date;}
+std::shared_ptr<Creature> Creature::GetFather() const {return father_.lock();}
+std::shared_ptr<Creature> Creature::GetMother() const {return mother_.lock();}
+void Creature::PrintTraits()
 {
     Ecosystem &ecosystem = Ecosystem::GetEcosystem();
     std::cout << *this << " is ";
@@ -112,8 +112,8 @@ void Creature::print_traits()
 
 std::ostream &operator<<(std::ostream &stream, const Creature &obj)
 {
-    stream << "Creature (" << "#" << obj.get_id() << ",";
-    (obj.get_sex() == Male) ? (stream << "M") : (stream << "F");
-    stream << "," << obj.get_species() << ")";
+    stream << "Creature (" << "#" << obj.GetID() << ",";
+    (obj.GetSex() == Male) ? (stream << "M") : (stream << "F");
+    stream << "," << obj.GetSpecies() << ")";
     return stream;
 }

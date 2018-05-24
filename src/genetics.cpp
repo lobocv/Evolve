@@ -18,12 +18,12 @@
  */
 Gene::Gene(char name, GeneType type) : name_((char) toupper(name)), type_(type) {}
 
-const char Gene::get_name() const
+const char Gene::GetName() const
 {
     return type_ ? (char)tolower(name_) : (char)toupper(name_);
 }
 
-const GeneType& Gene::get_type() const {return type_;}
+const GeneType& Gene::GetType() const {return type_;}
 
 
 /*
@@ -55,8 +55,8 @@ ChromosomePair Chromosome::MakeRandomPair(std::string genecodes)
     return std::make_pair(left_chromo, right_chromo);
 }
 
-const int Chromosome::get_length() const {return genes_.size();}
-const GeneSequence& Chromosome::get_genes() const {return genes_;}
+const int Chromosome::GetLength() const {return genes_.size();}
+const GeneSequence& Chromosome::GetGenes() const {return genes_;}
 
 
 /**
@@ -75,13 +75,13 @@ std::pair<int, int> GetAlleleRatio(const std::string &gene_codes, const Genome &
     {
         for (int chromo_idx=0; chromo_idx < 2; chromo_idx++)
         {
-            gene_sequence = &(chromo_idx ? chromo_pair.first.get_genes() : chromo_pair.second.get_genes());
+            gene_sequence = &(chromo_idx ? chromo_pair.first.GetGenes() : chromo_pair.second.GetGenes());
             for (const auto gene_code: gene_codes)
             {
                 it = gene_sequence->find(gene_code);
                 if ( it != gene_sequence->end())
                 {
-                    if (it->second.get_type() == Dominant)
+                    if (it->second.GetType() == Dominant)
                     {
                         n_dominant++;
                     } else {
@@ -99,7 +99,7 @@ std::pair<int, int> GetAlleleRatio(const std::string &gene_codes, const Genome &
 
 std::ostream &operator<<(std::ostream &stream, const Chromosome &obj)
 {
-    for (auto gene: obj.get_genes())
+    for (auto gene: obj.GetGenes())
     {
         stream << gene.second;
     }
@@ -108,6 +108,6 @@ std::ostream &operator<<(std::ostream &stream, const Chromosome &obj)
 
 std::ostream &operator<<(std::ostream &stream, const Gene &obj)
 {
-    stream << obj.get_name();
+    stream << obj.GetName();
     return stream;
 }

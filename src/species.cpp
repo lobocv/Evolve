@@ -15,11 +15,11 @@ Species::Species(std::string name, int genotype_length, int n_chromosome_pairs, 
     : name_(name), genotype_length_(genotype_length), n_chromosome_pairs_(n_chromosome_pairs),
       max_offspring_(max_offspring), life_expectancy_days_(life_expectancy_days){}
 
-const std::string Species::get_name() const {return name_;}
-const int Species::get_alive_population() const { return alive_;}
-const int Species::get_deceased_population() const { return deceased_;}
-const int Species::get_n_chromosome_pairs() const{return n_chromosome_pairs_;}
-std::vector<std::shared_ptr<Creature>>& Species::get_creatures() {return creatures_;}
+const std::string Species::GetName() const {return name_;}
+const int Species::GetAlivePopulation() const { return alive_;}
+const int Species::GetDeceasedPopulation() const { return deceased_;}
+const int Species::GetNChromosomePairs() const{return n_chromosome_pairs_;}
+std::vector<std::shared_ptr<Creature>>& Species::GetCreatures() {return creatures_;}
 
 /**
  * @brief Create a new creature of this species.
@@ -30,9 +30,9 @@ std::vector<std::shared_ptr<Creature>>& Species::get_creatures() {return creatur
 std::shared_ptr<Creature> Species::AddCreature(Sex sex, Genome genome)
 {
     std::shared_ptr<Creature> creature = std::make_shared<Creature>(*this, sex);
-    for (int chromo_num=0; chromo_num < this->get_n_chromosome_pairs(); chromo_num++) {
+    for (int chromo_num=0; chromo_num < this->GetNChromosomePairs(); chromo_num++) {
         creature->genome_ = genome;
-        creature->id_ = get_alive_population() + get_deceased_population();
+        creature->id_ = GetAlivePopulation() + GetDeceasedPopulation();
     }
     // Add the creature to the list of recorded creatures in the species
     creatures_.push_back(creature);
@@ -65,7 +65,7 @@ void Species::InitializeCreatures(int n_males, int n_females)
         
         Genome genome;
         // Create all the chromosomes for the new creature
-        for (int chromo_num=0; chromo_num < this->get_n_chromosome_pairs(); chromo_num++) {
+        for (int chromo_num=0; chromo_num < this->GetNChromosomePairs(); chromo_num++) {
             auto chromosome_pair = Chromosome::MakeRandomPair(gene_sequence);
             genome.push_back(chromosome_pair);
         }
@@ -80,6 +80,6 @@ bool operator!=(const Species &lhs, const Species &rhs) {return !(lhs == rhs);}
 
 std::ostream &operator<<(std::ostream &stream, const Species &obj)
 {
-    stream << "Species " << obj.get_name();
+    stream << "Species " << obj.GetName();
     return stream;
 }

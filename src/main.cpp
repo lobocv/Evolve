@@ -76,17 +76,17 @@ int main()
     std::cout << "===============" << std::endl;
 
     // Get the first two creatures and have them reproduce
-    std::vector<std::shared_ptr<Creature>> &creatures = ecosystem.species_[kMySpeciesName]->get_creatures();
+    std::vector<std::shared_ptr<Creature>> &creatures = ecosystem.species_[kMySpeciesName]->GetCreatures();
 
-    int& day_number = ecosystem.get_day();
+
     int epoch_length_days =0;
     do
     {
         std::cin >> epoch_length_days;
         ecosystem.RunEpoch(epoch_length_days);
-
-        std::cout << "Number of alive creatures after " << day_number << " days = " << myspecies->get_alive_population() << std::endl;
-        std::cout << "Number of deceased creatures after " << day_number << " days = " << myspecies->get_deceased_population() << std::endl;
+        int day_number = ecosystem.GetDay();
+        std::cout << "Number of alive creatures after " << day_number << " days = " << myspecies->GetAlivePopulation() << std::endl;
+        std::cout << "Number of deceased creatures after " << day_number << " days = " << myspecies->GetDeceasedPopulation() << std::endl;
 
         if (creatures.size() > 0)
         {

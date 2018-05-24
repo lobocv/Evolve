@@ -11,8 +11,8 @@ class Gene
 public:
     Gene() = default;
     Gene(char, GeneType);
-    const char get_name() const;
-    const GeneType& get_type() const;
+    const char GetName() const;
+    const GeneType& GetType() const;
 };
 
 class Chromosome
@@ -22,8 +22,8 @@ public:
     Chromosome() = default;
     Chromosome(GeneSequence);
     static ChromosomePair MakeRandomPair(std::string);
-    const int get_length() const;
-    const GeneSequence& get_genes() const;
+    const int GetLength() const;
+    const GeneSequence& GetGenes() const;
 };
 
 

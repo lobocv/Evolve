@@ -48,10 +48,10 @@ std::shared_ptr<Species> Ecosystem::RegisterSpecies(std::string species_name, in
  */
 void Ecosystem::RegisterTrait(std::shared_ptr<Trait> trait)
 {
-    std::cout << "TRAIT REGISTERED " << trait->get_name() << std::endl;
+    std::cout << "TRAIT REGISTERED " << trait->GetName() << std::endl;
     Ecosystem &ecosystem = Ecosystem::GetEcosystem();
     trait->InitializePhenospace();
-    ecosystem.traits_[trait->get_name()] = trait;
+    ecosystem.traits_[trait->GetName()] = trait;
 
 }
 
@@ -162,7 +162,7 @@ void Ecosystem::RunEpoch(int number_of_days)
         */
         for (auto &species : species_)
         {
-            auto &creatures = species.second->get_creatures();
+            auto &creatures = species.second->GetCreatures();
             if (std::rand() % 100 <= 100 * interaction_rate_ && creatures.size() > 0)
             {
 
@@ -184,14 +184,14 @@ void Ecosystem::RunEpoch(int number_of_days)
             std::vector<std::shared_ptr<Creature>>::iterator it = creatures.begin();
             while (it != creatures.end())
             {
-                int age = (day_ - (*it)->get_birth_date());
+                int age = (day_ - (*it)->GetBirthDate());
 //                std::cout << "Age of " << **it << " is " << age << std::endl;
-                (*it)->print_traits();
+                (*it)->PrintTraits();
                 bool creature_survives = true;
                 for (auto attr: attributes_)
                 {
                     auto attr_value = attr.second->CalculateValue(**it);
-                    auto attr_limit = environmental_limits_[attr.second->get_name()];
+                    auto attr_limit = environmental_limits_[attr.second->GetName()];
                     std::cout << "Attribute " << attr.first << " = " << attr_value << std::endl;
                     creature_survives = attr_value >= attr_limit.first && attr_value <= attr_limit.second;
                 }
@@ -212,6 +212,6 @@ void Ecosystem::RunEpoch(int number_of_days)
  * @brief Get the absolute day number in the ecosystem simulation.
  * @return
  */
-int& Ecosystem::get_day() {return day_;}
+int Ecosystem::GetDay() {return day_;}
 
 

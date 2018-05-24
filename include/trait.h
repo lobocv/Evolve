@@ -25,8 +25,8 @@ public:
     virtual ~Trait() {}
     void InitializePhenospace();
     Trait(std::string name, std::string genes, std::vector<std::string> phenotypes);
-    const std::string get_name() const;
-    const std::string& get_genes() const;
+    const std::string GetName() const;
+    const std::string& GetGenes() const;
     Phenovector CumulativePhenovector(const Genome &genome);
     int PhenovectorMaxDimension(Phenovector trait_vec);
     std::string ValueToPhenotype(Phenovector trait_vec);

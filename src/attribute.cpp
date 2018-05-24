@@ -21,10 +21,10 @@ float Attribute::CalculateValue(const Creature &creature)
     for (auto trait: traits_)
     {
         auto &weight = *weights_[ii].lock();
-        value += weight(*trait, creature.get_genome());
+        value += weight(*trait, creature.GetGenome());
         ii ++;
     }
     return value;
 }
 
-const std::string Attribute::get_name() const {return name_;}
+const std::string Attribute::GetName() const {return name_;}
