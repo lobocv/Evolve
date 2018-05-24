@@ -22,9 +22,10 @@ public:
     std::shared_ptr<Species> RegisterSpecies(std::string species_name, int chromosome_length, int n_chromosome_pairs, int max_offspring,
                                              int life_expectancy_days, int initial_population, float male_female_ratio);
     void RegisterDiscreteTrait(std::string name, std::string gene_codes, std::vector<std::string> phenotypes);
+    void RegisterBinaryTrait(std::string name, std::string gene_code, std::vector<std::string> phenotypes);
     void RegisterContinuousTrait(std::string name, std::string gene_codes, std::vector<std::string> phenotypes, float min, float max);
     void RegisterAttribute(std::string attr_name, std::vector<std::string> traits, std::vector<std::vector<float>> weights, float min, float max);
-    int& get_day();
+    int GetDay();
     void RunEpoch(int number_of_days);
 private:
     int day_ = 0;

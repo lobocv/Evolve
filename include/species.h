@@ -24,12 +24,11 @@ public:
     Species(std::string name, int genotype_length, int n_chromosome_pairs, int max_offspring, int life_expectancy_days);
     void InitializeCreatures(int n_males, int n_females);
     std::shared_ptr<Creature> AddCreature(Sex, Genome);
-    const std::string get_name() const;
-    const int get_n_chromosome_pairs() const;
-    std::vector<std::shared_ptr<Creature> > & get_creatures();
-    const int get_alive_population() const;
-    const int get_deceased_population() const;
-    const std::vector< std::shared_ptr<Creature> >& get_creatures() const;
+    const std::string GetName() const;
+    const int GetNChromosomePairs() const;
+    std::vector<std::shared_ptr<Creature>> &GetCreatures();
+    const int GetAlivePopulation() const;
+    const int GetDeceasedPopulation() const;
 
     friend bool operator==(const Species &lhs, const Species &rhs);
     friend bool operator!=(const Species &lhs, const Species &rhs);

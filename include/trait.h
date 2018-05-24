@@ -13,6 +13,9 @@
 class Trait
 {
 protected:
+    std::vector<Phenovector> phenotype_vectors_;
+    std::map<char, Phenovector> gene_phenovectors_;
+    virtual void InitializeGenevectors()=0;
     std::vector<std::shared_ptr<TraitWeighting>> weights_;
     std::string name_;
     std::string gene_codes_;
@@ -20,69 +23,60 @@ public:
     const std::vector<std::string> phenotypes_;
     Trait() = default;
     virtual ~Trait() {}
+    void InitializePhenospace();
     Trait(std::string name, std::string genes, std::vector<std::string> phenotypes);
-    const std::string get_name() const;
-    const std::string& get_genes() const;
-    virtual float CalculateValue(const Genome &genome)=0;
-    /**
-     * @brief Determine the phenotype that the given value corresponds to.
-     * @param value
-     * @return
-     */
-    virtual std::string ValueToPhenotype(float value)=0;
-    std::pair<float, float> CalculateStatistics(const std::vector<std::shared_ptr<Creature>> creatures);
-    virtual std::weak_ptr<TraitWeighting> MakeWeighting(std::vector<float> weights)=0;
+    const std::string GetName() const;
+    const std::string& GetGenes() const;
+    Phenovector CumulativePhenovector(const Genome &genome);
+    int PhenovectorMaxDimension(Phenovector trait_vec);
+    std::string ValueToPhenotype(Phenovector trait_vec);
+    std::string ValueToPhenotype(std::shared_ptr<Creature> c);
+    std::pair<std::vector<float>, std::vector<float>> CalculateStatistics(const std::vector<std::shared_ptr<Creature>> creatures);
+    std::map<std::string, int> CalculatePhenotypeStatistics(const std::vector<std::shared_ptr<Creature>> creatures);
+    std::weak_ptr<TraitWeighting> MakeWeighting(std::vector<float> weights);
 };
+
+class DiscreteTrait : public Trait
+{
+    void InitializeGenevectors();
+public:
+    DiscreteTrait() = default;
+    DiscreteTrait(std::string name, std::string genes, std::vector<std::string> phenotypes);
+    std::weak_ptr<TraitWeighting> MakeWeighting(std::vector<float> weights);
+
+};
+
 
 class ContinuousTrait : public Trait
 {
     float max_;
     float min_;
+    void InitializeGenevectors();
   public:
     ContinuousTrait() = default;
     ContinuousTrait(std::string name, std::string genes, std::vector<std::string> phenotypes, float max, float min);
     float CalculateValue(const Genome &genome);
     float CalculateNormalizedValue(const Genome &genome);
-    std::string ValueToPhenotype(float value);
+    std::string ValueToPhenotype(Phenovector trait_vec);
     std::weak_ptr<TraitWeighting> MakeWeighting(std::vector<float> weights);
 
-    friend class ContinuousTraitWeighting;
 };
 
 
-class DiscreteTrait : public Trait
+class BinaryTrait : public DiscreteTrait
 {
-  public:
-    DiscreteTrait() = default;
-    DiscreteTrait(std::string name, std::string genes, std::vector<std::string> phenotypes);
-    float CalculateValue(const Genome &genome);
-    std::string ValueToPhenotype(float value);
-    std::weak_ptr<TraitWeighting> MakeWeighting(std::vector<float> weights);
-
-    friend class DiscreteTraitWeighting;
+    void InitializeGenevectors();
+public:
+    BinaryTrait(std::string name, std::string genes, std::vector<std::string> phenotypes);
 };
 
 std::ostream &operator<< (std::ostream &stream, const Trait &obj);
-
 
 struct TraitWeighting
 {
    std::vector<float> weights_;
    TraitWeighting(std::vector<float> weights);
-   virtual ~TraitWeighting() {}
-   virtual float CalculateValue(Trait &trait, const Genome &genome)=0;
-};
-
-struct ContinuousTraitWeighting : public TraitWeighting
-{
-    ContinuousTraitWeighting(std::vector<float> weights);
-    float CalculateValue(Trait &trait, const Genome &genome);
-};
-
-struct DiscreteTraitWeighting : public TraitWeighting
-{
-    DiscreteTraitWeighting(std::vector<float> weights);
-    float CalculateValue(Trait &trait, const Genome &genome);
+   float operator()(Trait &trait, const Genome &genome);
 };
 
 

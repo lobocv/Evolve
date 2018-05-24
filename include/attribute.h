@@ -12,7 +12,7 @@ class Attribute
 public:
     Attribute(std::string name, std::vector<std::shared_ptr<Trait>> traits, std::vector<std::weak_ptr<TraitWeighting>> weights);
     float CalculateValue(const Creature &creature);
-    const std::string get_name() const;
+    const std::string GetName() const;
 };
 
 #endif // ATTRIBUTE_H

@@ -44,18 +44,17 @@ int main()
                                                                    kMySpeciesMaxOffspring, kMySpeciesLifeExpectanceDays,
                                                                    kMySpeciesInitPop, kMySpeciesMaleFemaleRatio);
 
-
-    // Create a list of traits for species in the ecosystem.
-    ecosystem.RegisterContinuousTrait("Hair Length", "ABCDEFGHIJKL", {"Short Haired", "Long Haired"}, 10, 30);
-    ecosystem.RegisterContinuousTrait("Body Fat Percentage", "GHIKJLMNOPQR", {"Thin", "Medium", "Fat"}, 0, 100);
-    ecosystem.RegisterDiscreteTrait("Hair Color", "D", {"Blond Haired", "Black Haired"});
-
-    // Create a list of attributes that the traits contribute towards.
     try
     {
-        ecosystem.RegisterAttribute("Temperature Resistance", {"Hair Length", "Body Fat Percentage", "Hair Color"}, {{1}, {1.4}, {1, 1.2}}, 0.25, 0.75);
-    } catch (
-        InvalidAttributeParameterError e)
+        // Create a list of traits for species in the ecosystem.
+        ecosystem.RegisterContinuousTrait("Hair Length", "ABCDEFGHIJKL", {"Short Haired", "Long Haired"}, 10, 30);
+        ecosystem.RegisterBinaryTrait("Hair Color", "D", {"Blond Haired", "Black Haired"});
+        ecosystem.RegisterDiscreteTrait("Exterior Type", "LMNOP", {"Fur", "Skin", "Scales"});
+
+        // Create a list of attributes that the traits contribute towards.
+        ecosystem.RegisterAttribute("Temperature Resistance", {"Hair Color", "Hair Length", "Exterior Type",}, {{1, 1}, {1, 1}, {1, 4, 1}}, 0.25, 1.0);
+
+    } catch (EvolveException e)
     {
         std::cout << e.what() <<std::endl;
         exit(-1);
@@ -77,31 +76,38 @@ int main()
     std::cout << "===============" << std::endl;
 
     // Get the first two creatures and have them reproduce
-    std::vector<std::shared_ptr<Creature>> &creatures = ecosystem.species_[kMySpeciesName]->get_creatures();
+    std::vector<std::shared_ptr<Creature>> &creatures = ecosystem.species_[kMySpeciesName]->GetCreatures();
 
-    int& day_number = ecosystem.get_day();
+
     int epoch_length_days =0;
     do
     {
         std::cin >> epoch_length_days;
         ecosystem.RunEpoch(epoch_length_days);
-
-        std::cout << "Number of alive creatures after " << day_number << " days = " << myspecies->get_alive_population() << std::endl;
-        std::cout << "Number of deceased creatures after " << day_number << " days = " << myspecies->get_deceased_population() << std::endl;
+        int day_number = ecosystem.GetDay();
+        std::cout << "Number of alive creatures after " << day_number << " days = " << myspecies->GetAlivePopulation() << std::endl;
+        std::cout << "Number of deceased creatures after " << day_number << " days = " << myspecies->GetDeceasedPopulation() << std::endl;
 
         if (creatures.size() > 0)
         {
             for (auto &trait_pair: ecosystem.traits_)
             {
                 auto trait = trait_pair.second;
-                auto stat = trait->CalculateStatistics(creatures);
-                std::cout << *trait << " Mean = " << stat.first << std::endl;
-                std::cout << *trait << " Standard Deviation = " << stat.second << std::endl;
+                  auto phenotype_counter = trait->CalculatePhenotypeStatistics(creatures);
+                  std::cout << *trait << " : ";
+                  for (auto it: phenotype_counter)
+                  {
+                      std::cout << it.first  << " = " << it.second << ", ";
+                  }
+                  std::cout << std::endl;
+//                auto stat = trait->CalculateStatistics(creatures);
+//                std::cout << *trait << " Mean = " << stat.first << std::endl;
+//                std::cout << *trait << " Standard Deviation = " << stat.second << std::endl;
             }
         }
-        ecosystem.environmental_limits_["Temperature Resistance"].first *= 1.01;
-        ecosystem.environmental_limits_["Temperature Resistance"].second /= 1.01;
-        std::cout << "New Temp Resistance limtis are " << ecosystem.environmental_limits_["Temperature Resistance"].first << ", " << ecosystem.environmental_limits_["Temperature Resistance"].second << std::endl;
+        ecosystem.environmental_limits_["Temperature Resistance"].first *= 1.02;
+//        ecosystem.environmental_limits_["Temperature Resistance"].second /= 1.01;
+        std::cout << "New Temp Resistance limits are " << ecosystem.environmental_limits_["Temperature Resistance"].first << ", " << ecosystem.environmental_limits_["Temperature Resistance"].second << std::endl;
 
 
     } while ( epoch_length_days > 0);

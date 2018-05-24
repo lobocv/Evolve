@@ -53,9 +53,9 @@ or discrete non-binary traits, there can be many phenotypes. In the discrete cas
 phenotype describes a vector in phenospace.
 
 #### Phenospace
-* A vector space that spans possible phenotypes. Phenotypes are represented as eigen-vectors in the vector-space
-The phenospace need not be singular, however if it is not singular, the linearly dependent vectors
-must be a negative scaling of one another. This signifies anti-correlation of the corresponding phenotypes.
+* A vector space that spans possible phenotypes. Phenotypes are represented as eigen-vectors (phenovectors)
+in the vector-space. Gene alleles will correspond to anti-vectors in the phenospace and the cummulative sum
+of the genevectors from a genome will determine the overall phenotype for a discrete non-binary trait.
 
 #### Gene
 * The building blocks of genetic Traits. When the gene has information about multiple traits
@@ -115,14 +115,16 @@ Examples
 #### Discrete Non-Binary (DNB) Traits
 
 If P is the number of phenotypes for a DNB trait, and N is the number of
-genes that describe the trait, then N = k*P for k > 0. Then each gene
-in the trait describes a vector (phenovector) in the P dimensional phenospace. The
-two alleles of the gene are anti-phenovectors with respect to one another, in other
-words Phenovector A = - Phenovector a. The phenovectors must be normalized and evenly
+genes that describe the trait, then there are N gene vectors that spans the
+P dimensional phenospace of the DNB trait. The two alleles of each gene in the trait
+are anti-genevectors with respect to one another, in other words
+genevector A = -genevector a. The genevectors must be normalized and evenly
 spaced throughout the phenospace in order to minimize bias towards a particular phenotype.
-The value of the DNB trait is then found by summing all the phenovectors in the genome and
-projecting it along the eigen-vectors of the phenospace. The largest projection determines
-the phenotype.
+In general, it is hard to evenly distribute an arbitrary number of genevectors throughout
+any phenospace larger than 2 dimensions so a basic approach of randomizing the genevectors
+is taken instead. The value of the DNB trait is then found by summing all the genevectors
+in the genome and projecting it along the eigen-vectors (phenovectors) of the phenospace.
+The largest projection determines the phenotype.
 
 Examples
 ---------------------------

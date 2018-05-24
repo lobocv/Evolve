@@ -23,15 +23,15 @@ public:
     ~Creature();
     Creature(Species& species, Sex sex);
     static std::vector<std::shared_ptr<Creature>> Reproduce(std::shared_ptr<Creature> creature1, std::shared_ptr<Creature> creature2);
-    const Genome& get_genome() const;
-    const int get_id() const;
-    const Sex get_sex() const;
-    const int get_birth_date() const;
-    std::shared_ptr<Creature> get_father() const;
-    std::shared_ptr<Creature> get_mother() const;
-    Species& get_species() const;
-    void print() const;
-    void print_traits();
+    const Genome& GetGenome() const;
+    const int GetID() const;
+    const Sex GetSex() const;
+    const int GetBirthDate() const;
+    std::shared_ptr<Creature> GetFather() const;
+    std::shared_ptr<Creature> GetMother() const;
+    Species& GetSpecies() const;
+    void Print() const;
+    void PrintTraits();
 
     friend class Species;
 };

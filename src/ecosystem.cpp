@@ -48,9 +48,10 @@ std::shared_ptr<Species> Ecosystem::RegisterSpecies(std::string species_name, in
  */
 void Ecosystem::RegisterTrait(std::shared_ptr<Trait> trait)
 {
-    std::cout << "TRAIT REGISTERED " << trait->get_name() << std::endl;
+    std::cout << "TRAIT REGISTERED " << trait->GetName() << std::endl;
     Ecosystem &ecosystem = Ecosystem::GetEcosystem();
-    ecosystem.traits_[trait->get_name()] = trait;
+    trait->InitializePhenospace();
+    ecosystem.traits_[trait->GetName()] = trait;
 
 }
 
@@ -66,6 +67,17 @@ void Ecosystem::RegisterDiscreteTrait(std::string trait_name, std::string gene_c
     RegisterTrait(trait_shared);
 }
 
+/**
+ * @brief Create and register a new BinaryTrait for all species in the ecosystem.
+ * @param trait_name
+ * @param gene_codes
+ */
+void Ecosystem::RegisterBinaryTrait(std::string trait_name, std::string gene_code, std::vector<std::string> phenotypes)
+{
+    auto trait = new BinaryTrait(trait_name, gene_code, phenotypes);
+    std::shared_ptr<Trait> trait_shared(trait);
+    RegisterTrait(trait_shared);
+}
 
 /**
  * @brief Create and register a new ContinuousTrait for all species in the ecosystem.
@@ -103,16 +115,25 @@ void Ecosystem::RegisterAttribute(std::string attr_name, std::vector<std::string
         }
     }
 
+    // Check that the number of weight vectors matches the number of phenotypes
+    if (weightValues.size() != traits.size())
+    {
+        throw InvalidAttributeParameterError("The number of weight vectors (" + std::to_string(weightValues.size()) + ") does not match " +
+                                             "the number of traits (" + std::to_string(traits.size()) + ").");
+    }
+
     float weight_sum = 0;
+    int ii=0;
     // Determine the maximum weight from all the phenotypes described by the traits.
     for (auto trait_weight: weightValues)
-    {
+    {        
         weight_sum += *std::max_element(trait_weight.begin(), trait_weight.end());;
+        ii++;
     }
     // Normalize all the weights and create weight objects.
     auto normalizer = [weight_sum](float w) {return w/ weight_sum;}; // lambda function that normalizes the weights.
     std::vector<std::weak_ptr<TraitWeighting>> weights;
-    int ii = 0;
+    ii = 0;
     for (auto &w: weightValues)
     {
         std::transform(w.begin(), w.end(), w.begin(), normalizer);
@@ -141,7 +162,7 @@ void Ecosystem::RunEpoch(int number_of_days)
         */
         for (auto &species : species_)
         {
-            auto &creatures = species.second->get_creatures();
+            auto &creatures = species.second->GetCreatures();
             if (std::rand() % 100 <= 100 * interaction_rate_ && creatures.size() > 0)
             {
 
@@ -163,16 +184,16 @@ void Ecosystem::RunEpoch(int number_of_days)
             std::vector<std::shared_ptr<Creature>>::iterator it = creatures.begin();
             while (it != creatures.end())
             {
-                int age = (day_ - (*it)->get_birth_date());
+                int age = (day_ - (*it)->GetBirthDate());
 //                std::cout << "Age of " << **it << " is " << age << std::endl;
-                (*it)->print_traits();
+                (*it)->PrintTraits();
                 bool creature_survives = true;
                 for (auto attr: attributes_)
                 {
                     auto attr_value = attr.second->CalculateValue(**it);
-                    auto attr_limit = environmental_limits_[attr.second->get_name()];
+                    auto attr_limit = environmental_limits_[attr.second->GetName()];
                     std::cout << "Attribute " << attr.first << " = " << attr_value << std::endl;
-                    creature_survives = attr_value > attr_limit.first && attr_value < attr_limit.second;
+                    creature_survives = attr_value >= attr_limit.first && attr_value <= attr_limit.second;
                 }
                 if (age > species.second->life_expectancy_days_ || !creature_survives)
                 {
@@ -191,6 +212,6 @@ void Ecosystem::RunEpoch(int number_of_days)
  * @brief Get the absolute day number in the ecosystem simulation.
  * @return
  */
-int& Ecosystem::get_day() {return day_;}
+int Ecosystem::GetDay() {return day_;}
 
 

@@ -1,6 +1,5 @@
 #include "attribute.h"
 
-
 /**
  * @brief An attribute is a value that the ecosystem uses to determine if the creature is fit enough to survive.
  * Attributes are contributed by one or more traits by weighting the phenotypes of the traits.
@@ -21,10 +20,11 @@ float Attribute::CalculateValue(const Creature &creature)
     int ii = 0;
     for (auto trait: traits_)
     {
-        value += weights_[ii].lock()->CalculateValue(*trait, creature.get_genome());
+        auto &weight = *weights_[ii].lock();
+        value += weight(*trait, creature.GetGenome());
         ii ++;
     }
     return value;
 }
 
-const std::string Attribute::get_name() const {return name_;}
+const std::string Attribute::GetName() const {return name_;}
