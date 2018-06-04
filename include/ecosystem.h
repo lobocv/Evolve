@@ -2,6 +2,7 @@
 #define ECOSYSTEM_H
 
 #include <map>
+#include <set>
 #include <iostream>
 #include <memory>
 #include "creature.h"

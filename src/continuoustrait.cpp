@@ -53,7 +53,12 @@ std::string ContinuousTrait::ValueToPhenotype(Phenovector trait_vec)
 
 float ContinuousTrait::ApplyWeighting(PhenotypeWeights weights, Phenovector trait_vec)
 {
+    // Find the value in the continuous interval [0, 1]
     auto normalized_value = 0.5*(trait_vec[0] / (gene_phenovectors_.size()) + 1);
+    // Each phenotype is a section of the continuous interval [0, 1], these form bins
+    // Find the value of the trait normalized by it's bin size.
+    auto bin_size = 1.0 / phenotypes_.size();
+    auto bin_normalized_value = std::fmod(normalized_value, bin_size) / bin_size;
     auto phenotype = ValueToPhenotype(trait_vec);
-    return weights[phenotype] * normalized_value;
+    return weights[phenotype] * bin_normalized_value;
 }

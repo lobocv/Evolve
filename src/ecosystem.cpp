@@ -133,6 +133,24 @@ void Ecosystem::RegisterAttribute(std::string attr_name, std::vector<std::string
                                                  traits[ii] + "' for attribute '" + attr_name + "' does not match. Requires " +
                                                  std::to_string(traitVec[ii]->phenotypes_.size()) + "weights.");
         }
+        // Check that all the phenotypes in the trait have weights associated with them.
+        std::set<std::string> set1, set2;
+        std::vector<std::string> setdiff;
+        std::for_each(trait_weight.begin(), trait_weight.end(), [&set1](const PhenotypeWeights::value_type &pair) {set1.insert(pair.first);});
+        std::for_each(traitVec[ii]->phenotypes_.begin(), traitVec[ii]->phenotypes_.end(), [&set2](const std::string &s) {set2.insert(s);});
+        std::set_difference(set2.begin(), set2.end(), set1.begin(), set1.end(), std::inserter(setdiff, setdiff.begin()));
+        if (setdiff.size() > 0)
+        {
+            std::string errormsg = "Not all phenotypes have been assigned weights: ";
+            for (int kk=0; kk < setdiff.size(); kk++)
+            {
+                errormsg += "'" + setdiff[kk] + "'";
+                if (kk != setdiff.size()-1 && setdiff.size() > 1) { errormsg += ", ";}
+
+            }
+            errormsg += '.';
+            throw InvalidAttributeParameterError(errormsg);
+        }
         weight_sum += std::max_element(trait_weight.begin(),
                                         trait_weight.end(),
                                         [](const PhenotypeWeights::value_type &pair1,const PhenotypeWeights::value_type &pair2) {return pair1.second < pair2.second;}
