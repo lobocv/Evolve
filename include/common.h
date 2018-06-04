@@ -22,6 +22,7 @@ typedef std::pair<Chromosome, Chromosome> ChromosomePair;
 typedef std::vector<ChromosomePair> Genome;
 typedef std::map<char, Gene> GeneSequence;
 typedef std::vector<float> Phenovector;
+typedef std::map<std::string, float> PhenotypeWeights;
 
 enum Sex{Male, Female};
 enum GeneType{Dominant, Recessive};

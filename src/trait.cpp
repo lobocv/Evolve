@@ -91,12 +91,13 @@ std::string Trait::ValueToPhenotype(std::shared_ptr<Creature> c)
 }
 
 
-float Trait::ApplyWeighting(std::vector<float> weights, Phenovector trait_vec)
+float Trait::ApplyWeighting(PhenotypeWeights weights, Phenovector trait_vec)
 {
+    auto phenotype = ValueToPhenotype(trait_vec);
     auto norm_trait_vec = NormalizeTraitVector(trait_vec);
     int phenotype_index = PhenovectorMaxDimension(trait_vec);
     float max_projection = std::fabs(norm_trait_vec[phenotype_index]);
-    return weights[phenotype_index] * max_projection;
+    return weights[phenotype] * max_projection;
 }
 
 

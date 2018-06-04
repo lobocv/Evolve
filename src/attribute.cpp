@@ -8,7 +8,7 @@
  * @param traits
  * @param weights
  */
-Attribute::Attribute(std::string name, std::vector<std::shared_ptr<Trait>> traits, std::vector<Phenovector> weights) : name_(name), traits_(traits), weights_(weights) {}
+Attribute::Attribute(std::string name, std::vector<std::shared_ptr<Trait>> traits, std::vector<PhenotypeWeights> weights) : name_(name), traits_(traits), weights_(weights) {}
 
 /**
  * @brief Calculates the value of the attribute for the given creatue.
@@ -25,8 +25,7 @@ float Attribute::CalculateValue(const Creature &creature)
         // dimension in phenospace and multiply them. Sum contributions
         // from all traits in the attribute.
         auto trait_vec = trait->CumulativePhenovector(creature.GetGenome());
-        auto &weight_vec = weights_[ii];
-        value += trait->ApplyWeighting(weight_vec, trait_vec);
+        value += trait->ApplyWeighting(weights_[ii], trait_vec);
         ii ++;
     }
     return value;

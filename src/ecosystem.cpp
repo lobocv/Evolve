@@ -100,7 +100,7 @@ void Ecosystem::RegisterContinuousTrait(std::string trait_name, std::string gene
  * @param min
  * @param max
  */
-void Ecosystem::RegisterAttribute(std::string attr_name, std::vector<std::string> traits, std::vector<Phenovector> weight_vectors, float min, float max)
+void Ecosystem::RegisterAttribute(std::string attr_name, std::vector<std::string> traits, std::vector<PhenotypeWeights> weight_vectors, float min, float max)
 {
     Ecosystem &ecosystem = Ecosystem::GetEcosystem();
     std::vector<std::shared_ptr<Trait>> traitVec;
@@ -133,14 +133,17 @@ void Ecosystem::RegisterAttribute(std::string attr_name, std::vector<std::string
                                                  traits[ii] + "' for attribute '" + attr_name + "' does not match. Requires " +
                                                  std::to_string(traitVec[ii]->phenotypes_.size()) + "weights.");
         }
-        weight_sum += *std::max_element(trait_weight.begin(), trait_weight.end());;
+        weight_sum += std::max_element(trait_weight.begin(),
+                                        trait_weight.end(),
+                                        [](const PhenotypeWeights::value_type &pair1,const PhenotypeWeights::value_type &pair2) {return pair1.second < pair2.second;}
+                                        )->second;
         ii++;
     }
-    // Normalize all the weights and create weight objects.
-    auto normalizer = [weight_sum](float w) {return w/ weight_sum;}; // lambda function that normalizes the weights.
+    // Normalize all the weights.
+    auto normalizer = [weight_sum](PhenotypeWeights::value_type &pair) {return pair.second /= weight_sum;}; // lambda function that normalizes the weights.
     for (auto &w: weight_vectors)
     {
-        std::transform(w.begin(), w.end(), w.begin(), normalizer);
+        std::for_each(w.begin(), w.end(), normalizer);
     }
 
     auto attr = new Attribute(attr_name, traitVec, weight_vectors);

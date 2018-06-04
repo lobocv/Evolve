@@ -55,7 +55,14 @@ int main()
         ecosystem.RegisterDiscreteTrait("Exterior Type", "LMNOP", {"Fur", "Skin", "Scales"});
 
         // Create a list of attributes that the traits contribute towards.
-        ecosystem.RegisterAttribute("Temperature Resistance", {"Hair Color", "Hair Length", "Exterior Type",}, {{1, 1}, {1, 1, 1, 1, 1}, {1, 1, 1}}, 0.2, 1.0);
+        ecosystem.RegisterAttribute("Temperature Resistance",
+                                    {"Hair Color", "Hair Length", "Exterior Type",},
+                                    {
+                                        {{"Blond Haired", 1}, {"Black Haired", 1}},
+                                        {{"Short Haired", 1}, {"Medium-Short Haired", 1}, {"Medium Haired", 1}, {"Medium-Long Haired", 1}, {"Long Haired", 1}},
+                                        {{"Fur", 1}, {"Skin", 1}, {"Scales", 1}}
+                                    },
+                                    0.2, 1.0);
 
     } catch (EvolveException e)
     {

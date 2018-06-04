@@ -33,7 +33,7 @@ public:
     std::string ValueToPhenotype(std::shared_ptr<Creature> c);
     std::pair<std::vector<float>, std::vector<float>> CalculateStatistics(const std::vector<std::shared_ptr<Creature>> creatures);
     std::map<std::string, int> CalculatePhenotypeStatistics(const std::vector<std::shared_ptr<Creature>> creatures);
-    virtual float ApplyWeighting(std::vector<float> weights, Phenovector trait_vec);
+    virtual float ApplyWeighting(PhenotypeWeights weights, Phenovector trait_vec);
 
     friend class Ecosystem;
 };
@@ -58,7 +58,7 @@ class ContinuousTrait : public Trait
     ContinuousTrait() = default;
     ContinuousTrait(std::string name, std::string genes, std::vector<std::string> phenotypes, float max, float min);
     std::string ValueToPhenotype(Phenovector trait_vec);
-    float ApplyWeighting(std::vector<float> weights, Phenovector trait_vec);
+    float ApplyWeighting(PhenotypeWeights weights, Phenovector trait_vec);
 };
 
 

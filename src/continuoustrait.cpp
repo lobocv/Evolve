@@ -51,10 +51,9 @@ std::string ContinuousTrait::ValueToPhenotype(Phenovector trait_vec)
 }
 
 
-float ContinuousTrait::ApplyWeighting(std::vector<float> weights, Phenovector trait_vec)
+float ContinuousTrait::ApplyWeighting(PhenotypeWeights weights, Phenovector trait_vec)
 {
     auto normalized_value = 0.5*(trait_vec[0] / (gene_phenovectors_.size()) + 1);
-    auto findex = (phenotypes_.size()-1) * normalized_value;
-    int index = int(std::round(findex));
-    return weights[index] * normalized_value;
+    auto phenotype = ValueToPhenotype(trait_vec);
+    return weights[phenotype] * normalized_value;
 }

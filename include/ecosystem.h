@@ -24,7 +24,7 @@ public:
     void RegisterDiscreteTrait(std::string name, std::string gene_codes, std::vector<std::string> phenotypes);
     void RegisterBinaryTrait(std::string name, std::string gene_code, std::vector<std::string> phenotypes);
     void RegisterContinuousTrait(std::string name, std::string gene_codes, std::vector<std::string> phenotypes, float min, float max);
-    void RegisterAttribute(std::string attr_name, std::vector<std::string> traits, std::vector<std::vector<float>> weights, float min, float max);
+    void RegisterAttribute(std::string attr_name, std::vector<std::string> traits, std::vector<PhenotypeWeights> weights, float min, float max);
     int GetDay();
     void RunEpoch(int number_of_days);
 private:

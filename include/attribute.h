@@ -8,9 +8,9 @@ class Attribute
 {
     std::string name_;
     std::vector<std::shared_ptr<Trait>> traits_;
-    std::vector<Phenovector> weights_;
+    std::vector<PhenotypeWeights> weights_;
 public:
-    Attribute(std::string name, std::vector<std::shared_ptr<Trait>> traits, std::vector<Phenovector> weights);
+    Attribute(std::string name, std::vector<std::shared_ptr<Trait>> traits, std::vector<PhenotypeWeights> weights);
     float CalculateValue(const Creature &creature);
     const std::string GetName() const;
 };
