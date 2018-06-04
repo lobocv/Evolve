@@ -7,6 +7,21 @@ DiscreteTrait::DiscreteTrait(std::string name, std::string genes, std::vector<st
 {
 }
 
+/**
+ * @brief Create the phenospace that the genes alleles will reside in.
+ * Each eigenvector in the phenospace corresponds to a specific phenotype
+ */
+void DiscreteTrait::InitializePhenospace()
+{
+    int N_col = phenotypes_.size();
+    phenotype_vectors_ = std::vector<Phenovector>(N_col, Phenovector(N_col, 0));
+    for (unsigned int ii=0; ii < N_col; ii++)
+    {
+        phenotype_vectors_[ii][ii] = 1;
+    }
+    InitializeGenevectors();
+
+}
 
 /**
  * @brief Generate vectors in the phenospace for each gene in the trait.

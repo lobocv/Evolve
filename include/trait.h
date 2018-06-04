@@ -23,13 +23,13 @@ public:
     const std::vector<std::string> phenotypes_;
     Trait() = default;
     virtual ~Trait() {}
-    void InitializePhenospace();
+    virtual void InitializePhenospace()=0;
     Trait(std::string name, std::string genes, std::vector<std::string> phenotypes);
     const std::string GetName() const;
     const std::string& GetGenes() const;
     Phenovector CumulativePhenovector(const Genome &genome);
     int PhenovectorMaxDimension(Phenovector trait_vec);
-    std::string ValueToPhenotype(Phenovector trait_vec);
+    virtual std::string ValueToPhenotype(Phenovector trait_vec);
     std::string ValueToPhenotype(std::shared_ptr<Creature> c);
     std::pair<std::vector<float>, std::vector<float>> CalculateStatistics(const std::vector<std::shared_ptr<Creature>> creatures);
     std::map<std::string, int> CalculatePhenotypeStatistics(const std::vector<std::shared_ptr<Creature>> creatures);
@@ -38,6 +38,7 @@ public:
 
 class DiscreteTrait : public Trait
 {
+    void InitializePhenospace();
     void InitializeGenevectors();
 public:
     DiscreteTrait() = default;
@@ -51,6 +52,7 @@ class ContinuousTrait : public Trait
 {
     float max_;
     float min_;
+    void InitializePhenospace();
     void InitializeGenevectors();
   public:
     ContinuousTrait() = default;
@@ -65,8 +67,11 @@ class ContinuousTrait : public Trait
 
 class BinaryTrait : public DiscreteTrait
 {
+    const int DominantPhenotypeIndex_ = 0;
+    const int RecessivePhenotypeIndex_ = 1;
     void InitializeGenevectors();
 public:
+    std::string ValueToPhenotype(Phenovector trait_vec);
     BinaryTrait(std::string name, std::string genes, std::vector<std::string> phenotypes);
 };
 

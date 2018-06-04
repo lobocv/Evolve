@@ -100,7 +100,7 @@ void Ecosystem::RegisterContinuousTrait(std::string trait_name, std::string gene
  * @param min
  * @param max
  */
-void Ecosystem::RegisterAttribute(std::string attr_name, std::vector<std::string> traits, std::vector<std::vector<float>> weightValues, float min, float max)
+void Ecosystem::RegisterAttribute(std::string attr_name, std::vector<std::string> traits, std::vector<Phenovector> weight_vectors, float min, float max)
 {
     Ecosystem &ecosystem = Ecosystem::GetEcosystem();
     std::vector<std::shared_ptr<Trait>> traitVec;
@@ -116,33 +116,28 @@ void Ecosystem::RegisterAttribute(std::string attr_name, std::vector<std::string
     }
 
     // Check that the number of weight vectors matches the number of phenotypes
-    if (weightValues.size() != traits.size())
+    if (weight_vectors.size() != traits.size())
     {
-        throw InvalidAttributeParameterError("The number of weight vectors (" + std::to_string(weightValues.size()) + ") does not match " +
+        throw InvalidAttributeParameterError("The number of weight vectors (" + std::to_string(weight_vectors.size()) + ") does not match " +
                                              "the number of traits (" + std::to_string(traits.size()) + ").");
     }
 
     float weight_sum = 0;
     int ii=0;
     // Determine the maximum weight from all the phenotypes described by the traits.
-    for (auto trait_weight: weightValues)
+    for (auto trait_weight: weight_vectors)
     {        
         weight_sum += *std::max_element(trait_weight.begin(), trait_weight.end());;
         ii++;
     }
     // Normalize all the weights and create weight objects.
     auto normalizer = [weight_sum](float w) {return w/ weight_sum;}; // lambda function that normalizes the weights.
-    std::vector<std::weak_ptr<TraitWeighting>> weights;
-    ii = 0;
-    for (auto &w: weightValues)
+    for (auto &w: weight_vectors)
     {
         std::transform(w.begin(), w.end(), w.begin(), normalizer);
-        auto weight_obj = traitVec[ii]->MakeWeighting(w);
-        weights.push_back(weight_obj);
-        ii++;
     }
 
-    auto attr = new Attribute(attr_name, traitVec, weights);
+    auto attr = new Attribute(attr_name, traitVec, weight_vectors);
     std::shared_ptr<Attribute> attr_shared(attr);
     ecosystem.attributes_[attr_name] = attr_shared;
     ecosystem.environmental_limits_[attr_name] = std::make_pair(min, max);

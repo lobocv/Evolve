@@ -1,4 +1,5 @@
 #include "attribute.h"
+#include <numeric>
 
 /**
  * @brief An attribute is a value that the ecosystem uses to determine if the creature is fit enough to survive.
@@ -7,7 +8,7 @@
  * @param traits
  * @param weights
  */
-Attribute::Attribute(std::string name, std::vector<std::shared_ptr<Trait>> traits, std::vector<std::weak_ptr<TraitWeighting>> weights) : name_(name), traits_(traits), weights_(weights) {}
+Attribute::Attribute(std::string name, std::vector<std::shared_ptr<Trait>> traits, std::vector<Phenovector> weights) : name_(name), traits_(traits), weights_(weights) {}
 
 /**
  * @brief Calculates the value of the attribute for the given creatue.
@@ -20,8 +21,13 @@ float Attribute::CalculateValue(const Creature &creature)
     int ii = 0;
     for (auto trait: traits_)
     {
-        auto &weight = *weights_[ii].lock();
-        value += weight(*trait, creature.GetGenome());
+        // For each trait, find the weight that corresponds to the phenotype
+        // dimension in phenospace and multiply them. Sum contributions
+        // from all traits in the attribute.
+        auto trait_vec = trait->CumulativePhenovector(creature.GetGenome());
+        auto &weight_vec = weights_[ii];
+        int phenotype_index = trait->PhenovectorMaxDimension(trait_vec);
+        value += weight_vec[phenotype_index] * trait_vec[phenotype_index];
         ii ++;
     }
     return value;

@@ -16,23 +16,6 @@ Trait::Trait(std::string name, std::string genes, std::vector<std::string> pheno
 const std::string Trait::GetName() const { return name_;}
 const std::string& Trait::GetGenes() const {return gene_codes_;}
 
-
-/**
- * @brief Create the phenospace that the genes alleles will reside in.
- * Each eigenvector in the phenospace corresponds to a specific phenotype
- */
-void Trait::InitializePhenospace()
-{
-    int N_col = phenotypes_.size();
-    phenotype_vectors_ = std::vector<Phenovector>(N_col, Phenovector(N_col, 0));
-    for (unsigned int ii=0; ii < N_col; ii++)
-    {
-        phenotype_vectors_[ii][ii] = 1;
-    }
-    InitializeGenevectors();
-
-}
-
 /**
  * @brief Sum the all the genevectors from the genome to find the traitvector in phenospace.
  * @param genome
@@ -40,7 +23,7 @@ void Trait::InitializePhenospace()
  */
 Phenovector Trait::CumulativePhenovector(const Genome &genome)
 {
-    Phenovector trait_vec(phenotypes_.size());
+    Phenovector trait_vec(phenotype_vectors_.size());
     int genes_found = 0;
 
     for (auto chromo_pair: genome)
@@ -70,7 +53,7 @@ Phenovector Trait::CumulativePhenovector(const Genome &genome)
         throw UnrepresentedTraitError("Not all genes that describe this trait are present.");
     }
 
-    return NormalizeTraitVector(trait_vec);
+    return trait_vec;
 }
 
 /**
@@ -97,7 +80,8 @@ int Trait::PhenovectorMaxDimension(Phenovector trait_vec)
  */
 std::string Trait::ValueToPhenotype(Phenovector trait_vec)
 {
-    int phenotype_index = PhenovectorMaxDimension(trait_vec);
+    auto norm_trait_vec = NormalizeTraitVector(trait_vec);
+    int phenotype_index = PhenovectorMaxDimension(norm_trait_vec);
     return phenotypes_[phenotype_index];
 }
 
