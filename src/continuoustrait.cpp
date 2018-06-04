@@ -43,17 +43,18 @@ void ContinuousTrait::InitializeGenevectors()
     }
 }
 
-
 std::string ContinuousTrait::ValueToPhenotype(Phenovector trait_vec)
 {
-    // Calculate the normalized value [-1, 1] for the trait
-    auto normalized_value = trait_vec[0] / gene_phenovectors_.size();
-
-    float full_range = (max_ - min_);
-    float mean_value = 0.5*(max_ + min_);
-    auto value = normalized_value * (0.5 * full_range)  + mean_value;
-    int index = std::round(value);
+    auto normalized_value = 0.5*(trait_vec[0] / (gene_phenovectors_.size()) + 1);
+    int index = std::round((phenotypes_.size()-1) * normalized_value);
     return phenotypes_[index];
+}
 
 
+float ContinuousTrait::ApplyWeighting(std::vector<float> weights, Phenovector trait_vec)
+{
+    auto normalized_value = 0.5*(trait_vec[0] / (gene_phenovectors_.size()) + 1);
+    auto findex = (phenotypes_.size()-1) * normalized_value;
+    int index = int(std::round(findex));
+    return weights[index] * normalized_value;
 }

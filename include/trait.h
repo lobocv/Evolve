@@ -33,7 +33,9 @@ public:
     std::string ValueToPhenotype(std::shared_ptr<Creature> c);
     std::pair<std::vector<float>, std::vector<float>> CalculateStatistics(const std::vector<std::shared_ptr<Creature>> creatures);
     std::map<std::string, int> CalculatePhenotypeStatistics(const std::vector<std::shared_ptr<Creature>> creatures);
-    std::weak_ptr<TraitWeighting> MakeWeighting(std::vector<float> weights);
+    virtual float ApplyWeighting(std::vector<float> weights, Phenovector trait_vec);
+
+    friend class Ecosystem;
 };
 
 class DiscreteTrait : public Trait
@@ -43,8 +45,6 @@ class DiscreteTrait : public Trait
 public:
     DiscreteTrait() = default;
     DiscreteTrait(std::string name, std::string genes, std::vector<std::string> phenotypes);
-    std::weak_ptr<TraitWeighting> MakeWeighting(std::vector<float> weights);
-
 };
 
 
@@ -57,11 +57,8 @@ class ContinuousTrait : public Trait
   public:
     ContinuousTrait() = default;
     ContinuousTrait(std::string name, std::string genes, std::vector<std::string> phenotypes, float max, float min);
-    float CalculateValue(const Genome &genome);
-    float CalculateNormalizedValue(const Genome &genome);
     std::string ValueToPhenotype(Phenovector trait_vec);
-    std::weak_ptr<TraitWeighting> MakeWeighting(std::vector<float> weights);
-
+    float ApplyWeighting(std::vector<float> weights, Phenovector trait_vec);
 };
 
 

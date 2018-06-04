@@ -80,8 +80,7 @@ int Trait::PhenovectorMaxDimension(Phenovector trait_vec)
  */
 std::string Trait::ValueToPhenotype(Phenovector trait_vec)
 {
-    auto norm_trait_vec = NormalizeTraitVector(trait_vec);
-    int phenotype_index = PhenovectorMaxDimension(norm_trait_vec);
+    int phenotype_index = PhenovectorMaxDimension(trait_vec);
     return phenotypes_[phenotype_index];
 }
 
@@ -92,16 +91,12 @@ std::string Trait::ValueToPhenotype(std::shared_ptr<Creature> c)
 }
 
 
-std::weak_ptr<TraitWeighting> Trait::MakeWeighting(std::vector<float> weights)
+float Trait::ApplyWeighting(std::vector<float> weights, Phenovector trait_vec)
 {
-    if (weights.size() != phenotypes_.size()) {
-        throw InvalidAttributeParameterError("TraitWeighting '" + name_ + "' must have a " +
-                                             std::to_string(phenotypes_.size()) + " weight values. " +
-                                             "Got " + std::to_string(weights.size()) + " weight(s) instead.");
-    }
-    auto ptr = std::make_shared<TraitWeighting>(weights);
-    weights_.push_back(ptr);
-    return ptr;
+    auto norm_trait_vec = NormalizeTraitVector(trait_vec);
+    int phenotype_index = PhenovectorMaxDimension(trait_vec);
+    float max_projection = std::fabs(norm_trait_vec[phenotype_index]);
+    return weights[phenotype_index] * max_projection;
 }
 
 
@@ -165,18 +160,6 @@ std::map<std::string, int> Trait::CalculatePhenotypeStatistics(const std::vector
 
     }
     return counter;
-}
-
-/*
- *  TraitWeighting
-*/
-TraitWeighting::TraitWeighting(std::vector<float> weights) : weights_(weights) {}
-
-float TraitWeighting::operator()(Trait &trait, const Genome &genome)
-{
-    auto trait_vec = trait.CumulativePhenovector(genome);
-    int phenotype_index = trait.PhenovectorMaxDimension(trait_vec);
-    return weights_[phenotype_index] * trait_vec[phenotype_index];
 }
 
 

@@ -126,7 +126,13 @@ void Ecosystem::RegisterAttribute(std::string attr_name, std::vector<std::string
     int ii=0;
     // Determine the maximum weight from all the phenotypes described by the traits.
     for (auto trait_weight: weight_vectors)
-    {        
+    {
+        if (trait_weight.size() != traitVec[ii]->phenotypes_.size())
+        {
+            throw InvalidAttributeParameterError("The number of weights (" + std::to_string(trait_weight.size()) + ") in trait '" +
+                                                 traits[ii] + "' for attribute '" + attr_name + "' does not match. Requires " +
+                                                 std::to_string(traitVec[ii]->phenotypes_.size()) + "weights.");
+        }
         weight_sum += *std::max_element(trait_weight.begin(), trait_weight.end());;
         ii++;
     }

@@ -26,8 +26,7 @@ float Attribute::CalculateValue(const Creature &creature)
         // from all traits in the attribute.
         auto trait_vec = trait->CumulativePhenovector(creature.GetGenome());
         auto &weight_vec = weights_[ii];
-        int phenotype_index = trait->PhenovectorMaxDimension(trait_vec);
-        value += weight_vec[phenotype_index] * trait_vec[phenotype_index];
+        value += trait->ApplyWeighting(weight_vec, trait_vec);
         ii ++;
     }
     return value;

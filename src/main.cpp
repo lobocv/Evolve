@@ -32,6 +32,9 @@ int main()
     const int kMySpeciesMaxOffspring = 5;
     const int N_GENES = 26;
     const float INTERACTION_RATE = 0.75;
+    const bool kEnableThresholdTightening = true;
+    const float kTempMinThreshIncrease = 1.02;
+    const float kTempMaxThreshDecrease = 1.01;
 
 
     // Change the seed to be based off the current system time
@@ -47,12 +50,12 @@ int main()
     try
     {
         // Create a list of traits for species in the ecosystem.
-        ecosystem.RegisterContinuousTrait("Hair Length", "ABCDEFGHIJKL", {"Short Haired", "Long Haired"}, 10, 30);
+        ecosystem.RegisterContinuousTrait("Hair Length", "ABCDEFGHIJKL", {"Short Haired", "Medium-Short Haired", "Medium Haired", "Medium-Long Haired", "Long Haired"}, 10, 30);
         ecosystem.RegisterBinaryTrait("Hair Color", "D", {"Blond Haired", "Black Haired"});
         ecosystem.RegisterDiscreteTrait("Exterior Type", "LMNOP", {"Fur", "Skin", "Scales"});
 
         // Create a list of attributes that the traits contribute towards.
-        ecosystem.RegisterAttribute("Temperature Resistance", {"Hair Color", "Hair Length", "Exterior Type",}, {{1, 1}, {1, 1}, {1, 4, 1}}, 0.25, 1.0);
+        ecosystem.RegisterAttribute("Temperature Resistance", {"Hair Color", "Hair Length", "Exterior Type",}, {{1, 1}, {1, 1, 1, 1, 1}, {1, 1, 1}}, 0.2, 1.0);
 
     } catch (EvolveException e)
     {
@@ -105,8 +108,11 @@ int main()
 //                std::cout << *trait << " Standard Deviation = " << stat.second << std::endl;
             }
         }
-        ecosystem.environmental_limits_["Temperature Resistance"].first *= 1.02;
-//        ecosystem.environmental_limits_["Temperature Resistance"].second /= 1.01;
+        if (kEnableThresholdTightening)
+        {
+            ecosystem.environmental_limits_["Temperature Resistance"].first *= kTempMinThreshIncrease;
+            ecosystem.environmental_limits_["Temperature Resistance"].second /= kTempMaxThreshDecrease;
+        }
         std::cout << "New Temp Resistance limits are " << ecosystem.environmental_limits_["Temperature Resistance"].first << ", " << ecosystem.environmental_limits_["Temperature Resistance"].second << std::endl;
 
 
