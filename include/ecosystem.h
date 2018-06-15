@@ -45,4 +45,6 @@ private:
     friend class EcosystemDeleter;
 };
 
+std::ostream &operator<<(std::ostream &stream, const Ecosystem &ecosystem);
+
 #endif // ECOSYSTEM_H

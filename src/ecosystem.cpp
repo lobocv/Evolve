@@ -171,6 +171,34 @@ void Ecosystem::RegisterAttribute(std::string attr_name, std::vector<std::string
 }
 
 /**
+ * @brief Get the absolute day number in the ecosystem simulation.
+ * @return
+ */
+int Ecosystem::GetDay() {return day_;}
+
+
+std::ostream &operator<<(std::ostream &stream, const Ecosystem &ecosystem)
+{
+    std::cout << "List of Species" << std::endl;
+    std::cout << "===============" << std::endl;
+    for (auto species: ecosystem.species_)
+    {
+        std::cout << *species.second << std::endl;
+    }
+    std::cout << std::endl;
+    std::cout << "List of Traits" << std::endl;
+    std::cout << "===============" << std::endl;
+    for (auto trait: ecosystem.traits_)
+    {
+        std::cout << *trait.second << std::endl;
+    }
+    std::cout << "===============" << std::endl;
+
+    // Get the first two creatures and have them repr
+}
+
+
+/**
  * @brief Simulate the passing of a number of days (known as an epoch). During this time creatures will interact (reproduce / fight), grow and and die.
  * @param number_of_days
  */
@@ -229,11 +257,5 @@ void Ecosystem::RunEpoch(int number_of_days)
 
     }
 }
-
-/**
- * @brief Get the absolute day number in the ecosystem simulation.
- * @return
- */
-int Ecosystem::GetDay() {return day_;}
 
 
