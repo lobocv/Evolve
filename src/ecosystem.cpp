@@ -197,6 +197,18 @@ std::ostream &operator<<(std::ostream &stream, const Ecosystem &ecosystem)
     // Get the first two creatures and have them repr
 }
 
+void Ecosystem::set_attribute_limit_min(std::string attribute, float value)
+{
+    auto max = environmental_limits_[attribute].second;
+    if ( value > 0 && value < max) environmental_limits_[attribute].first = value;
+}
+
+void Ecosystem::set_attribute_limit_max(std::string attribute, float value)
+{
+    auto min = environmental_limits_[attribute].first;
+    if ( value > min && value < 1) environmental_limits_[attribute].second = value;
+}
+
 
 /**
  * @brief Simulate the passing of a number of days (known as an epoch). During this time creatures will interact (reproduce / fight), grow and and die.

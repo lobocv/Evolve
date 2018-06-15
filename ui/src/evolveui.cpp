@@ -2,10 +2,14 @@
 #include "ui_evolveui.h"
 #include <iostream>
 
+#include <evolve.h>
+#include <ecosystem.h>
+
 EvolveUI::EvolveUI(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::EvolveUI)
 {
+    init();
     ui->setupUi(this);
 }
 
@@ -14,7 +18,10 @@ EvolveUI::~EvolveUI()
     delete ui;
 }
 
-void EvolveUI::on_horizontalSlider_valueChanged(int value)
+
+void EvolveUI::on_run_button_clicked()
 {
-    std::cout << value << std::endl;
+    Ecosystem &ecosystem = Ecosystem::GetEcosystem();
+    ecosystem.RunEpoch(ui->epoch_length_spinbox->value());
+    print_epoch_results();
 }

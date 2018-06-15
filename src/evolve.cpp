@@ -14,7 +14,21 @@
 #include <time.h> 
 
 
-int run()
+// Config
+const auto kMySpeciesName = "Blorp";
+const int kMySpeciesInitPop = 100;
+const float kMySpeciesMaleFemaleRatio = 0.5;
+const int kMySpeciesChromoPairNum = 1;
+const int kMySpeciesLifeExpectanceDays = 365;
+const int kMySpeciesMaxOffspring = 5;
+const int N_GENES = 26;
+const float INTERACTION_RATE = 0.75;
+const bool kEnableThresholdTightening = true;
+const float kTempMinThreshIncrease = 1.02;
+const float kTempMaxThreshDecrease = 1.01;
+
+
+int init()
 {
     std::cout << "       Evolve         " << std::endl;
     std::cout << "======================" << std::endl;
@@ -22,19 +36,6 @@ int run()
     std::cout << "Major Version: " << Evolve_VERSION_MAJOR << std::endl;
     std::cout << "Minor Version: " << Evolve_VERSION_MINOR << std::endl;
     std::cout << "======================" << std::endl;
-
-    // Config
-    const auto kMySpeciesName = "Blorp";
-    const int kMySpeciesInitPop = 100;
-    const float kMySpeciesMaleFemaleRatio = 0.5;
-    const int kMySpeciesChromoPairNum = 1;
-    const int kMySpeciesLifeExpectanceDays = 365;
-    const int kMySpeciesMaxOffspring = 5;
-    const int N_GENES = 26;
-    const float INTERACTION_RATE = 0.75;
-    const bool kEnableThresholdTightening = true;
-    const float kTempMinThreshIncrease = 1.02;
-    const float kTempMaxThreshDecrease = 1.01;
 
 
     // Change the seed to be based off the current system time
@@ -76,12 +77,30 @@ int run()
     std::vector<std::shared_ptr<Creature>> &creatures = ecosystem.species_[kMySpeciesName]->GetCreatures();
 
 
-    int epoch_length_days =0;
-    do
+//    int epoch_length_days =0;
+//    do
+//    {
+//        std::cin >> epoch_length_days;
+//        ecosystem.RunEpoch(epoch_length_days);
+//        int day_number = ecosystem.GetDay();
+//        print_epoch_results();
+//        std::cout << "New Temp Resistance limits are " << ecosystem.environmental_limits_["Temperature Resistance"].first << ", " << ecosystem.environmental_limits_["Temperature Resistance"].second << std::endl;
+
+
+//    } while ( epoch_length_days > 0);
+
+    return 0;
+}
+
+void print_epoch_results()
+{
+    Ecosystem &ecosystem = Ecosystem::GetEcosystem();
+    auto day_number = ecosystem.GetDay();
+    for (auto &species_pair: ecosystem.species_)
     {
-        std::cin >> epoch_length_days;
-        ecosystem.RunEpoch(epoch_length_days);
-        int day_number = ecosystem.GetDay();
+        auto myspecies = species_pair.second;
+        std::vector<std::shared_ptr<Creature>> &creatures = ecosystem.species_[kMySpeciesName]->GetCreatures();
+
         std::cout << "Number of alive creatures after " << day_number << " days = " << myspecies->GetAlivePopulation() << std::endl;
         std::cout << "Number of deceased creatures after " << day_number << " days = " << myspecies->GetDeceasedPopulation() << std::endl;
 
@@ -97,20 +116,7 @@ int run()
                       std::cout << it.first  << " = " << it.second << ", ";
                   }
                   std::cout << std::endl;
-//                auto stat = trait->CalculateStatistics(creatures);
-//                std::cout << *trait << " Mean = " << stat.first << std::endl;
-//                std::cout << *trait << " Standard Deviation = " << stat.second << std::endl;
             }
         }
-        if (kEnableThresholdTightening)
-        {
-            ecosystem.environmental_limits_["Temperature Resistance"].first *= kTempMinThreshIncrease;
-            ecosystem.environmental_limits_["Temperature Resistance"].second /= kTempMaxThreshDecrease;
-        }
-        std::cout << "New Temp Resistance limits are " << ecosystem.environmental_limits_["Temperature Resistance"].first << ", " << ecosystem.environmental_limits_["Temperature Resistance"].second << std::endl;
-
-
-    } while ( epoch_length_days > 0);
-
-    return 0;
+    }
 }

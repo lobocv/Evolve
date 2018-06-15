@@ -16,7 +16,7 @@ public:
     ~EvolveUI();
 
 private slots:
-    void on_horizontalSlider_valueChanged(int value);
+    void on_run_button_clicked();
 
 private:
     Ui::EvolveUI *ui;
