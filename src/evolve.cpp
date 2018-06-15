@@ -28,6 +28,9 @@ const float kTempMinThreshIncrease = 1.02;
 const float kTempMaxThreshDecrease = 1.01;
 
 
+namespace Evolve {
+
+
 int init()
 {
     std::cout << "       Evolve         " << std::endl;
@@ -92,31 +95,4 @@ int init()
     return 0;
 }
 
-void print_epoch_results()
-{
-    Ecosystem &ecosystem = Ecosystem::GetEcosystem();
-    auto day_number = ecosystem.GetDay();
-    for (auto &species_pair: ecosystem.species_)
-    {
-        auto myspecies = species_pair.second;
-        std::vector<std::shared_ptr<Creature>> &creatures = ecosystem.species_[kMySpeciesName]->GetCreatures();
-
-        std::cout << "Number of alive creatures after " << day_number << " days = " << myspecies->GetAlivePopulation() << std::endl;
-        std::cout << "Number of deceased creatures after " << day_number << " days = " << myspecies->GetDeceasedPopulation() << std::endl;
-
-        if (creatures.size() > 0)
-        {
-            for (auto &trait_pair: ecosystem.traits_)
-            {
-                auto trait = trait_pair.second;
-                  auto phenotype_counter = trait->CalculatePhenotypeStatistics(creatures);
-                  std::cout << *trait << " : ";
-                  for (auto it: phenotype_counter)
-                  {
-                      std::cout << it.first  << " = " << it.second << ", ";
-                  }
-                  std::cout << std::endl;
-            }
-        }
-    }
 }

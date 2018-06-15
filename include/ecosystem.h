@@ -31,6 +31,7 @@ public:
     int GetDay();
     void set_attribute_limit_min(std::string attribute, float value);
     void set_attribute_limit_max(std::string attribute, float value);
+    void print_epoch_results();
 private:
     int day_ = 0;
     void RegisterTrait(std::shared_ptr<Trait> trait);

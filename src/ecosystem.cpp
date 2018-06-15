@@ -209,6 +209,33 @@ void Ecosystem::set_attribute_limit_max(std::string attribute, float value)
     if ( value > min && value < 1) environmental_limits_[attribute].second = value;
 }
 
+void Ecosystem::print_epoch_results()
+{
+    for (auto &species_pair: species_)
+    {
+        auto myspecies = species_pair.second;
+        std::vector<std::shared_ptr<Creature>> &creatures = species_[species_pair.first]->GetCreatures();
+
+        std::cout << "Number of alive creatures after " << day_ << " days = " << myspecies->GetAlivePopulation() << std::endl;
+        std::cout << "Number of deceased creatures after " << day_ << " days = " << myspecies->GetDeceasedPopulation() << std::endl;
+
+        if (creatures.size() > 0)
+        {
+            for (auto &trait_pair: traits_)
+            {
+                auto trait = trait_pair.second;
+                  auto phenotype_counter = trait->CalculatePhenotypeStatistics(creatures);
+                  std::cout << *trait << " : ";
+                  for (auto it: phenotype_counter)
+                  {
+                      std::cout << it.first  << " = " << it.second << ", ";
+                  }
+                  std::cout << std::endl;
+            }
+        }
+    }
+}
+
 
 /**
  * @brief Simulate the passing of a number of days (known as an epoch). During this time creatures will interact (reproduce / fight), grow and and die.

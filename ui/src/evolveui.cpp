@@ -9,7 +9,7 @@ EvolveUI::EvolveUI(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::EvolveUI)
 {
-    init();
+    Evolve::init();
     ui->setupUi(this);
 }
 
@@ -23,5 +23,5 @@ void EvolveUI::on_run_button_clicked()
 {
     Ecosystem &ecosystem = Ecosystem::GetEcosystem();
     ecosystem.RunEpoch(ui->epoch_length_spinbox->value());
-    print_epoch_results();
+    Evolve::print_epoch_results();
 }

@@ -1,6 +1,9 @@
 #ifndef EVOLVE_H
 #define EVOLVE_H
 
-int init();
-void print_epoch_results();
+namespace Evolve {
+
+    int init();
+
+}
 #endif // EVOLVE_H
