@@ -29,4 +29,4 @@ include_directories(include)
 file(GLOB SOURCES "src/*.cpp")
 
 # add the executeable
- add_executable(Evolve ${SOURCES})
+ add_library(Evolve ${SOURCES})

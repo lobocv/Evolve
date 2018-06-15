@@ -4,3 +4,4 @@ html/*
 index/*
 latex/*
 CMakeLists.txt.user
+**/*.pro.user

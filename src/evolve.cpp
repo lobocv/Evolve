@@ -14,7 +14,7 @@
 #include <time.h> 
 
 
-int main()
+int run()
 {
     std::cout << "       Evolve         " << std::endl;
     std::cout << "======================" << std::endl;
@@ -70,20 +70,7 @@ int main()
         exit(-1);
     }
 
-    std::cout << "List of Species" << std::endl;
-    std::cout << "===============" << std::endl;
-    for (auto species: ecosystem.species_)
-    {
-        std::cout << *species.second << std::endl;
-    }
-    std::cout << std::endl;
-    std::cout << "List of Traits" << std::endl;
-    std::cout << "===============" << std::endl;
-    for (auto trait: ecosystem.traits_)
-    {
-        std::cout << *trait.second << std::endl;
-    }
-    std::cout << "===============" << std::endl;
+    std::cout << ecosystem << std::endl;
 
     // Get the first two creatures and have them reproduce
     std::vector<std::shared_ptr<Creature>> &creatures = ecosystem.species_[kMySpeciesName]->GetCreatures();
