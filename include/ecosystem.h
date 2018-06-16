@@ -29,8 +29,8 @@ public:
 
     void RunEpoch(int number_of_days);
     int GetDay();
-    void set_attribute_limit_min(std::string attribute, float value);
-    void set_attribute_limit_max(std::string attribute, float value);
+    void set_attribute_limit_min(std::string attribute, int value);
+    void set_attribute_limit_max(std::string attribute, int value);
     void print_epoch_results();
 private:
     int day_ = 0;

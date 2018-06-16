@@ -197,16 +197,18 @@ std::ostream &operator<<(std::ostream &stream, const Ecosystem &ecosystem)
     // Get the first two creatures and have them repr
 }
 
-void Ecosystem::set_attribute_limit_min(std::string attribute, float value)
+void Ecosystem::set_attribute_limit_min(std::string attribute, int value)
 {
+    float norm_value = value / 100.0;
     auto max = environmental_limits_[attribute].second;
-    if ( value > 0 && value < max) environmental_limits_[attribute].first = value;
+    if ( norm_value >= 0 && norm_value <= max) environmental_limits_[attribute].first = norm_value;
 }
 
-void Ecosystem::set_attribute_limit_max(std::string attribute, float value)
+void Ecosystem::set_attribute_limit_max(std::string attribute, int value)
 {
+    float norm_value = value / 100.0;
     auto min = environmental_limits_[attribute].first;
-    if ( value > min && value < 1) environmental_limits_[attribute].second = value;
+    if ( norm_value >= min && norm_value <= 1) environmental_limits_[attribute].second = norm_value;
 }
 
 void Ecosystem::print_epoch_results()
@@ -234,6 +236,7 @@ void Ecosystem::print_epoch_results()
             }
         }
     }
+
 }
 
 

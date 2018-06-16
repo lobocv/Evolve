@@ -23,5 +23,30 @@ void EvolveUI::on_run_button_clicked()
 {
     Ecosystem &ecosystem = Ecosystem::GetEcosystem();
     ecosystem.RunEpoch(ui->epoch_length_spinbox->value());
-    Evolve::print_epoch_results();
+    ecosystem.print_epoch_results();
+
+    // Update the number of alive and dead creatures
+    std::string label;
+    for (auto &species_pair: ecosystem.species_)
+    {
+        auto myspecies = species_pair.second;
+        label += species_pair.first + "(" + std::to_string(myspecies->GetAlivePopulation()) + " / " + std::to_string(myspecies->GetDeceasedPopulation()) + ")\n";
+    }
+    ui->alive_dead_creatures_label->setText(QString(label.c_str()));
+
+    ui->day_number_label->setText(QString(std::to_string(ecosystem.GetDay()).c_str()));
+}
+
+void EvolveUI::on_temperature_min_slider_valueChanged(int value)
+{
+    Ecosystem &ecosystem = Ecosystem::GetEcosystem();
+    ecosystem.set_attribute_limit_min("Temperature Resistance", value);
+    std::cout << "New Temp Resistance limits are " << ecosystem.environmental_limits_["Temperature Resistance"].first << ", " << ecosystem.environmental_limits_["Temperature Resistance"].second << std::endl;
+}
+
+void EvolveUI::on_temperature_max_slider_valueChanged(int value)
+{
+    Ecosystem &ecosystem = Ecosystem::GetEcosystem();
+    ecosystem.set_attribute_limit_max("Temperature Resistance", value);
+    std::cout << "New Temp Resistance limits are " << ecosystem.environmental_limits_["Temperature Resistance"].first << ", " << ecosystem.environmental_limits_["Temperature Resistance"].second << std::endl;
 }
