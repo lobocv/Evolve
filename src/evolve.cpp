@@ -16,7 +16,7 @@
 
 // Config
 const auto kMySpeciesName = "Blorp";
-const int kMySpeciesInitPop = 100;
+const int kMySpeciesInitPop = 1000;
 const float kMySpeciesMaleFemaleRatio = 0.5;
 const int kMySpeciesChromoPairNum = 1;
 const int kMySpeciesLifeExpectanceDays = 365;
@@ -63,10 +63,10 @@ int init()
                                     {"Hair Color", "Hair Length", "Exterior Type",},
                                     {
                                         {{"Blond Haired", 1}, {"Black Haired", 1}},
-                                        {{"Short Haired", 1}, {"Medium-Short Haired", 1}, {"Medium Haired", 1}, {"Medium-Long Haired", 1}, {"Long Haired", 1}},
+                                        {{"Short Haired", 3}, {"Medium-Short Haired", 2}, {"Medium Haired", 1}, {"Medium-Long Haired", 0.5}, {"Long Haired", 0.25}},
                                         {{"Fur", 1}, {"Skin", 1}, {"Scales", 1}}
                                     },
-                                    0.2, 1.0);
+                                    0.0, 1.0);
 
     } catch (EvolveException e)
     {
