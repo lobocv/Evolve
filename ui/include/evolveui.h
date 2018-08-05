@@ -2,11 +2,21 @@
 #define EVOLVEUI_H
 
 #include <QMainWindow>
-#include <thread>
+#include <QThread>
 
 namespace Ui {
 class EvolveUI;
 }
+
+
+class EcosystemThread : public QThread
+{
+public:
+    bool ecosystem_running_ = false;
+    Ui::EvolveUI *ui_;
+protected:
+    void run();
+};
 
 class EvolveUI : public QMainWindow
 {
@@ -15,7 +25,7 @@ class EvolveUI : public QMainWindow
 public:
     explicit EvolveUI(QWidget *parent = 0);
     ~EvolveUI();
-    std::thread ecosystem_thread_;
+    std::shared_ptr<EcosystemThread> ecosystem_thread_;
     void run_ecosystem();
 
 private:
@@ -31,6 +41,7 @@ private slots:
 private:
     Ui::EvolveUI *ui;
 };
+
 
 
 

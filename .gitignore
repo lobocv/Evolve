@@ -1,7 +1,9 @@
 build/*
+build-EvolveUI-Desktop_Qt_5_10_1_GCC_64bit-Debug/*
 .idea/*
 html/*
 index/*
 latex/*
 CMakeLists.txt.user
 **/*.pro.user
+
