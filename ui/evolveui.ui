@@ -18,7 +18,7 @@
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout" stretch="3,2">
       <item>
-       <layout class="QVBoxLayout" name="verticalLayout_3">
+       <layout class="QVBoxLayout" name="verticalLayout_3" stretch="1,10">
         <item>
          <widget class="QPushButton" name="run_button">
           <property name="text">
@@ -27,17 +27,17 @@
          </widget>
         </item>
         <item>
-         <layout class="QVBoxLayout" name="verticalLayout_5">
+         <layout class="QVBoxLayout" name="verticalLayout_5" stretch="0,10">
           <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_3">
-            <item>
+           <layout class="QFormLayout" name="formLayout">
+            <item row="0" column="0">
              <widget class="QLabel" name="label_2">
               <property name="text">
                <string>Epoch Length (Days)</string>
               </property>
              </widget>
             </item>
-            <item>
+            <item row="0" column="1">
              <widget class="QSpinBox" name="epoch_length_spinbox">
               <property name="maximum">
                <number>1000</number>
@@ -47,10 +47,24 @@
               </property>
              </widget>
             </item>
+            <item row="1" column="0">
+             <widget class="QLabel" name="label_4">
+              <property name="text">
+               <string>Day Number:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QLabel" name="day_number_label">
+              <property name="text">
+               <string>0</string>
+              </property>
+             </widget>
+            </item>
            </layout>
           </item>
           <item>
-           <layout class="QVBoxLayout" name="verticalLayout_2">
+           <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,100">
             <item>
              <widget class="QLabel" name="label">
               <property name="frameShadow">
@@ -74,34 +88,16 @@
        </layout>
       </item>
       <item>
-       <layout class="QGridLayout" name="gridLayout_2">
-        <item row="0" column="1">
-         <widget class="QLabel" name="day_number_label">
-          <property name="text">
-           <string>0</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="0">
-         <widget class="QLabel" name="label_4">
-          <property name="text">
-           <string>Day Number:</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <widget class="QLabel" name="alive_dead_creatures_label">
-          <property name="text">
-           <string>-- / --</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="0">
+       <layout class="QVBoxLayout" name="_2" stretch="1,100">
+        <item>
          <widget class="QLabel" name="label_3">
           <property name="text">
-           <string>Creatures (alive / dead): </string>
+           <string>Species Information</string>
           </property>
          </widget>
+        </item>
+        <item>
+         <layout class="QVBoxLayout" name="species_info_layout"/>
         </item>
        </layout>
       </item>

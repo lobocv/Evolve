@@ -31,12 +31,15 @@ LIBS += -L"/home/calvin/lobocv/Evolve/build" -lEvolve
 SOURCES += \
         src/main.cpp \
         src/evolveui.cpp \
-        src/labelslider.cpp
+        src/labelslider.cpp \
+        src/speciesinfo.cpp
 
 HEADERS += \
         include/evolveui.h \
-        include/labelslider.h
+        include/labelslider.h \
+        include/speciesinfo.h
 
 FORMS += \
         evolveui.ui \
-        labelslider.ui
+        labelslider.ui \
+        speciesinfo.ui \

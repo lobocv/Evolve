@@ -3,20 +3,14 @@
 
 #include <QMainWindow>
 #include <QThread>
+#include "map"
+#include "speciesinfo.h"
 
 namespace Ui {
 class EvolveUI;
 }
 
-
-class EcosystemThread : public QThread
-{
-public:
-    bool ecosystem_running_ = false;
-    Ui::EvolveUI *ui_;
-protected:
-    void run();
-};
+class EcosystemThread;
 
 class EvolveUI : public QMainWindow
 {
@@ -27,6 +21,8 @@ public:
     ~EvolveUI();
     std::shared_ptr<EcosystemThread> ecosystem_thread_;
     void run_ecosystem();
+    Ui::EvolveUI *ui;
+    std::map<std::string, SpeciesInfo*> speciesinfo_;
 
 private:
     bool ecosystem_running_ = false;
@@ -34,10 +30,17 @@ private:
 private slots:
     void on_run_button_clicked();
 
-private:
-    Ui::EvolveUI *ui;
 };
 
+
+class EcosystemThread : public QThread
+{
+public:
+    bool ecosystem_running_ = false;
+    EvolveUI *app;
+protected:
+    void run();
+};
 
 
 
