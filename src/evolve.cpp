@@ -68,6 +68,15 @@ int init()
                                     },
                                     0.0, 1.0);
 
+        ecosystem.RegisterAttribute("Hygene",
+                                    {"Hair Length", "Exterior Type",},
+                                    {
+                                        {{"Short Haired", 3}, {"Medium-Short Haired", 2}, {"Medium Haired", 1}, {"Medium-Long Haired", 0.5}, {"Long Haired", 0.25}},
+                                        {{"Fur", 1}, {"Skin", 2}, {"Scales", 3}}
+                                    },
+                                    0.0, 1.0);
+
+
     } catch (EvolveException e)
     {
         std::cout << e.what() <<std::endl;

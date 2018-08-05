@@ -1,5 +1,8 @@
 #include "evolveui.h"
 #include "ui_evolveui.h"
+#include "labelslider.h"
+#include "ui_labelslider.h"
+
 #include <iostream>
 #include <sstream>
 #include <QThread>
@@ -13,6 +16,17 @@ EvolveUI::EvolveUI(QWidget *parent) :
 {
     Evolve::init();
     ui->setupUi(this);
+    Ecosystem &ecosystem = Ecosystem::GetEcosystem();
+    for (auto &attr_pair: ecosystem.attributes_)
+    {
+        auto attr_name = attr_pair.first;
+        auto limits = ecosystem.environmental_limits_[attr_name];
+        LabelSlider *attr_slider = new LabelSlider(this);
+        attr_slider->ui->name_label->setText(QString(attr_name.c_str()));
+        attr_slider->ui->min_label->setText(QString(("Min :" + std::to_string(int(limits.first))).c_str()));
+        attr_slider->ui->max_label->setText(QString(("Max :" + std::to_string(int(limits.second))).c_str()));
+        ui->attributes_layout->addWidget(attr_slider);
+    }
 }
 
 EvolveUI::~EvolveUI() { delete ui;}
@@ -63,18 +77,4 @@ void EvolveUI::on_run_button_clicked()
         ecosystem_thread_->start();
     }
 
-}
-
-void EvolveUI::on_temperature_min_slider_valueChanged(int value)
-{
-    Ecosystem &ecosystem = Ecosystem::GetEcosystem();
-    ecosystem.set_attribute_limit_min("Temperature Resistance", value);
-    std::cout << "New Temp Resistance limits are " << ecosystem.environmental_limits_["Temperature Resistance"].first << ", " << ecosystem.environmental_limits_["Temperature Resistance"].second << std::endl;
-}
-
-void EvolveUI::on_temperature_max_slider_valueChanged(int value)
-{
-    Ecosystem &ecosystem = Ecosystem::GetEcosystem();
-    ecosystem.set_attribute_limit_max("Temperature Resistance", value);
-    std::cout << "New Temp Resistance limits are " << ecosystem.environmental_limits_["Temperature Resistance"].first << ", " << ecosystem.environmental_limits_["Temperature Resistance"].second << std::endl;
 }

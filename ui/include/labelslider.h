@@ -15,8 +15,13 @@ public:
     explicit LabelSlider(QWidget *parent = 0);
     ~LabelSlider();
 
-private:
+//private:
     Ui::LabelSlider *ui;
+
+private slots:
+    void on_min_slider_valueChanged(int value);
+    void on_max_slider_valueChanged(int value);
+
 };
 
 #endif // LABELSLIDER_H

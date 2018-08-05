@@ -34,10 +34,6 @@ private:
 private slots:
     void on_run_button_clicked();
 
-    void on_temperature_min_slider_valueChanged(int value);
-
-    void on_temperature_max_slider_valueChanged(int value);
-
 private:
     Ui::EvolveUI *ui;
 };
