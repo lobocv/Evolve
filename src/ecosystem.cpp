@@ -34,6 +34,8 @@ std::shared_ptr<zmq::socket_t> Ecosystem::openConnection(std::string host, int p
     return socket_;
 }
 
+std::shared_ptr<zmq::socket_t> Ecosystem::getConnection() {return socket_;}
+
 /**
  * @brief Create and register a new species into the Ecosystem.
  * @param species_name

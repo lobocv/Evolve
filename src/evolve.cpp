@@ -87,7 +87,7 @@ int init()
 
     // Get the first two creatures and have them reproduce
     std::vector<std::shared_ptr<Creature>> &creatures = ecosystem.species_[kMySpeciesName]->GetCreatures();
-
+    ecosystem.openConnection("0.0.0.0", 12346);
 
 //    int epoch_length_days =0;
 //    do

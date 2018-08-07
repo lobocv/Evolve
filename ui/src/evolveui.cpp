@@ -49,7 +49,7 @@ void EcosystemThread::run()
     Ecosystem &ecosystem = Ecosystem::GetEcosystem();
     Ui::EvolveUI *ui = app->ui;
 
-    auto socket = ecosystem.openConnection("0.0.0.0", 12346);
+    auto socket = ecosystem.getConnection();
 
     while (ecosystem_running_)
     {
