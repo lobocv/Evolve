@@ -5,6 +5,8 @@
 #include "speciesinfo.h"
 #include "ui_speciesinfo.h"
 
+#include <zmq.hpp>
+#include <cstring>
 #include <iostream>
 #include <sstream>
 #include <QThread>
@@ -46,6 +48,9 @@ void EcosystemThread::run()
 {
     Ecosystem &ecosystem = Ecosystem::GetEcosystem();
     Ui::EvolveUI *ui = app->ui;
+
+    auto socket = ecosystem.openConnection("0.0.0.0", 12346);
+
     while (ecosystem_running_)
     {
         ecosystem.RunEpoch(ui->epoch_length_spinbox->value());
@@ -61,6 +66,28 @@ void EcosystemThread::run()
             auto deceased = myspecies->GetDeceasedPopulation();
             app->speciesinfo_[species_name]->ui->alive_label->setText(QString(std::to_string(alive).c_str()));
             app->speciesinfo_[species_name]->ui->deceased_label->setText(QString(std::to_string(deceased).c_str()));
+            std::vector<std::shared_ptr<Creature>> &creatures = ecosystem.species_[species_name]->GetCreatures();
+            for (auto &trait_pair: ecosystem.traits_)
+            {
+                auto phenotype_counter = trait_pair.second->CalculatePhenotypeStatistics(creatures);    
+                std::stringstream json;
+                json << "{";
+                int ii=0;
+                for (auto it: phenotype_counter)
+                {
+                    if (ii > 0) json << ", ";
+                    json << "\"" << it.first << "\" : " << std::to_string(it.second);
+                    ii++;
+                }
+                json << "}";
+                auto val = json.str();
+                zmq::message_t reply (val.size());
+                std::cout << val << std::endl;
+                std::memcpy (reply.data (), val.c_str(), val.size());
+                socket->send(reply);
+//                sleep(1);
+            }
+            
         }
 
         long total_population = 0;

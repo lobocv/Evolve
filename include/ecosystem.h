@@ -8,6 +8,7 @@
 #include "creature.h"
 #include "species.h"
 #include "attribute.h"
+#include <zmq.hpp>
 
 // Singleton
 class Ecosystem
@@ -26,12 +27,13 @@ public:
     void RegisterBinaryTrait(std::string name, std::string gene_code, std::vector<std::string> phenotypes);
     void RegisterContinuousTrait(std::string name, std::string gene_codes, std::vector<std::string> phenotypes, float min, float max);
     void RegisterAttribute(std::string attr_name, std::vector<std::string> traits, std::vector<PhenotypeWeights> weights, float min, float max);
-
     void RunEpoch(int number_of_days);
     int GetDay();
     void set_attribute_limit_min(std::string attribute, int value);
     void set_attribute_limit_max(std::string attribute, int value);
     void print_epoch_results();
+    std::shared_ptr<zmq::socket_t> openConnection(std::string host, int port);
+
 private:
     int day_ = 0;
     void RegisterTrait(std::shared_ptr<Trait> trait);
@@ -47,6 +49,12 @@ private:
     };
 
     friend class EcosystemDeleter;
+
+    // ZeroMQ message
+    std::shared_ptr<zmq::context_t> zmq_context_;
+    std::shared_ptr<zmq::socket_t> socket_;
+
+
 };
 
 std::ostream &operator<<(std::ostream &stream, const Ecosystem &ecosystem);

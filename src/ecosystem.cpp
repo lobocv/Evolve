@@ -2,7 +2,7 @@
 #include "species.h"
 #include "trait.h"
 #include "attribute.h"
-
+#include <sstream>
 #include <algorithm>
 
 /**
@@ -15,6 +15,23 @@ Ecosystem& Ecosystem::GetEcosystem()
 {
     static std::shared_ptr<Ecosystem> eco( new Ecosystem() , Ecosystem::EcosystemDeleter() );
     return *eco;
+}
+
+/**
+ * @brief Create an out-bound connection that will transmit details of the ecosystem after each epoch.
+ * @param host
+ * @param port
+ * @return
+ */
+std::shared_ptr<zmq::socket_t> Ecosystem::openConnection(std::string host, int port)
+{
+    zmq_context_ = std::make_shared<zmq::context_t>(1);
+    socket_ = std::make_shared<zmq::socket_t>(*zmq_context_, ZMQ_PUB);
+    std::stringstream url;
+    url << "tcp://" << host << ":" << port;
+    socket_->bind(url.str().c_str());
+
+    return socket_;
 }
 
 /**
