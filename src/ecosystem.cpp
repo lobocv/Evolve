@@ -5,6 +5,11 @@
 #include <sstream>
 #include <algorithm>
 
+#include "json.hpp"
+
+using json = nlohmann::json;
+
+
 /**
     Ecosystem (Singleton)
 
@@ -232,13 +237,17 @@ void Ecosystem::set_attribute_limit_max(std::string attribute, int value)
 
 void Ecosystem::print_epoch_results()
 {
+    auto socket = getConnection();
+    json payload;
+
     for (auto &species_pair: species_)
     {
-        auto myspecies = species_pair.second;
-        std::vector<std::shared_ptr<Creature>> &creatures = species_[species_pair.first]->GetCreatures();
+        auto speciesname = species_pair.first;
+        auto species = species_pair.second;
+        std::vector<std::shared_ptr<Creature>> &creatures = species_[speciesname]->GetCreatures();
 
-        std::cout << "Number of alive creatures after " << day_ << " days = " << myspecies->GetAlivePopulation() << std::endl;
-        std::cout << "Number of deceased creatures after " << day_ << " days = " << myspecies->GetDeceasedPopulation() << std::endl;
+        std::cout << "Number of alive creatures after " << day_ << " days = " << species->GetAlivePopulation() << std::endl;
+        std::cout << "Number of deceased creatures after " << day_ << " days = " << species->GetDeceasedPopulation() << std::endl;
 
         if (creatures.size() > 0)
         {
@@ -249,11 +258,20 @@ void Ecosystem::print_epoch_results()
                   std::cout << *trait << " : ";
                   for (auto it: phenotype_counter)
                   {
+                      payload["phenotypes"][speciesname][it.first] = it.second;
                       std::cout << it.first  << " = " << it.second << ", ";
                   }
                   std::cout << std::endl;
             }
         }
+
+        std::stringstream jsonstrstream;
+        jsonstrstream << payload;
+        std::string payloadstr = jsonstrstream.str();
+        zmq::message_t reply (payloadstr.size());
+        std::cout << payloadstr << std::endl;
+        std::memcpy (reply.data (), payloadstr.c_str(), payloadstr.size());
+        socket->send(reply);
     }
 
 }
