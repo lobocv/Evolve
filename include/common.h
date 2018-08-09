@@ -7,6 +7,7 @@
 #include <map>
 #include <exception>
 #include <cmath>
+#include <zmq.hpp>
 
 // Forward Declarations
 class Chromosome;
@@ -99,5 +100,6 @@ inline std::ostream &operator<<(std::ostream &stream, const std::vector<T> &obj)
     }
     return stream;
 }
+
 
 #endif

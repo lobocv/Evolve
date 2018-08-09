@@ -235,7 +235,7 @@ void Ecosystem::set_attribute_limit_max(std::string attribute, int value)
     if ( norm_value >= min && norm_value <= 1) environmental_limits_[attribute].second = norm_value;
 }
 
-void Ecosystem::print_epoch_results()
+void Ecosystem::PublishResults()
 {
     auto socket = getConnection();
     json payload;
@@ -246,8 +246,8 @@ void Ecosystem::print_epoch_results()
         auto species = species_pair.second;
         std::vector<std::shared_ptr<Creature>> &creatures = species_[speciesname]->GetCreatures();
 
-        std::cout << "Number of alive creatures after " << day_ << " days = " << species->GetAlivePopulation() << std::endl;
-        std::cout << "Number of deceased creatures after " << day_ << " days = " << species->GetDeceasedPopulation() << std::endl;
+        payload[speciesname]["alive"] = species->GetAlivePopulation();
+        payload[speciesname]["deceased"] = species->GetDeceasedPopulation();
 
         if (creatures.size() > 0)
         {
@@ -258,7 +258,7 @@ void Ecosystem::print_epoch_results()
                   std::cout << *trait << " : ";
                   for (auto it: phenotype_counter)
                   {
-                      payload["phenotypes"][speciesname][it.first] = it.second;
+                      payload[speciesname]["phenotypes"][it.first] = it.second;
                       std::cout << it.first  << " = " << it.second << ", ";
                   }
                   std::cout << std::endl;
@@ -267,11 +267,7 @@ void Ecosystem::print_epoch_results()
 
         std::stringstream jsonstrstream;
         jsonstrstream << payload;
-        std::string payloadstr = jsonstrstream.str();
-        zmq::message_t reply (payloadstr.size());
-        std::cout << payloadstr << std::endl;
-        std::memcpy (reply.data (), payloadstr.c_str(), payloadstr.size());
-        socket->send(reply);
+        socketsend(*socket, jsonstrstream.str());
     }
 
 }
@@ -338,3 +334,14 @@ void Ecosystem::RunEpoch(int number_of_days)
 }
 
 
+/**
+ * @brief Send string value over a ZeroMQ socket.
+ * @param socket
+ * @param payload
+ */
+void Ecosystem::socketsend(zmq::socket_t& socket, std::string payload)
+{
+    zmq::message_t reply (payload.size());
+    std::memcpy (reply.data (), payload.c_str(), payload.size());
+    socket.send(reply);
+}

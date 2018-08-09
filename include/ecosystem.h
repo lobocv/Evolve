@@ -32,7 +32,7 @@ public:
     std::shared_ptr<zmq::socket_t> getConnection();
     void set_attribute_limit_min(std::string attribute, int value);
     void set_attribute_limit_max(std::string attribute, int value);
-    void print_epoch_results();
+    void PublishResults();
     std::shared_ptr<zmq::socket_t> openConnection(std::string host, int port);
 
 private:
@@ -54,7 +54,7 @@ private:
     // ZeroMQ message
     std::shared_ptr<zmq::context_t> zmq_context_;
     std::shared_ptr<zmq::socket_t> socket_;
-
+    void socketsend(zmq::socket_t& socket, std::string payload);
 
 };
 
