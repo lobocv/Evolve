@@ -15,8 +15,9 @@ import json
 app = QtGui.QApplication([])
 
 p = pg.plot()
+p.showGrid(x=True, y=True, alpha=0.6)
 p.setWindowTitle('Evolve Statistics')
-p.setRange(QtCore.QRectF(0, -10, 5000, 20)) 
+p.setRange(QtCore.QRectF(0, 0, 100, 2000)) 
 p.setLabel('left', 'Number of Creatures', units='')
 p.setLabel('bottom', 'Epoch', units='')
 alive_line = p.plot()
