@@ -253,12 +253,13 @@ void Ecosystem::PublishResults()
         {
             for (auto &trait_pair: traits_)
             {
+                auto traitname = trait_pair.first;
                 auto trait = trait_pair.second;
                   auto phenotype_counter = trait->CalculatePhenotypeStatistics(creatures);
                   std::cout << *trait << " : ";
                   for (auto it: phenotype_counter)
                   {
-                      payload[speciesname]["phenotypes"][it.first] = it.second;
+                      payload[speciesname]["phenotypes"][traitname][it.first] = it.second;
                       std::cout << it.first  << " = " << it.second << ", ";
                   }
                   std::cout << std::endl;
