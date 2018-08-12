@@ -3,24 +3,25 @@
 """
 Update a simple plot as rapidly as possible to measure speed.
 """
-
-
 from pyqtgraph.Qt import QtGui, QtCore
 import pyqtgraph as pg
 import zmq
 import json
 
 
-def create_subplot(title='', xlabels=None):
+def create_subplot(title='', xlabels=None, spacing=3):
     global layout
     axis = PhenotypeAxis(xlabels, orientation='bottom')
+    axis.setTickSpacing(major=spacing, minor=spacing,)
 
     plot = layout.addPlot(title=title, axisItems={'bottom': axis})
     plot.showGrid(x=True, y=True, alpha=0.6)
     plot.setWindowTitle(title)
     plot.setLabel('left', 'Number of Creatures', units='')
-    plot.setLabel('bottom', 'Epoch', units='')
+    plot.setLabel('bottom', 'Phenotype', units='')
 
+    vb = plot.getViewBox()
+    vb.setLimits(yMin=0)
     return plot
 
 
@@ -30,12 +31,15 @@ def update():
     payload = socket.recv()
     data = json.loads(payload.decode())
 
-    spacing = 0
+    spacing = 3
     barwidth = 1
 
     for speciesname, species_info in data.items():
         if speciesname not in plots:
             plots[speciesname] = {}
+
+        if "phenotypes" not in species_info:
+            continue
 
         for ii, (traitname, trait) in enumerate(species_info["phenotypes"].items()):
             if traitname not in plots[speciesname]:
@@ -45,15 +49,14 @@ def update():
 
             if (ii+1) % max_row == 0 and ii > 0:
                 layout.nextRow()
-
+            colors= 'bgrcmykw'
             for jj, (phenotype, phenotype_count) in enumerate(trait.items()):
                 if phenotype not in plots[speciesname][traitname]:
-
-                    bar = pg.BarGraphItem(x=[jj + jj*spacing], height=phenotype_count, width=barwidth)
+                    bar = pg.BarGraphItem(x=[jj*spacing], height=phenotype_count, width=barwidth, brush=colors[jj])
                     plot.addItem(bar)
-                    plots[speciesname][traitname][phenotype] = bar
+                    plots[speciesname][traitname][phenotype] = (plot, bar)
                 else:
-                    bar = plots[speciesname][traitname][phenotype]
+                    plot, bar = plots[speciesname][traitname][phenotype]
                     bar.setOpts(height=phenotype_count)
 
     # force complete redraw for every plot
@@ -67,21 +70,37 @@ class PhenotypeAxis(pg.AxisItem):
         self.x_axis_labels = x_axis_labels
 
     def tickStrings(self, values, scale, spacing):
-
-        # return list(range(len(self.x_axis_labels))), self.x_axis_labels
-        # return (map(str, values)), self.x_axis_labels + list(map(str, values))
+        """Override this method to replace axis tick numbers with phenotype labels. """
         strns = []
 
         for x in values:
-            xint = int(round(x))
+            x /= float(spacing)
             try:
-                s = self.x_axis_labels[xint]
+                if x >= 0 and x % 1 < 0.01:
+                    x = int(round(x))
+                    s = self.x_axis_labels[x]
+                else:
+                    s = ""
             except IndexError:
-                s = str(x)
-            # s = str(x)
+                s = ""
             strns.append(s)
 
         return strns
+
+    def generateDrawSpecs(self, p):
+        """ Override this method to alternate the y position of tick labels so that they don't overlap."""
+        axisSpec, tickSpecs, textSpecs = super(PhenotypeAxis, self).generateDrawSpecs(p)
+
+        do_shift = True
+        for rect, textflags, vstr in textSpecs:
+            if vstr:
+                shift = rect.height()*1.5
+                if do_shift:
+                    rect.adjust(0, 0, shift, shift)
+                do_shift = not do_shift
+
+        return axisSpec, tickSpecs, textSpecs
+
 
 # Start Qt event loop unless running in interactive mode.
 if __name__ == '__main__':
