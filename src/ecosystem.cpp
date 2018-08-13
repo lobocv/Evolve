@@ -6,6 +6,8 @@
 #include <algorithm>
 
 #include "json.hpp"
+#include "spdlog/spdlog.h"
+#include "spdlog/fmt/ostr.h"
 
 using json = nlohmann::json;
 
@@ -240,6 +242,8 @@ void Ecosystem::PublishResults()
     auto socket = getConnection();
     json payload;
 
+    auto logger = spdlog::get("file_logger");
+
     for (auto &species_pair: species_)
     {
         auto speciesname = species_pair.first;
@@ -260,7 +264,7 @@ void Ecosystem::PublishResults()
                   for (auto it: phenotype_counter)
                   {
                       payload[speciesname]["phenotypes"][traitname][it.first] = it.second;
-                      std::cout << it.first  << " = " << it.second << ", ";
+                      logger->info("{0} = {1} are reproducing.", it.first, it.second);
                   }
                   std::cout << std::endl;
             }
@@ -280,6 +284,7 @@ void Ecosystem::PublishResults()
  */
 void Ecosystem::RunEpoch(int number_of_days)
 {
+    auto logger = spdlog::get("file_logger");
     for (int epoch_day=0; epoch_day < number_of_days; epoch_day++, day_++)
     {
         /*
@@ -300,9 +305,9 @@ void Ecosystem::RunEpoch(int number_of_days)
                 try
                 {
                     Creature::Reproduce(c1, c2);
-                    std::cout << *c1 << " and " << *c2 << " are reproducing." << std::endl;
+                    logger->info("{0} and {1} are reproducing.", *c1, *c2);
                 } catch (CannotProcreateError e) {
-                    std::cout << *c1 << " and " << *c2 << " failed to reproduce because " << e.what() << std::endl;
+                    logger->info("{0} and {1} failed to reproduce.", *c1, *c2);
                 }
 
             }
@@ -318,7 +323,7 @@ void Ecosystem::RunEpoch(int number_of_days)
                 {
                     auto attr_value = attr.second->CalculateValue(**it);
                     auto attr_limit = environmental_limits_[attr.second->GetName()];
-                    std::cout << "Attribute " << attr.first << " = " << attr_value << std::endl;
+                    logger->info("Attribute {0} = {1}", attr.first, attr_value);
                     creature_survives &= attr_value >= attr_limit.first && attr_value <= attr_limit.second;
                 }
                 if (age > species.second->life_expectancy_days_ || !creature_survives)

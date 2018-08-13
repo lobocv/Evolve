@@ -2,6 +2,8 @@
 #include <stdlib.h> 
 #include <functional>
 #include <memory>
+#include "spdlog/spdlog.h"
+#include "spdlog/sinks/file_sinks.h"
 
 #include "EvolveConfig.h"
 #include "common.h"
@@ -24,21 +26,31 @@ const int kMySpeciesMaxOffspring = 5;
 const int N_GENES = 26;
 const float INTERACTION_RATE = 0.75;
 const bool kEnableThresholdTightening = true;
-const float kTempMinThreshIncrease = 1.02;
-const float kTempMaxThreshDecrease = 1.01;
 
 
 namespace Evolve {
 
-
 int init()
 {
-    std::cout << "       Evolve         " << std::endl;
-    std::cout << "======================" << std::endl;
-    std::cout << "Author: Calvin Lobo" << std::endl;
-    std::cout << "Major Version: " << Evolve_VERSION_MAJOR << std::endl;
-    std::cout << "Minor Version: " << Evolve_VERSION_MINOR << std::endl;
-    std::cout << "======================" << std::endl;
+
+
+    auto console = spdlog::stdout_color_mt("console");
+    std::shared_ptr<spdlog::logger> my_logger;
+    try
+    {
+        my_logger = spdlog::basic_logger_st("file_logger", "/tmp/EvolveLog.txt");
+
+    } catch (const spdlog::spdlog_ex& ex)
+    {
+        std::cout << "Log initialization failed: " << ex.what() << std::endl;
+    }
+    spdlog::set_level(spdlog::level::info);
+    my_logger->info("       Evolve         ");
+    my_logger->info("======================");
+    my_logger->info("Author: Calvin Lobo");
+    my_logger->info("Major Version: {0}", Evolve_VERSION_MAJOR);
+    my_logger->info("Minor Version: {0}", Evolve_VERSION_MINOR);
+    my_logger->info("======================");
 
 
     // Change the seed to be based off the current system time
