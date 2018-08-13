@@ -3,10 +3,11 @@
 """
 Update a simple plot as rapidly as possible to measure speed.
 """
-from pyqtgraph.Qt import QtGui, QtCore
+import json
+
 import pyqtgraph as pg
 import zmq
-import json
+from pyqtgraph.Qt import QtGui, QtCore
 
 
 def create_subplot(title='', xlabels=None, spacing=3):
@@ -21,18 +22,16 @@ def create_subplot(title='', xlabels=None, spacing=3):
     plot.setLabel('bottom', 'Phenotype', units='')
 
     vb = plot.getViewBox()
-    vb.setLimits(yMin=0)
+    vb.setLimits(xMin=-1, yMin=0)
     return plot
 
 
-def update():
-    global plots, view, layout, loop
-    max_row = 3
-    payload = socket.recv()
-    data = json.loads(payload.decode())
-
-    spacing = 3
+@QtCore.pyqtSlot()
+def update_plots(data):
+    global plots, view, layout
+    spacing = 5
     barwidth = 1
+    max_row = 3
 
     for speciesname, species_info in data.items():
         if speciesname not in plots:
@@ -43,13 +42,14 @@ def update():
 
         for ii, (traitname, trait) in enumerate(species_info["phenotypes"].items()):
             if traitname not in plots[speciesname]:
-                plot = create_subplot(title="%s: %s" % (speciesname, traitname), xlabels=list(trait.keys()))
+                plot = create_subplot(title="%s: %s" % (speciesname, traitname), xlabels=list(trait.keys()), spacing=spacing)
                 plot.setRange(QtCore.QRectF(0, 0, len(trait) + len(trait)*spacing, 500))
                 plots[speciesname][traitname] = {}
 
             if (ii+1) % max_row == 0 and ii > 0:
                 layout.nextRow()
-            colors= 'bgrcmykw'
+
+            colors = 'bgrcmykw'
             for jj, (phenotype, phenotype_count) in enumerate(trait.items()):
                 if phenotype not in plots[speciesname][traitname]:
                     bar = pg.BarGraphItem(x=[jj*spacing], height=phenotype_count, width=barwidth, brush=colors[jj])
@@ -58,9 +58,6 @@ def update():
                 else:
                     plot, bar = plots[speciesname][traitname][phenotype]
                     bar.setOpts(height=phenotype_count)
-
-    # force complete redraw for every plot
-    app.processEvents()
 
 
 class PhenotypeAxis(pg.AxisItem):
@@ -102,6 +99,17 @@ class PhenotypeAxis(pg.AxisItem):
         return axisSpec, tickSpecs, textSpecs
 
 
+class MessageQueueThread(QtCore.QThread):
+
+    update = QtCore.pyqtSignal(dict)
+
+    def run(self):
+        while 1:
+            payload = socket.recv()
+            data = json.loads(payload.decode())
+            self.update.emit(data)
+
+
 # Start Qt event loop unless running in interactive mode.
 if __name__ == '__main__':
     import sys
@@ -110,7 +118,7 @@ if __name__ == '__main__':
     view = pg.GraphicsView()
     layout = pg.GraphicsLayout()
     view.setCentralItem(layout)
-    view.show()
+    view.showMaximized()
 
     print("Collecting phenotype statistics from Evolve server...")
     # Socket to talk to server
@@ -124,9 +132,9 @@ if __name__ == '__main__':
 
     plots = {}
 
-    timer = QtCore.QTimer()
-    timer.timeout.connect(update)
-    timer.start(0)
+    t = MessageQueueThread()
+    t.update.connect(update_plots)
+    t.start()
 
     if (sys.flags.interactive != 1) or not hasattr(QtCore, 'PYQT_VERSION'):
         QtGui.QApplication.instance().exec_()
