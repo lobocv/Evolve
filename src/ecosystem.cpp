@@ -74,7 +74,8 @@ std::shared_ptr<Species> Ecosystem::RegisterSpecies(std::string species_name, in
  */
 void Ecosystem::RegisterTrait(std::shared_ptr<Trait> trait)
 {
-    std::cout << "TRAIT REGISTERED " << trait->GetName() << std::endl;
+    auto logger = spdlog::get("logger");
+    logger->info("Registering Trait: {0}", trait->GetName());
     Ecosystem &ecosystem = Ecosystem::GetEcosystem();
     trait->InitializePhenospace();
     ecosystem.traits_[trait->GetName()] = trait;
@@ -205,22 +206,22 @@ int Ecosystem::GetDay() {return day_;}
 
 std::ostream &operator<<(std::ostream &stream, const Ecosystem &ecosystem)
 {
-    std::cout << "List of Species" << std::endl;
-    std::cout << "===============" << std::endl;
+    stream << "List of Species" << std::endl;
+    stream << "===============" << std::endl;
     for (auto species: ecosystem.species_)
     {
-        std::cout << *species.second << std::endl;
+        stream << *species.second << std::endl;
     }
-    std::cout << std::endl;
-    std::cout << "List of Traits" << std::endl;
-    std::cout << "===============" << std::endl;
+    stream << std::endl;
+    stream << "List of Traits" << std::endl;
+    stream << "===============" << std::endl;
     for (auto trait: ecosystem.traits_)
     {
-        std::cout << *trait.second << std::endl;
+        stream << *trait.second << std::endl;
     }
-    std::cout << "===============" << std::endl;
+    stream << "===============" << std::endl;
 
-    // Get the first two creatures and have them repr
+    return stream;
 }
 
 void Ecosystem::set_attribute_limit_min(std::string attribute, int value)
@@ -242,7 +243,7 @@ void Ecosystem::PublishResults()
     auto socket = getConnection();
     json payload;
 
-    auto logger = spdlog::get("file_logger");
+    auto logger = spdlog::get("logger");
 
     for (auto &species_pair: species_)
     {
@@ -260,13 +261,11 @@ void Ecosystem::PublishResults()
                 auto traitname = trait_pair.first;
                 auto trait = trait_pair.second;
                   auto phenotype_counter = trait->CalculatePhenotypeStatistics(creatures);
-                  std::cout << *trait << " : ";
                   for (auto it: phenotype_counter)
                   {
                       payload[speciesname]["phenotypes"][traitname][it.first] = it.second;
                       logger->info("{0} = {1} are reproducing.", it.first, it.second);
                   }
-                  std::cout << std::endl;
             }
         }
 
@@ -284,7 +283,7 @@ void Ecosystem::PublishResults()
  */
 void Ecosystem::RunEpoch(int number_of_days)
 {
-    auto logger = spdlog::get("file_logger");
+    auto logger = spdlog::get("logger");
     for (int epoch_day=0; epoch_day < number_of_days; epoch_day++, day_++)
     {
         /*
@@ -316,8 +315,6 @@ void Ecosystem::RunEpoch(int number_of_days)
             while (it != creatures.end())
             {
                 int age = (day_ - (*it)->GetBirthDate());
-//                std::cout << "Age of " << **it << " is " << age << std::endl;
-                (*it)->PrintTraits();
                 bool creature_survives = true;
                 for (auto attr: attributes_)
                 {

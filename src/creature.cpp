@@ -6,7 +6,9 @@
 #include "ecosystem.h"
 #include <ctype.h>
 #include <iostream>
+#include <sstream>
 #include <cstdlib>
+#include <spdlog/spdlog.h>
 
 /*
     Creature
@@ -28,7 +30,10 @@ Creature::~Creature()
 {
     species_.deceased_++;
     species_.alive_--;
-    std::cout << *this << " has died." << std::endl;
+    auto logger = spdlog::get("logger");
+    std::stringstream s;
+    s << *this;
+    logger->debug("{0} has died.", s.str());
 }
 
 /**

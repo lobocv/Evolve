@@ -1,9 +1,11 @@
 #include <iostream>
+#include <sstream>
 #include <stdlib.h> 
 #include <functional>
 #include <memory>
 #include "spdlog/spdlog.h"
-#include "spdlog/sinks/file_sinks.h"
+#include "spdlog/sinks/stdout_color_sinks.h"
+#include "spdlog/sinks/basic_file_sink.h"
 
 #include "EvolveConfig.h"
 #include "common.h"
@@ -24,8 +26,8 @@ const int kMySpeciesChromoPairNum = 1;
 const int kMySpeciesLifeExpectanceDays = 365;
 const int kMySpeciesMaxOffspring = 5;
 const int N_GENES = 26;
-const float INTERACTION_RATE = 0.75;
-const bool kEnableThresholdTightening = true;
+
+const char LOGFILE[] = "/tmp/EvolveLog.txt";
 
 
 namespace Evolve {
@@ -33,24 +35,24 @@ namespace Evolve {
 int init()
 {
 
+    // Set up sinks to stdout and file
+    std::vector<spdlog::sink_ptr> sinks;
+    sinks.push_back(std::make_shared<spdlog::sinks::stdout_color_sink_mt>());
+    sinks.push_back(std::make_shared<spdlog::sinks::basic_file_sink_mt>(LOGFILE));
+    // Create a logger and attach sinks to it
+    auto logger = std::make_shared<spdlog::logger>("logger", begin(sinks), end(sinks));
+    // Make this logger available globally
+    spdlog::register_logger(logger);
+    // Set the log level
+    logger->set_level(spdlog::level::info);
 
-    auto console = spdlog::stdout_color_mt("console");
-    std::shared_ptr<spdlog::logger> my_logger;
-    try
-    {
-        my_logger = spdlog::basic_logger_st("file_logger", "/tmp/EvolveLog.txt");
 
-    } catch (const spdlog::spdlog_ex& ex)
-    {
-        std::cout << "Log initialization failed: " << ex.what() << std::endl;
-    }
-    spdlog::set_level(spdlog::level::info);
-    my_logger->info("       Evolve         ");
-    my_logger->info("======================");
-    my_logger->info("Author: Calvin Lobo");
-    my_logger->info("Major Version: {0}", Evolve_VERSION_MAJOR);
-    my_logger->info("Minor Version: {0}", Evolve_VERSION_MINOR);
-    my_logger->info("======================");
+    logger->info("       Evolve         ");
+    logger->info("======================");
+    logger->info("Author: Calvin Lobo");
+    logger->info("Major Version: {0}", Evolve_VERSION_MAJOR);
+    logger->info("Minor Version: {0}", Evolve_VERSION_MINOR);
+    logger->info("======================");
 
 
     // Change the seed to be based off the current system time
@@ -95,23 +97,11 @@ int init()
         exit(-1);
     }
 
-    std::cout << ecosystem << std::endl;
+    std::stringstream s;
+    s << ecosystem;
+    logger->info(s.str());
 
-    // Get the first two creatures and have them reproduce
-    std::vector<std::shared_ptr<Creature>> &creatures = ecosystem.species_[kMySpeciesName]->GetCreatures();
     ecosystem.openConnection("0.0.0.0", 12346);
-
-//    int epoch_length_days =0;
-//    do
-//    {
-//        std::cin >> epoch_length_days;
-//        ecosystem.RunEpoch(epoch_length_days);
-//        int day_number = ecosystem.GetDay();
-//        print_epoch_results();
-//        std::cout << "New Temp Resistance limits are " << ecosystem.environmental_limits_["Temperature Resistance"].first << ", " << ecosystem.environmental_limits_["Temperature Resistance"].second << std::endl;
-
-
-//    } while ( epoch_length_days > 0);
 
     return 0;
 }
